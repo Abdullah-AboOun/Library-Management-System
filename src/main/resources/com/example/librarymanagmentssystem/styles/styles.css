@@ -1,0 +1,10 @@
+.button-with-hover:hover {
+    -fx-opacity: 0.9;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #3498DB;
+    -fx-background-color: white;
+}

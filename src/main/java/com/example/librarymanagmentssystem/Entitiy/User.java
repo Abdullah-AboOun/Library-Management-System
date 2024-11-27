@@ -1,20 +1,26 @@
 package com.example.librarymanagmentssystem.Entitiy;
 
-import java.util.Objects;
-
-public class Person {
+public class User {
+    private final int id;
     private String fullName;
     private String userName;
     private String password;
+    private Role role;
     private String email;
     private String phoneNumber;
 
-    public Person(String fullName, String userName, String password, String email, String phoneNumber) {
+    public User(int id, String fullName, String userName, String password, Role role, String email, String phoneNumber) {
+        this.id = id;
         this.fullName = fullName;
         this.userName = userName;
         this.password = password;
+        this.role = role;
         this.email = email;
         this.phoneNumber = phoneNumber;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getFullName() {
@@ -41,6 +47,14 @@ public class Person {
         this.password = password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -58,30 +72,14 @@ public class Person {
     }
 
     @Override
-    public String toString() {
-        return "Person{" +
-                "fullName='" + fullName + '\'' +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
-    }
+    public final boolean equals(Object o) {
+        if (!(o instanceof User user)) return false;
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
-            return false;
-        Person person = (Person) o;
-        return Objects.equals(fullName, person.fullName) &&
-                Objects.equals(userName, person.userName) &&
-                Objects.equals(password, person.password) &&
-                Objects.equals(email, person.email) &&
-                Objects.equals(phoneNumber, person.phoneNumber);
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fullName, userName, password, email, phoneNumber);
+        return id;
     }
 }
