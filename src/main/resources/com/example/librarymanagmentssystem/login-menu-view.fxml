@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<FlowPane alignment="CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarymanagmentssystem.LoginMenuController">
+    <VBox alignment="CENTER" prefHeight="300.0" prefWidth="250.0" spacing="5.0">
+        <VBox alignment="CENTER" prefHeight="150.0" prefWidth="100.0" spacing="12.0">
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/login.png" />
+                </image>
+            </ImageView>
+            <Label text="Login" />
+            <TextField fx:id="userNameField" promptText="username" />
+            <PasswordField fx:id="passwordField" promptText="password" />
+            <Label fx:id="errorLabel" />
+        </VBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+            <Button mnemonicParsing="false" onAction="#submitButtonOnClick" text="Submit" />
+            <Button mnemonicParsing="false" onAction="#registerButtonOnClick" text="Register" />
+        </HBox>
+    </VBox>
+</FlowPane>
