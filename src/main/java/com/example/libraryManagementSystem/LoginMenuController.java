@@ -1,4 +1,4 @@
-package com.example.librarymanagmentssystem;
+package com.example.libraryManagementSystem;
 
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;

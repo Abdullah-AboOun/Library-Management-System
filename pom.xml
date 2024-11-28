@@ -86,7 +86,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.librarymanagmentssystem/com.example.librarymanagmentssystem.MainApplication
+                                com.example.librarymanagmentssystem/com.example.libraryManagementSystem.MainApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

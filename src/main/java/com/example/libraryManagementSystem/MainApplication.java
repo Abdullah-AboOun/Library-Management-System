@@ -1,11 +1,9 @@
-package com.example.librarymanagmentssystem;
+package com.example.libraryManagementSystem;
 
-import com.example.librarymanagmentssystem.Entitiy.Role;
-import com.example.librarymanagmentssystem.Entitiy.User;
+import com.example.libraryManagementSystem.entity.Role;
+import com.example.libraryManagementSystem.entity.User;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 

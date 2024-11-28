@@ -1,4 +1,4 @@
-package com.example.librarymanagmentssystem.Entitiy;
+package com.example.libraryManagementSystem.entity;
 
 public class User {
     private final int id;

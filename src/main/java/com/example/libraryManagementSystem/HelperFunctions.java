@@ -1,4 +1,4 @@
-package com.example.librarymanagmentssystem;
+package com.example.libraryManagementSystem;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

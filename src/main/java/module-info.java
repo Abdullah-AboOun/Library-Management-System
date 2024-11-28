@@ -1,5 +1,5 @@
 
-module com.example.librarymanagmentssystem {
+module com.example.libraryManagementSystem {
 
     requires javafx.controls;
 
@@ -7,8 +7,8 @@ module com.example.librarymanagmentssystem {
 
     requires transitive javafx.graphics;
 
-    opens com.example.librarymanagmentssystem to javafx.fxml;
+    opens com.example.libraryManagementSystem to javafx.fxml;
 
-    exports com.example.librarymanagmentssystem;
+    exports com.example.libraryManagementSystem;
 
 }
