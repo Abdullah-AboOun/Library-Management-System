@@ -23,7 +23,7 @@
 }
 
 .success-label {
-  -fx-text-fill: #27ae60;
+  -fx-text-fill: #27ae60 !important;
   -fx-background-color: #d4efdf;
   -fx-padding: 8px;
   -fx-background-radius: 4px;

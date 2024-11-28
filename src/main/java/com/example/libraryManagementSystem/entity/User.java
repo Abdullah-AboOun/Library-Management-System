@@ -8,8 +8,10 @@ public class User {
     private Role role;
     private String email;
     private String phoneNumber;
+    private String imagePath; // New field
 
-    public User(int id, String fullName, String userName, String password, Role role, String email, String phoneNumber) {
+    public User(int id, String fullName, String userName, String password,
+            Role role, String email, String phoneNumber, String imagePath) {
         this.id = id;
         this.fullName = fullName;
         this.userName = userName;
@@ -17,6 +19,16 @@ public class User {
         this.role = role;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.imagePath = imagePath;
+    }
+
+    // Add getter/setter for imagePath
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public int getId() {
@@ -73,7 +85,8 @@ public class User {
 
     @Override
     public final boolean equals(Object o) {
-        if (!(o instanceof User user)) return false;
+        if (!(o instanceof User user))
+            return false;
 
         return id == user.id;
     }

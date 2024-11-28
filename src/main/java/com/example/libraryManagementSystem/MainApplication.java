@@ -32,11 +32,11 @@ public class MainApplication extends Application {
 
     private static void initializeData() {
         userList.addAll(
-                new User(1, "Ahmad", "ahmad", "123", Role.ADMIN, "ahmad@gmail.com", "123456789"),
-                new User(2, "Ali", "ali", "123", Role.USER, "ali@gmail.com", "123456789"),
-                new User(3, "Sara", "sara", "123", Role.Librarian, "Sara@gmail.com", "123456789"));
+                new User(1, "Ahmad", "ahmad", "123", Role.ADMIN, "ahmad@gmail.com",
+                        "123456789", "images/avatar.png"),
+                new User(2, "Ali", "ali", "123", Role.USER, "ali@gmail.com",
+                        "123456789", "images/avatar.png"),
+                new User(3, "Sara", "sara", "123", Role.Librarian, "Sara@gmail.com",
+                        "123456789", "images/avatar.png"));
     }
-
-
-
 }
