@@ -20,7 +20,6 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         HelperFunctions.setPrimaryStage(stage);
         HelperFunctions.setScene("login-view.fxml", "Login", 300, 400);
-        stage.setTitle("Library Management System");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/login.png"))));
         stage.show();
         initializeData();
