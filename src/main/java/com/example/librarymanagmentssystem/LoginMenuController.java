@@ -19,10 +19,7 @@ public class LoginMenuController {
 
     @FXML
     private void loginButtonOnClick() {
-        boolean userExists = MainApplication.userList
-                .parallelStream()
-                .anyMatch(user -> user.getUserName().equals(userNameField.getText())
-                        && user.getPassword().equals(passwordField.getText()));
+        boolean userExists = MainApplication.userList.parallelStream().anyMatch(user -> user.getUserName().equals(userNameField.getText()) && user.getPassword().equals(passwordField.getText()));
 
         if (userExists) {
             errorLabel.setText("Welcome " + userNameField.getText());
@@ -47,7 +44,7 @@ public class LoginMenuController {
 
     @FXML
     private void registerButtonOnClick() {
-
+        HelperFunctions.switchScene("register");
 
     }
 }

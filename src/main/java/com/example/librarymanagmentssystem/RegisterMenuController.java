@@ -8,6 +8,6 @@ public class RegisterMenuController {
     }
 
     public void switchToLogin(ActionEvent actionEvent) {
-
+        HelperFunctions.switchScene("login");
     }
 }

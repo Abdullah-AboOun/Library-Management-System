@@ -20,17 +20,15 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login-menu-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 300, 400);
-        stage.setTitle("Login Screen");
+        HelperFunctions.setPrimaryStage(stage);
+        HelperFunctions.setScene("login-view.fxml", "Login", 300, 400);
+        stage.setTitle("Library Management System");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/login.png"))));
-        stage.setScene(scene);
         stage.show();
+        initializeData();
     }
 
     public static void main(String[] args) {
-        initializeData();
-
         launch(args);
     }
 
@@ -40,4 +38,7 @@ public class MainApplication extends Application {
                 new User(2, "Ali", "ali", "123", Role.USER, "ali@gmail.com", "123456789"),
                 new User(3, "Sara", "sara", "123", Role.Librarian, "Sara@gmail.com", "123456789"));
     }
+
+
+
 }
