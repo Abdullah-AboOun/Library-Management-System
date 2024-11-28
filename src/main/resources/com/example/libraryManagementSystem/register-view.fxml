@@ -5,10 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
-<FlowPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.example.libraryManagementSystem.RegisterController"
-          prefHeight="600.0" prefWidth="800.0"
-          alignment="CENTER">
+<FlowPane alignment="CENTER" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.libraryManagementSystem.RegisterController">
 
     <stylesheets>
         <URL value="@styles/styles.css"/>
@@ -16,43 +14,38 @@
     <VBox alignment="CENTER" spacing="15">
 
         <VBox alignment="CENTER" spacing="5">
-            <ImageView fx:id="profileImageView" fitHeight="100.0" fitWidth="100.0"
-                       pickOnBounds="true" preserveRatio="true" onMouseClicked="#imageViewOnClick"/>
-            <Label fx:id="imageErrorLabel" styleClass="error-label"/>
+            <ImageView fx:id="profileImageView" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#imageViewOnClick"
+                       pickOnBounds="true" preserveRatio="true"/>
         </VBox>
 
-        <HBox spacing="30" alignment="CENTER">
+        <HBox alignment="CENTER" spacing="30">
             <!-- Left Column -->
             <VBox alignment="CENTER" spacing="15">
-                <TextField fx:id="fullNameField" promptText="Full Name"
-                           style="-fx-pref-width: 200;"/>
-                <Label fx:id="fullNameErrorLabel" styleClass="error-label"/>
 
-                <TextField fx:id="userNameField" promptText="Username"
-                           style="-fx-pref-width: 200;"/>
+                <TextField fx:id="userNameField" promptText="Username" style="-fx-pref-width: 200;"/>
                 <Label fx:id="userNameErrorLabel" styleClass="error-label"/>
 
-                <PasswordField fx:id="passwordField" promptText="Password"
-                               style="-fx-pref-width: 200;"/>
+                <TextField fx:id="emailField" promptText="Email" style="-fx-pref-width: 200;"/>
+                <Label fx:id="emailErrorLabel" styleClass="error-label"/>
+
+
+                <PasswordField fx:id="passwordField" promptText="Password" style="-fx-pref-width: 200;"/>
                 <Label fx:id="passwordErrorLabel" styleClass="error-label"/>
 
-                <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password"
-                               style="-fx-pref-width: 200;"/>
+                <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" style="-fx-pref-width: 200;"/>
                 <Label fx:id="confirmPasswordErrorLabel" styleClass="error-label"/>
             </VBox>
 
             <!-- Right Column -->
             <VBox alignment="CENTER" spacing="15">
-                <TextField fx:id="emailField" promptText="Email"
-                           style="-fx-pref-width: 200;"/>
-                <Label fx:id="emailErrorLabel" styleClass="error-label"/>
+                <TextField fx:id="fullNameField" promptText="Full Name" style="-fx-pref-width: 200;"/>
+                <Label fx:id="fullNameErrorLabel" styleClass="error-label"/>
 
-                <TextField fx:id="phoneField" promptText="Phone"
-                           style="-fx-pref-width: 200;"/>
+
+                <TextField fx:id="phoneField" promptText="Phone" style="-fx-pref-width: 200;"/>
                 <Label fx:id="phoneErrorLabel" styleClass="error-label"/>
 
-                <ComboBox fx:id="roleComboBox" promptText="Select Role"
-                          style="-fx-pref-width: 200;"/>
+                <ComboBox fx:id="roleComboBox" promptText="Select Role" style="-fx-pref-width: 200;"/>
                 <Label fx:id="roleErrorLabel" styleClass="error-label"/>
             </VBox>
         </HBox>
@@ -65,11 +58,9 @@
             </styleClass>
         </Button>
 
-        <Label fx:id="errorLabel"/>
-
         <HBox alignment="CENTER" spacing="5">
             <Label text="Already have an account?"/>
-            <Hyperlink text="Login" onAction="#switchToLogin"/>
+            <Hyperlink onAction="#switchToLogin" text="Login"/>
         </HBox>
     </VBox>
 </FlowPane>

@@ -1,14 +1,9 @@
 package com.example.libraryManagementSystem;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class HelperFunctions {
@@ -46,17 +41,6 @@ public class HelperFunctions {
             case "librarianDashboard":
                 setScene("librarian-dashboard-view.fxml", "Librarian Dashboard", 800, 600);
                 break;
-        }
-    }
-
-    public static void saveUserImage(Image image, String fileName) {
-        try {
-            String resourcePath = "src/main/resources/com/example/libraryManagementSystem/images/users images";
-            File outputFile = new File(resourcePath + fileName);
-            BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-            ImageIO.write(bImage, "png", outputFile);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

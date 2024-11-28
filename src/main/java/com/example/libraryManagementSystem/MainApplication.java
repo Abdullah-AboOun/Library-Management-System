@@ -7,7 +7,10 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Objects;
 
 import static javafx.collections.FXCollections.observableArrayList;
@@ -16,6 +19,30 @@ public class MainApplication extends Application {
 
     static ObservableList<User> userList = observableArrayList();
 
+    public static void main(String[] args) {
+
+        launch(args);
+    }
+
+    private static void initializeData() {
+        String defaultImagePath = "";
+        URL resourceUrl = MainApplication.class.getResource("/com/example/libraryManagementSystem/images/avatar.png");
+        try {
+            assert resourceUrl != null;
+            defaultImagePath = new File(resourceUrl.toURI()).getAbsolutePath();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        userList.addAll(
+                new User("ahmad", "123", "Ahmad", Role.ADMIN, "ahmad@gmail.com",
+                        "123456789", defaultImagePath),
+                new User("ali", "123", "Ali", Role.USER, "ali@gmail.com",
+                        "123456789", defaultImagePath),
+                new User("sara", "123", "Sara", Role.Librarian, "Sara@gmail.com",
+                        "123456789", defaultImagePath));
+        System.out.println(defaultImagePath);
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         HelperFunctions.setPrimaryStage(stage);
@@ -23,19 +50,5 @@ public class MainApplication extends Application {
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/login.png"))));
         stage.show();
         initializeData();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    private static void initializeData() {
-        userList.addAll(
-                new User(1, "Ahmad", "ahmad", "123", Role.ADMIN, "ahmad@gmail.com",
-                        "123456789", "images/avatar.png"),
-                new User(2, "Ali", "ali", "123", Role.USER, "ali@gmail.com",
-                        "123456789", "images/avatar.png"),
-                new User(3, "Sara", "sara", "123", Role.Librarian, "Sara@gmail.com",
-                        "123456789", "images/avatar.png"));
     }
 }

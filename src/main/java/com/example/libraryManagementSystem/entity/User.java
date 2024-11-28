@@ -1,46 +1,24 @@
 package com.example.libraryManagementSystem.entity;
 
+import java.util.Objects;
+
 public class User {
-    private final int id;
-    private String fullName;
     private String userName;
     private String password;
+    private String fullName;
     private Role role;
     private String email;
     private String phoneNumber;
     private String imagePath; // New field
 
-    public User(int id, String fullName, String userName, String password,
-            Role role, String email, String phoneNumber, String imagePath) {
-        this.id = id;
-        this.fullName = fullName;
+    public User(String userName, String password, String fullName, Role role, String email, String phoneNumber, String imagePath) {
         this.userName = userName;
         this.password = password;
+        this.fullName = fullName;
         this.role = role;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.imagePath = imagePath;
-    }
-
-    // Add getter/setter for imagePath
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getUserName() {
@@ -57,6 +35,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public Role getRole() {
@@ -83,16 +69,36 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    @Override
-    public final boolean equals(Object o) {
-        if (!(o instanceof User user))
-            return false;
+    public String getImagePath() {
+        return imagePath;
+    }
 
-        return id == user.id;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userName, user.userName);
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return Objects.hashCode(userName);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", role=" + role +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                '}';
     }
 }
