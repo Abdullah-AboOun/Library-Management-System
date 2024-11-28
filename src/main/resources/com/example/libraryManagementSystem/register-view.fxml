@@ -3,11 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
 <FlowPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="com.example.libraryManagementSystem.RegisterController"
           prefHeight="600.0" prefWidth="800.0"
           alignment="CENTER">
 
+    <stylesheets>
+        <URL value="@styles/styles.css"/>
+    </stylesheets>
     <VBox alignment="CENTER" spacing="15">
 
         <VBox alignment="CENTER" spacing="5">
@@ -52,8 +57,13 @@
             </VBox>
         </HBox>
 
-        <Button text="Register" onAction="#registerButtonOnClick"
-                style="-fx-pref-width: 200; -fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+        <Button mnemonicParsing="false" onAction="#registerButtonOnClick"
+                style="-fx-background-color: #2ECC71; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-pref-width: 120; -fx-pref-height: 35; -fx-cursor: hand;"
+                text="Register">
+            <styleClass>
+                <String fx:value="button-with-hover"/>
+            </styleClass>
+        </Button>
 
         <Label fx:id="errorLabel"/>
 
