@@ -1,5 +1,6 @@
 package com.example.libraryManagementSystem;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -29,6 +30,7 @@ public class DashboardController implements Initializable {
     public Label phoneErrorLabel;
     public ComboBox roleComboBox;
     public Label roleErrorLabel;
+    public ImageView smallProfileImageView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -36,9 +38,32 @@ public class DashboardController implements Initializable {
 
         String imagePath = MainApplication.loggedInUser.getImagePath();
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
+        smallProfileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
+
+        userNameField.setText(MainApplication.loggedInUser.getUserName());
+        fullNameField.setText(MainApplication.loggedInUser.getFullName());
+        emailField.setText(MainApplication.loggedInUser.getEmail());
+        phoneField.setText(MainApplication.loggedInUser.getPhoneNumber());
+        roleComboBox.setValue(MainApplication.loggedInUser.getRole().toString());
+        passwordField.setText(MainApplication.loggedInUser.getPassword());
+        confirmPasswordField.setText(MainApplication.loggedInUser.getPassword());
+
+
     }
 
     public void imageViewOnClick(MouseEvent mouseEvent) {
 
+    }
+
+    public void addButtonOnClick(ActionEvent actionEvent) {
+    }
+
+    public void updateButtonOnClick(ActionEvent actionEvent) {
+    }
+
+    public void deleteButtonOnClick(ActionEvent actionEvent) {
+    }
+
+    public void cancelButtonOnClick(ActionEvent actionEvent) {
     }
 }

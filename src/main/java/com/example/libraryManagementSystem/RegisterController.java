@@ -14,7 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -35,6 +34,7 @@ public class RegisterController implements Initializable {
     public Label roleErrorLabel;
     public ImageView profileImageView;
     private String imagePath = MainApplication.defaultImagePath;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         roleComboBox.getItems().addAll("Admin", "User", "Librarian");

@@ -19,6 +19,7 @@ public class HelperFunctions {
             Scene scene = new Scene(fxmlLoader.load(), width, height);
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
+            primaryStage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
