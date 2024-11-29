@@ -18,14 +18,14 @@ import static javafx.collections.FXCollections.observableArrayList;
 public class MainApplication extends Application {
 
     static ObservableList<User> userList = observableArrayList();
+    static User loggedInUser;
+    public static String defaultImagePath = "";
 
     public static void main(String[] args) {
-
         launch(args);
     }
 
     private static void initializeData() {
-        String defaultImagePath = "";
         URL resourceUrl = MainApplication.class.getResource("/com/example/libraryManagementSystem/images/avatar.png");
         try {
             assert resourceUrl != null;

@@ -34,18 +34,10 @@ public class RegisterController implements Initializable {
     public ComboBox roleComboBox;
     public Label roleErrorLabel;
     public ImageView profileImageView;
-    private String imagePath = "";
-
+    private String imagePath = MainApplication.defaultImagePath;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         roleComboBox.getItems().addAll("Admin", "User", "Librarian");
-        URL resourceUrl = getClass().getResource("/com/example/libraryManagementSystem/images/avatar.png");
-        try {
-            assert resourceUrl != null;
-            imagePath = new File(resourceUrl.toURI()).getAbsolutePath();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
 
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
     }

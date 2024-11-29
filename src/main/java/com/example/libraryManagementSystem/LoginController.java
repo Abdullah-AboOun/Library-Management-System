@@ -31,13 +31,16 @@ public class LoginController implements Initializable {
 
     @FXML
     private void loginButtonOnClick() {
-        boolean userExists = MainApplication.userList.parallelStream()
-                .anyMatch(user -> user.getUserName().equals(userNameField.getText())
-                        && user.getPassword().equals(passwordField.getText()));
 
-        if (userExists) {
+        MainApplication.loggedInUser = MainApplication.userList.parallelStream()
+                .filter(user -> user.getUserName().equals(userNameField.getText())
+                        && user.getPassword().equals(passwordField.getText()))
+                .findFirst().orElse(null);
+
+        if (MainApplication.loggedInUser != null) {
             errorLabel.setText("Welcome " + userNameField.getText());
             errorLabel.getStyleClass().setAll("success-label");
+            HelperFunctions.switchScene("dashboard");
         } else {
             errorLabel.setText("⚠ Invalid username or password");
             errorLabel.getStyleClass().setAll("error-label");
