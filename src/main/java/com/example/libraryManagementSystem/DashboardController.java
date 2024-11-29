@@ -65,5 +65,6 @@ public class DashboardController implements Initializable {
     }
 
     public void cancelButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("login");
     }
 }
