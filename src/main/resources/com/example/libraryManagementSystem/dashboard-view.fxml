@@ -16,11 +16,15 @@
         <VBox alignment="CENTER" prefHeight="700.0" prefWidth="120.0" spacing="20.0"
               style="-fx-padding: 15;">
             <ImageView fx:id="smallProfileImageView" fitHeight="100.0" fitWidth="100.0"
+                       onMouseClicked="#smallProfileImageViewOnClick"
                        pickOnBounds="true" preserveRatio="true">
-                <VBox.margin>
-                    <Insets bottom="40.0"/>
-                </VBox.margin>
             </ImageView>
+            <Label fx:id="usernameLabel"/>
+            <VBox.margin>
+                <Insets bottom="40.0"/>
+            </VBox.margin>
+
+
             <Button mnemonicParsing="false"
                     style="-fx-background-color: #3498DB"
                     text="Dashboard"/>
@@ -94,7 +98,7 @@
         </VBox>
 
         <!-- Right Table Section -->
-        <TableView fx:id="userTableView" prefHeight="700.0" prefWidth="650">
+        <TableView fx:id="userTableView" prefHeight="700.0" prefWidth="642.0">
             <columns>
                 <TableColumn fx:id="profileImageColumn"
                              prefWidth="60.0" text="Image">

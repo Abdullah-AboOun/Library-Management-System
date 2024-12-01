@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
@@ -41,7 +42,9 @@ public class DashboardController implements Initializable {
     public TableColumn<User, Role> roleColumn;
     public TableColumn<User, String> passwordColumn;
     public TableColumn<User, ImageView> profileImageColumn;
+    public Label usernameLabel;
     User loggedInUser;
+    String imagePath;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,7 +53,7 @@ public class DashboardController implements Initializable {
         String imagePath = loggedInUser.getImagePath();
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
         smallProfileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
-
+        usernameLabel.setText(loggedInUser.getFullName());
         if (loggedInUser.getRole() == Role.USER) {
             roleComboBox.setDisable(true);
         } else if (loggedInUser.getRole() == Role.Librarian) {
@@ -68,8 +71,8 @@ public class DashboardController implements Initializable {
         phoneColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
 
-        roleColumn.setCellValueFactory(cellData
-                -> new SimpleObjectProperty<>(cellData.getValue().getRole()));
+        roleColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getRole()));
 
         passwordColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getPassword()));
@@ -84,7 +87,9 @@ public class DashboardController implements Initializable {
 
         userTableView.setItems(MainApplication.userList);
 
-        userTableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+        userTableView.getSelectionModel().selectedItemProperty().addListener((
+                observableValue, oldValue, newValue) -> {
+
             if (newValue != null) {
                 User user = userTableView.getSelectionModel().getSelectedItem();
                 userNameField.setText(user.getUserName());
@@ -95,19 +100,93 @@ public class DashboardController implements Initializable {
                 passwordField.setText(user.getPassword());
                 confirmPasswordField.setText(user.getPassword());
                 profileImageView.setImage(new Image(new File(user.getImagePath()).toURI().toString()));
+                smallProfileImageView.setImage(new Image(new File(user.getImagePath()).toURI().toString()));
             }
         });
 
     }
 
     public void imageViewOnClick(MouseEvent mouseEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters()
+                .add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        String projectPath = System.getProperty("user.dir");
+        File initialDirectory = new File(
+                projectPath + "/src/main/resources/com/example/libraryManagementSystem/images");
+        fileChooser.setInitialDirectory(initialDirectory);
 
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            imagePath = selectedFile.getAbsolutePath();
+        }
+        profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
     }
 
     public void addButtonOnClick(ActionEvent actionEvent) {
+
+
+        Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
+            case "Admin" -> Role.ADMIN;
+            case "Librarian" -> Role.Librarian;
+            default -> Role.USER;
+        };
+
+        String userName = userNameField.getText();
+        String password = passwordField.getText();
+        String fullName = fullNameField.getText();
+        String email = emailField.getText();
+        String phone = phoneField.getText();
+        imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
+        User user = new User(userName, password, fullName, role, email, phone, imagePath);
+
+        if (MainApplication.userList.contains(user)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("User already exists!");
+            alert.showAndWait();
+            return;
+        }
+
+        MainApplication.userList.add(user);
     }
 
     public void updateButtonOnClick(ActionEvent actionEvent) {
+
+
+        String userName = userNameField.getText();
+        String password = passwordField.getText();
+        String fullName = fullNameField.getText();
+        String email = emailField.getText();
+        String phone = phoneField.getText();
+        imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
+        Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
+            case "Admin" -> Role.ADMIN;
+            case "Librarian" -> Role.Librarian;
+            default -> Role.USER;
+        };
+        User user = new User(userName, password, fullName, role, email, phone, imagePath);
+
+        if (!MainApplication.userList.contains(user)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("No user found with user name: " + userName);
+            alert.showAndWait();
+            return;
+        }
+        int i = MainApplication.userList.indexOf(user);
+        MainApplication.userList.set(i, user);
+        userTableView.refresh();
+
+
+//        user.setUserName(userNameField.getText());
+//        user.setPassword(passwordField.getText());
+//        user.setFullName(fullNameField.getText());
+//        user.setEmail(emailField.getText());
+//        user.setPhoneNumber(phoneField.getText());
+//        user.setRole(role);
+//        user.setImagePath(imagePath == null ? MainApplication.defaultImagePath : imagePath);
 
     }
 
@@ -121,5 +200,9 @@ public class DashboardController implements Initializable {
 
     public void cancelButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("login");
+    }
+
+    public void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
+        HelperFunctions.switchScene("profileDashboard");
     }
 }
