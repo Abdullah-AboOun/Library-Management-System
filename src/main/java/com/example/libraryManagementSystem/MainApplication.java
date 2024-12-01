@@ -18,8 +18,8 @@ import static javafx.collections.FXCollections.observableArrayList;
 public class MainApplication extends Application {
 
     static ObservableList<User> userList = observableArrayList();
-    static User loggedInUser;
-    public static String defaultImagePath = "";
+    static int loggedInUserIndex = 0;
+    static String defaultImagePath = "";
 
     public static void main(String[] args) {
         launch(args);

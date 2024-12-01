@@ -32,22 +32,20 @@
                     <Font name="System Bold" size="24.0"/>
                 </font>
             </Label>
-            <TextField fx:id="userNameField" promptText="Username"
-                       style="-fx-background-radius: 4; -fx-border-radius: 4; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-background-color: #FAFAFA; -fx-pref-height: 35;"/>
-            <PasswordField fx:id="passwordField" promptText="Password"
-                           style="-fx-background-radius: 4; -fx-border-radius: 4; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-background-color: #FAFAFA; -fx-pref-height: 35;"/>
+            <TextField fx:id="userNameField" promptText="Username"/>
+            <PasswordField fx:id="passwordField" promptText="Password"/>
             <Label fx:id="errorLabel" style="-fx-text-fill: #E74C3C;"/>
         </VBox>
         <HBox alignment="CENTER" spacing="15.0">
             <Button mnemonicParsing="false" onAction="#loginButtonOnClick"
-                    style="-fx-background-color: #3498DB; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-pref-width: 120; -fx-pref-height: 35; -fx-cursor: hand;"
+                    style="-fx-background-color: #3498DB;"
                     text="Login">
                 <styleClass>
                     <String fx:value="button-with-hover"/>
                 </styleClass>
             </Button>
             <Button mnemonicParsing="false" onAction="#registerButtonOnClick"
-                    style="-fx-background-color: #2ECC71; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-pref-width: 120; -fx-pref-height: 35; -fx-cursor: hand;"
+                    style="-fx-background-color: #2ECC71;"
                     text="Register">
                 <styleClass>
                     <String fx:value="button-with-hover"/>
