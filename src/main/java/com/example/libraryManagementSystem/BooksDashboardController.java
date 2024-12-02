@@ -1,5 +1,6 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.entity.Book;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.beans.property.SimpleObjectProperty;
@@ -20,83 +21,109 @@ public class BooksDashboardController implements Initializable {
 
     public ImageView profileImageView;
     public ImageView smallProfileImageView;
-
-
-//    public TableView<User> userTableView;
-//    public TableColumn<User, String> usernameColumn;
-//    public TableColumn<User, String> fullNameColumn;
-//    public TableColumn<User, String> emailColumn;
-//    public TableColumn<User, String> phoneColumn;
-//    public TableColumn<User, Role> roleColumn;
-//    public TableColumn<User, String> passwordColumn;
-//    public TableColumn<User, ImageView> profileImageColumn;
     public Label usernameLabel;
+    public ImageView bookImageView;
+    public TextField titleField;
+    public Label titleErrorLabel;
+    public TextField authorField;
+    public Label authorErrorLabel;
+    public TextField isbnField;
+    public Label isbnErrorLabel;
+    public TextField dateField;
+    public Label dateErrorLabel;
+    public ComboBox languageComboBox;
+    public Label languageErrorLabel;
+    public ComboBox categoryComboBox;
+    public Label categoryErrorLabel;
+    public TextField publisherField;
+    public Label publisherErrorLabel;
+    public TextField pagesField;
+    public Label pagesErrorLabel;
+    public TextField copiesField;
+    public Label copiesErrorLabel;
+    public TableView<Book> bookTableView;
+    public TableColumn<Book, String> titleColumn;
+    public TableColumn<Book, String> authorColumn;
+    public TableColumn<Book, String> dateOfPublicationColumn;
+    public TableColumn<Book, String> isbnColumn;
+    public TableColumn<Book, String> languageColumn;
+    public TableColumn<Book, String> categoryColumn;
+    public TableColumn<Book, String> publisherColumn;
+    public TableColumn<Book, Integer> pagesNumberColumn;
+    public TableColumn<Book, Integer> copiesNumberColumn;
+    public TableColumn<Book, ImageView> bookImageColumn;
     User loggedInUser;
     String imagePath;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        roleComboBox.getItems().addAll("Admin", "User", "Librarian");
         loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
         String imagePath = loggedInUser.getImagePath();
-        profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
         smallProfileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
         usernameLabel.setText(loggedInUser.getFullName());
 
-//        usernameColumn.setCellValueFactory(cellData ->
-//                new SimpleStringProperty(cellData.getValue().getUserName()));
-//
-//        fullNameColumn.setCellValueFactory(cellData ->
-//                new SimpleStringProperty(cellData.getValue().getFullName()));
-//
-//        emailColumn.setCellValueFactory(cellData ->
-//                new SimpleStringProperty(cellData.getValue().getEmail()));
-//
-//        phoneColumn.setCellValueFactory(cellData ->
-//                new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
-//
-//        roleColumn.setCellValueFactory(cellData ->
-//                new SimpleObjectProperty<>(cellData.getValue().getRole()));
-//
-//        passwordColumn.setCellValueFactory(cellData ->
-//                new SimpleStringProperty(cellData.getValue().getPassword()));
-//
-//        profileImageColumn.setCellValueFactory(cellData -> {
-//            String userImagePath = cellData.getValue().getImagePath();
-//            ImageView imageView = new ImageView(new Image(new File(userImagePath).toURI().toString()));
-//            imageView.setFitHeight(30);
-//            imageView.setFitWidth(30);
-//            return new SimpleObjectProperty<>(imageView);
-//        });
-//
-//        userTableView.setItems(MainApplication.userList);
-//
-//        userTableView.getSelectionModel().selectedItemProperty().addListener((
-//                observableValue, oldValue, newValue) -> {
-//
-//            if (newValue != null) {
-//                User user = userTableView.getSelectionModel().getSelectedItem();
-//                userNameField.setText(user.getUserName());
-//                fullNameField.setText(user.getFullName());
-//                emailField.setText(user.getEmail());
-//                phoneField.setText(user.getPhoneNumber());
-//                roleComboBox.setValue(user.getRole());
-//                passwordField.setText(user.getPassword());
-//                confirmPasswordField.setText(user.getPassword());
-//                profileImageView.setImage(new Image(new File(user.getImagePath()).toURI().toString()));
-//                smallProfileImageView.setImage(new Image(new File(user.getImagePath()).toURI().toString()));
 
-//        });
+        titleColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getTitle()));
 
-        }
+        authorColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getAuthor()));
+
+        dateOfPublicationColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getDateOfPublication()));
+
+        isbnColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getISBN()));
+
+        languageColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getLanguage()));
+
+        categoryColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getCategory()));
+
+        publisherColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getPublisher()));
+
+        pagesNumberColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getPagesNumber()));
+
+        copiesNumberColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCopiesNumber()));
+
+        bookImageColumn.setCellValueFactory(cellData -> {
+            String bookImagePath = cellData.getValue().getImagePath();
+            ImageView imageView = new ImageView(new Image(new File(bookImagePath).toURI().toString()));
+            imageView.setFitHeight(30);
+            imageView.setFitWidth(30);
+            return new SimpleObjectProperty<>(imageView);
+        });
+
+        bookTableView.setItems(MainApplication.bookList);
+
+        bookTableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue != null) {
+                Book book = bookTableView.getSelectionModel().getSelectedItem();
+                titleField.setText(book.getTitle());
+                authorField.setText(book.getAuthor());
+                isbnField.setText(book.getISBN());
+                dateField.setText(book.getDateOfPublication());
+                languageComboBox.setValue(book.getLanguage());
+                categoryComboBox.setValue(book.getCategory());
+                publisherField.setText(book.getPublisher());
+                pagesField.setText(String.valueOf(book.getPagesNumber()));
+                copiesField.setText(String.valueOf(book.getCopiesNumber()));
+                bookImageView.setImage(new Image(new File(book.getImagePath()).toURI().toString()));
+            }
+        });
+
+
+    }
 
     public void imageViewOnClick(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters()
-                .add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         String projectPath = System.getProperty("user.dir");
-        File initialDirectory = new File(
-                projectPath + "/src/main/resources/com/example/libraryManagementSystem/images");
+        File initialDirectory = new File(projectPath + "/src/main/resources/com/example/libraryManagementSystem/images");
         fileChooser.setInitialDirectory(initialDirectory);
 
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -108,75 +135,77 @@ public class BooksDashboardController implements Initializable {
 
     public void addButtonOnClick(ActionEvent actionEvent) {
 
+        String title = titleField.getText();
+        String author = authorField.getText();
+        String isbn = isbnField.getText();
+        String date = dateField.getText();
+        String language = languageComboBox.getSelectionModel().getSelectedItem().toString();
+        String category = categoryComboBox.getSelectionModel().getSelectedItem().toString();
+        String publisher = publisherField.getText();
+        int pages = Integer.parseInt(pagesField.getText());
+        int copies = Integer.parseInt(copiesField.getText());
+        imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
+        Book book = new Book(title, author, date, isbn, language, category, publisher, imagePath, pages, copies);
 
-//        Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
-//            case "Admin" -> Role.ADMIN;
-//            case "Librarian" -> Role.Librarian;
-//            default -> Role.USER;
-//        };
-//
-//        String userName = userNameField.getText();
-//        String password = passwordField.getText();
-//        String fullName = fullNameField.getText();
-//        String email = emailField.getText();
-//        String phone = phoneField.getText();
-//        imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
-//        User user = new User(userName, password, fullName, role, email, phone, imagePath);
+        if (MainApplication.bookList.contains(book)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Book already exists!");
+            alert.showAndWait();
+            return;
+        }
 
-//        if (MainApplication.userList.contains(user)) {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Error");
-//            alert.setHeaderText(null);
-//            alert.setContentText("User already exists!");
-//            alert.showAndWait();
-//            return;
-//        }
-//
-//        MainApplication.userList.add(user);
+        MainApplication.bookList.add(book);
     }
 
     public void updateButtonOnClick(ActionEvent actionEvent) {
+        String title = titleField.getText();
+        String author = authorField.getText();
+        String isbn = isbnField.getText();
+        String date = dateField.getText();
+        String language = languageComboBox.getSelectionModel().getSelectedItem().toString();
+        String category = categoryComboBox.getSelectionModel().getSelectedItem().toString();
+        String publisher = publisherField.getText();
+        int pages = Integer.parseInt(pagesField.getText());
+        int copies = Integer.parseInt(copiesField.getText());
+        imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
+        Book book = new Book(title, author, date, isbn, language, category, publisher, imagePath, pages, copies);
 
-
-//        String userName = userNameField.getText();
-//        String password = passwordField.getText();
-//        String fullName = fullNameField.getText();
-//        String email = emailField.getText();
-//        String phone = phoneField.getText();
-//        imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
-//        Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
-//            case "Admin" -> Role.ADMIN;
-//            case "Librarian" -> Role.Librarian;
-//            default -> Role.USER;
-//        };
-//        User user = new User(userName, password, fullName, role, email, phone, imagePath);
-//
-//        if (!MainApplication.userList.contains(user)) {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Error");
-//            alert.setHeaderText(null);
-//            alert.setContentText("No user found with user name: " + userName);
-//            alert.showAndWait();
-//            return;
-//        }
-//        int i = MainApplication.userList.indexOf(user);
-//        MainApplication.userList.set(i, user);
-//        userTableView.refresh();
+        if (!MainApplication.bookList.contains(book)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("No book found with title: " + title);
+            alert.showAndWait();
+            return;
+        }
+        int i = MainApplication.bookList.indexOf(book);
+        MainApplication.bookList.set(i, book);
+        bookTableView.refresh();
     }
 
     public void deleteButtonOnClick(ActionEvent actionEvent) {
-//        User user = userTableView.getSelectionModel().getSelectedItem();
-//        if (user == null) {
-//            return;
-//        }
-//        MainApplication.userList.remove(user);
+        Book book = bookTableView.getSelectionModel().getSelectedItem();
+        if (book == null) {
+            return;
+        }
+        MainApplication.bookList.remove(book);
     }
+
 
     public void cancelButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("login");
     }
 
+
     public void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
         HelperFunctions.switchScene("profileDashboard");
     }
+
+
+    public void dashboardButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("dashboard");
+    }
+
 }

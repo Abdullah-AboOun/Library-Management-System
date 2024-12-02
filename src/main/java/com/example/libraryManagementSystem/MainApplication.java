@@ -1,5 +1,6 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.entity.Book;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.application.Application;
@@ -17,7 +18,8 @@ import static javafx.collections.FXCollections.observableArrayList;
 
 public class MainApplication extends Application {
 
-    static ObservableList<User> userList = observableArrayList();
+    public static ObservableList<Book> bookList;
+    public static ObservableList<User> userList = observableArrayList();
     static int loggedInUserIndex = 0;
     static String defaultImagePath = "";
 

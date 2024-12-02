@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
+
 <FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" columnHalignment="CENTER"
-          prefHeight="700.0"
-          prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.12"
+          prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.12"
           fx:controller="com.example.libraryManagementSystem.BooksDashboardController">
+
     <stylesheets>
         <URL value="@styles/dashboard.css"/>
     </stylesheets>
@@ -26,12 +34,9 @@
             </VBox.margin>
 
 
-            <Button mnemonicParsing="false"
-                    style="-fx-background-color: #3498DB"
+            <Button mnemonicParsing="false" onAction="#dashboardButtonOnClick" style="-fx-background-color: #3498DB"
                     text="Dashboard"/>
-            <Button mnemonicParsing="false"
-                    style="-fx-background-color: #3498DB"
-                    text="Books"/>
+            <Button mnemonicParsing="false" style="-fx-background-color: #3498DB" text="Books"/>
 
         </VBox>
 
@@ -69,14 +74,12 @@
 
             <HBox alignment="CENTER" spacing="8">
                 <VBox spacing="3">
-                    <ComboBox fx:id="languageComboBox" prefWidth="150" promptText="Language">
-                        <Label fx:id="languageErrorLabel" styleClass="error-label"/>
-                    </ComboBox>
+                    <ComboBox fx:id="languageComboBox" prefWidth="150" promptText="Language"/>
+                    <Label fx:id="languageErrorLabel" styleClass="error-label"/>
                 </VBox>
                 <VBox spacing="3">
-                    <ComboBox fx:id="categoryComboBox" prefWidth="150" promptText="Category">
-                        <Label fx:id="categoryErrorLabel" styleClass="error-label"/>
-                    </ComboBox>
+                    <ComboBox fx:id="categoryComboBox" prefWidth="150" promptText="Category"/>
+                    <Label fx:id="categoryErrorLabel" styleClass="error-label"/>
                 </VBox>
             </HBox>
 
@@ -105,17 +108,19 @@
         </VBox>
 
         <!-- Right Table Section -->
-        <TableView fx:id="bookTableView" prefHeight="700.0" prefWidth="642.0">
+        <TableView fx:id="bookTableView" prefHeight="700.0" prefWidth="730.0">
             <columns>
-                <TableColumn fx:id="titleColumn" text="Title" prefWidth="100">
+                <TableColumn fx:id="bookImageColumn" prefWidth="60.0" text="Image">
                 </TableColumn>
-                <TableColumn fx:id="authorColumn" text="Author" prefWidth="90">
+                <TableColumn fx:id="titleColumn" text="Title" prefWidth="80">
+                </TableColumn>
+                <TableColumn fx:id="authorColumn" text="Author" prefWidth="80">
                 </TableColumn>
                 <TableColumn fx:id="dateOfPublicationColumn" text="Publication Date" prefWidth="100">
                 </TableColumn>
                 <TableColumn fx:id="isbnColumn" text="ISBN" prefWidth="80">
                 </TableColumn>
-                <TableColumn fx:id="languageColumn" text="Language" prefWidth="70">
+                <TableColumn fx:id="languageColumn" text="Language" prefWidth="40">
                 </TableColumn>
                 <TableColumn fx:id="categoryColumn" text="Category" prefWidth="70">
                 </TableColumn>

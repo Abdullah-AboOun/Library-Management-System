@@ -25,12 +25,8 @@
             </VBox.margin>
 
 
-            <Button mnemonicParsing="false"
-                    style="-fx-background-color: #3498DB"
-                    text="Dashboard"/>
-            <Button mnemonicParsing="false"
-                    style="-fx-background-color: #3498DB"
-                    text="Books"/>
+            <Button mnemonicParsing="false" style="-fx-background-color: #3498DB" text="Dashboard"/>
+            <Button mnemonicParsing="false" onAction="#bookButtonOnClick" style="-fx-background-color: #3498DB" text="Books"/>
 
         </VBox>
 

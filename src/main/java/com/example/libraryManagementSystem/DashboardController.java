@@ -195,4 +195,8 @@ public class DashboardController implements Initializable {
     public void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
         HelperFunctions.switchScene("profileDashboard");
     }
+
+    public void bookButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("bookDashboard");
+    }
 }
