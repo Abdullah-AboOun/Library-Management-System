@@ -49,8 +49,8 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        roleComboBox.getItems().addAll("Admin", "User", "Librarian");
-        roleFilterComboBox.getItems().addAll("All", "Admin", "User", "Librarian");
+        roleComboBox.getItems().addAll("ADMIN", "USER", "LIBRARIAN");
+        roleFilterComboBox.getItems().addAll("All", "ADMIN", "USER", "LIBRARIAN");
         loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
         String imagePath = loggedInUser.getImagePath();
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
@@ -58,26 +58,20 @@ public class DashboardController implements Initializable {
         usernameLabel.setText(loggedInUser.getFullName());
         if (loggedInUser.getRole() == Role.USER) {
             roleComboBox.setDisable(true);
-        } else if (loggedInUser.getRole() == Role.Librarian) {
-            roleComboBox.getItems().remove("Admin");
+        } else if (loggedInUser.getRole() == Role.LIBRARIAN) {
+            roleComboBox.getItems().remove("ADMIN");
         }
-        usernameColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getUserName()));
+        usernameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserName()));
 
-        fullNameColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFullName()));
+        fullNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFullName()));
 
-        emailColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getEmail()));
+        emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
 
-        phoneColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
+        phoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
 
-        roleColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getRole()));
+        roleColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getRole()));
 
-        passwordColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getPassword()));
+        passwordColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPassword()));
 
         profileImageColumn.setCellValueFactory(cellData -> {
             String userImagePath = cellData.getValue().getImagePath();
@@ -98,7 +92,8 @@ public class DashboardController implements Initializable {
                 fullNameField.setText(user.getFullName());
                 emailField.setText(user.getEmail());
                 phoneField.setText(user.getPhoneNumber());
-                roleComboBox.setValue(user.getRole());
+                int roleIndex = roleComboBox.getItems().indexOf(user.getRole().toString());
+                roleComboBox.getSelectionModel().select(roleIndex);
                 passwordField.setText(user.getPassword());
                 confirmPasswordField.setText(user.getPassword());
                 profileImageView.setImage(new Image(new File(user.getImagePath()).toURI().toString()));
@@ -125,7 +120,6 @@ public class DashboardController implements Initializable {
     }
 
     public void addButtonOnClick(ActionEvent actionEvent) {
-
 
         boolean isValid = true;
         if (roleComboBox.getSelectionModel().isEmpty()) {
@@ -176,8 +170,8 @@ public class DashboardController implements Initializable {
         }
 
         Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
-            case "Admin" -> Role.ADMIN;
-            case "Librarian" -> Role.Librarian;
+            case "ADMIN" -> Role.ADMIN;
+            case "LIBRARIAN" -> Role.LIBRARIAN;
             default -> Role.USER;
         };
 
@@ -204,7 +198,6 @@ public class DashboardController implements Initializable {
 
     public void updateButtonOnClick(ActionEvent actionEvent) {
 
-
         String userName = userNameField.getText();
         String password = passwordField.getText();
         String fullName = fullNameField.getText();
@@ -212,8 +205,8 @@ public class DashboardController implements Initializable {
         String phone = phoneField.getText();
         imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
         Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
-            case "Admin" -> Role.ADMIN;
-            case "Librarian" -> Role.Librarian;
+            case "ADMIN" -> Role.ADMIN;
+            case "LIBRARIAN" -> Role.LIBRARIAN;
             default -> Role.USER;
         };
         User user = new User(userName, password, fullName, role, email, phone, imagePath);
@@ -252,12 +245,14 @@ public class DashboardController implements Initializable {
     }
 
     public void roleFilterComboBox(ActionEvent actionEvent) {
-        String role = roleFilterComboBox.getSelectionModel().getSelectedItem().toString();
+        String role = roleFilterComboBox.getSelectionModel().isEmpty() ? "All"
+                : roleFilterComboBox.getSelectionModel().getSelectedItem().toString();
+
         if (role.equals("All")) {
             userTableView.setItems(MainApplication.userList);
             return;
         }
-        userTableView.setItems(MainApplication.userList.filtered(user ->
-                user.getRole().toString().equals(role)));
+        userTableView.setItems(MainApplication.userList.filtered(user -> user.getRole().toString().equals(role)));
+
     }
 }

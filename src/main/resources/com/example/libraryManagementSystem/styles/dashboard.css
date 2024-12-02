@@ -17,13 +17,19 @@
     -fx-cursor: hand;
 }
 
+.button:hover {
+    -fx-opacity: 0.9;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
 .text-field:focused,
 .password-field:focused {
     -fx-border-color: #3498db;
     -fx-background-color: white;
 }
 
-.password-field, .text-field {
+.password-field, .text-field, .combo-box {
     -fx-background-radius: 4;
     -fx-border-radius: 4;
     -fx-border-color: #E0E0E0;

@@ -106,7 +106,7 @@ public class RegisterController implements Initializable {
 
             Role userRole = switch (role) {
                 case "Admin" -> Role.ADMIN;
-                case "Librarian" -> Role.Librarian;
+                case "Librarian" -> Role.LIBRARIAN;
                 default -> Role.USER;
             };
 
