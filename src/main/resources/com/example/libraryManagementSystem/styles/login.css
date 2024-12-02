@@ -1,4 +1,4 @@
-.button-with-hover:hover {
+.button:hover {
     -fx-opacity: 0.9;
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;

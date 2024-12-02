@@ -111,7 +111,7 @@ public class ProfileDashboardController implements Initializable {
             imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
             Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
                 case "Admin" -> Role.ADMIN;
-                case "Librarian" -> Role.Librarian;
+                case "Librarian" -> Role.LIBRARIAN;
                 default -> Role.USER;
             };
             user = new User(userName, password, fullName, role, email, phone, imagePath);

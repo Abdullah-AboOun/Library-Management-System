@@ -40,9 +40,10 @@ public class MainApplication extends Application {
                         "123456789", defaultImagePath),
                 new User("ali", "123", "Ali", Role.ADMIN, "ali@gmail.com",
                         "123456789", defaultImagePath),
-                new User("sara", "123", "Sara", Role.Librarian, "Sara@gmail.com",
+                new User("sara", "123", "Sara", Role.LIBRARIAN, "Sara@gmail.com",
+                        "123456789", defaultImagePath),
+                new User("nada", "123", "Nada", Role.USER, "nada@gmail.com",
                         "123456789", defaultImagePath));
-        System.out.println(defaultImagePath);
     }
 
     @Override
