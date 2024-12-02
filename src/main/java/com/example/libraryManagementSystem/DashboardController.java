@@ -43,12 +43,14 @@ public class DashboardController implements Initializable {
     public TableColumn<User, String> passwordColumn;
     public TableColumn<User, ImageView> profileImageColumn;
     public Label usernameLabel;
+    public ComboBox roleFilterComboBox;
     User loggedInUser;
     String imagePath;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         roleComboBox.getItems().addAll("Admin", "User", "Librarian");
+        roleFilterComboBox.getItems().addAll("All", "Admin", "User", "Librarian");
         loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
         String imagePath = loggedInUser.getImagePath();
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
@@ -125,10 +127,54 @@ public class DashboardController implements Initializable {
     public void addButtonOnClick(ActionEvent actionEvent) {
 
 
-        if (roleComboBox.getSelectionModel().getSelectedItem() == null) {
+        boolean isValid = true;
+        if (roleComboBox.getSelectionModel().isEmpty()) {
             roleErrorLabel.setText("Role is required!");
+            isValid = false;
+        } else {
+            roleErrorLabel.setText("");
+        }
+        if (userNameField.getText().isEmpty()) {
+            userNameErrorLabel.setText("Username is required!");
+            isValid = false;
+        } else {
+            userNameErrorLabel.setText("");
+        }
+        if (passwordField.getText().isEmpty()) {
+            passwordErrorLabel.setText("Password is required!");
+            isValid = false;
+        } else {
+            passwordErrorLabel.setText("");
+        }
+        if (!passwordField.getText().equals(confirmPasswordField.getText())) {
+            confirmPasswordErrorLabel.setText("Passwords do not match!");
+            isValid = false;
+        } else {
+            confirmPasswordErrorLabel.setText("");
+        }
+        if (fullNameField.getText().isEmpty()) {
+            fullNameErrorLabel.setText("Full name is required!");
+            isValid = false;
+        } else {
+            fullNameErrorLabel.setText("");
+        }
+        if (emailField.getText().isEmpty()) {
+            emailErrorLabel.setText("Email is required!");
+            isValid = false;
+        } else {
+            emailErrorLabel.setText("");
+        }
+        if (phoneField.getText().isEmpty()) {
+            phoneErrorLabel.setText("Phone is required!");
+            isValid = false;
+        } else {
+            phoneErrorLabel.setText("");
+        }
+
+        if (!isValid) {
             return;
         }
+
         Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
             case "Admin" -> Role.ADMIN;
             case "Librarian" -> Role.Librarian;
@@ -141,30 +187,6 @@ public class DashboardController implements Initializable {
         String email = emailField.getText();
         String phone = phoneField.getText();
         imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
-        if (userName.isEmpty()) {
-            userNameErrorLabel.setText("Username is required!");
-            return;
-        }
-        if (password.isEmpty()) {
-            passwordErrorLabel.setText("Password is required!");
-            return;
-        }
-        if (!password.equals(confirmPasswordField.getText())) {
-            confirmPasswordErrorLabel.setText("Passwords do not match!");
-            return;
-        }
-        if (fullName.isEmpty()) {
-            fullNameErrorLabel.setText("Full name is required!");
-            return;
-        }
-        if (email.isEmpty()) {
-            emailErrorLabel.setText("Email is required!");
-            return;
-        }
-        if (phone.isEmpty()) {
-            phoneErrorLabel.setText("Phone is required!");
-            return;
-        }
 
         User user = new User(userName, password, fullName, role, email, phone, imagePath);
 
@@ -227,5 +249,15 @@ public class DashboardController implements Initializable {
 
     public void bookButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("bookDashboard");
+    }
+
+    public void roleFilterComboBox(ActionEvent actionEvent) {
+        String role = roleFilterComboBox.getSelectionModel().getSelectedItem().toString();
+        if (role.equals("All")) {
+            userTableView.setItems(MainApplication.userList);
+            return;
+        }
+        userTableView.setItems(MainApplication.userList.filtered(user ->
+                user.getRole().toString().equals(role)));
     }
 }

@@ -38,7 +38,7 @@ public class MainApplication extends Application {
         userList.addAll(
                 new User("ahmad", "123", "Ahmad", Role.ADMIN, "ahmad@gmail.com",
                         "123456789", defaultImagePath),
-                new User("ali", "123", "Ali", Role.USER, "ali@gmail.com",
+                new User("ali", "123", "Ali", Role.ADMIN, "ali@gmail.com",
                         "123456789", defaultImagePath),
                 new User("sara", "123", "Sara", Role.Librarian, "Sara@gmail.com",
                         "123456789", defaultImagePath));
