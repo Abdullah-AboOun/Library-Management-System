@@ -38,8 +38,9 @@ public class HelperFunctions {
                 break;
             case "profileDashboard":
                 setScene("profile-dashboard-view.fxml", "Profile Dashboard", 800, 600);
+                break;
             case "librarianDashboard":
-                setScene("librarian-dashboard-view.fxml", "Librarian Dashboard", 800, 600);
+                setScene("books-dashboard-view.fxml", "Books Dashboard", 800, 600);
                 break;
         }
     }

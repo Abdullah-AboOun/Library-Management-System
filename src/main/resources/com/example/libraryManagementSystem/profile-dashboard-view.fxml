@@ -9,7 +9,7 @@
           prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12"
           fx:controller="com.example.libraryManagementSystem.ProfileDashboardController">
     <stylesheets>
-        <URL value="@styles/register.css"/>
+        <URL value="@styles/dashboard.css"/>
     </stylesheets>
     <VBox alignment="CENTER" spacing="15">
         <VBox alignment="CENTER" spacing="5">
@@ -52,11 +52,9 @@
             </VBox>
         </HBox>
 
-        <Button mnemonicParsing="false" onAction="#updateButtonOnClick"
-                text="Update">
+        <Button onAction="#updateButtonOnClick" text="Update">
         </Button>
-        <Button mnemonicParsing="false" onAction="#cancelButtonOnClick"
-                text="Cancel">
+        <Button onAction="#cancelButtonOnClick" text="Cancel">
         </Button>
     </VBox>
 </FlowPane>

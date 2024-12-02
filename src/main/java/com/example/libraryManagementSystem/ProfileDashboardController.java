@@ -4,7 +4,10 @@ import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -31,18 +34,22 @@ public class ProfileDashboardController implements Initializable {
     public Label roleErrorLabel;
     public ImageView profileImageView;
     private String imagePath;
-    User loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
+    User loggedInUser;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        roleComboBox.getItems().addAll("Admin", "User", "Librarian");
+        loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
 
+        roleComboBox.getItems().addAll("Admin", "User", "Librarian");
 
         fullNameField.setText(loggedInUser.getFullName());
         userNameField.setText(loggedInUser.getUserName());
         emailField.setText(loggedInUser.getEmail());
         phoneField.setText(loggedInUser.getPhoneNumber());
+        passwordField.setText(loggedInUser.getPassword());
+        confirmPasswordField.setText(loggedInUser.getPassword());
         roleComboBox.setValue(loggedInUser.getRole().toString());
+
         imagePath = loggedInUser.getImagePath();
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
 
@@ -94,6 +101,7 @@ public class ProfileDashboardController implements Initializable {
             confirmPasswordErrorLabel.setText("");
         }
 
+        User user;
         if (isValid) {
             String userName = userNameField.getText();
             String password = passwordField.getText();
@@ -106,13 +114,17 @@ public class ProfileDashboardController implements Initializable {
                 case "Librarian" -> Role.Librarian;
                 default -> Role.USER;
             };
-            User user = new User(userName, password, fullName, role, email, phone, imagePath);
-
-            int i = MainApplication.userList.indexOf(loggedInUser);
-            MainApplication.userList.set(i, user);
-            HelperFunctions.switchScene("dashboard");
+            user = new User(userName, password, fullName, role, email, phone, imagePath);
+        } else {
+            return;
         }
+
+
+
+        MainApplication.userList.set(MainApplication.loggedInUserIndex, user);
+        HelperFunctions.switchScene("dashboard");
     }
+
 
     public void imageViewOnClick(MouseEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();

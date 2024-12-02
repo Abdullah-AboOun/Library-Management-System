@@ -16,7 +16,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DashboardController implements Initializable {
+public class BooksDashboardController implements Initializable {
 
     public ImageView profileImageView;
     public TextField userNameField;
