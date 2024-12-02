@@ -130,7 +130,7 @@ public class BooksDashboardController implements Initializable {
         if (selectedFile != null) {
             imagePath = selectedFile.getAbsolutePath();
         }
-        profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
+        bookImageView.setImage(new Image(new File(imagePath).toURI().toString()));
     }
 
     public void addButtonOnClick(ActionEvent actionEvent) {
