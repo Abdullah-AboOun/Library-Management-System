@@ -4,60 +4,63 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import java.lang.String?>
 <?import java.net.URL?>
-<FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="600.0"
-          prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12"
-          fx:controller="com.example.libraryManagementSystem.RegisterController">
+<FlowPane alignment="CENTER" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.libraryManagementSystem.RegisterController">
     <stylesheets>
         <URL value="@styles/register.css"/>
     </stylesheets>
-    <VBox alignment="CENTER" spacing="15">
-        <VBox alignment="CENTER" spacing="5">
-            <ImageView fx:id="profileImageView" fitHeight="100.0" fitWidth="100.0"
-                       onMouseClicked="#imageViewOnClick" pickOnBounds="true" preserveRatio="true"/>
-        </VBox>
+    <VBox alignment="CENTER" prefWidth="320.0" spacing="10" style="-fx-padding: 10;">
+        <ImageView fx:id="profileImageView" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#imageViewOnClick"
+                   pickOnBounds="true" preserveRatio="true">
+            <VBox.margin>
+                <Insets bottom="30.0"/>
+            </VBox.margin>
+        </ImageView>
 
-        <HBox alignment="CENTER" spacing="30">
-            <!-- Left Column -->
-            <VBox alignment="CENTER" prefHeight="324.0" prefWidth="200.0" spacing="10.0">
+        <HBox alignment="CENTER" spacing="8">
+            <VBox spacing="3">
                 <TextField fx:id="userNameField" promptText="Username"/>
                 <Label fx:id="userNameErrorLabel" styleClass="error-label"/>
-
-                <TextField fx:id="emailField" promptText="Email"/>
-                <Label fx:id="emailErrorLabel" styleClass="error-label"/>
-
-                <PasswordField fx:id="passwordField" promptText="Password"/>
-                <Label fx:id="passwordErrorLabel" styleClass="error-label"/>
-
-                <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password"/>
-                <Label fx:id="confirmPasswordErrorLabel" styleClass="error-label"/>
-                <padding>
-                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
-                </padding>
             </VBox>
-
-            <!-- Right Column -->
-            <VBox alignment="CENTER" prefHeight="324.0" prefWidth="200.0" spacing="10.0">
+            <VBox spacing="3">
                 <TextField fx:id="fullNameField" promptText="Full Name"/>
                 <Label fx:id="fullNameErrorLabel" styleClass="error-label"/>
-
-                <TextField fx:id="phoneField" promptText="Phone"/>
-                <Label fx:id="phoneErrorLabel" styleClass="error-label"/>
-
-                <ComboBox fx:id="roleComboBox" promptText="Select Role"/>
-                <Label fx:id="roleErrorLabel" styleClass="error-label"/>
-                <padding>
-                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
-                </padding>
             </VBox>
         </HBox>
 
-        <Button mnemonicParsing="false" onAction="#registerButtonOnClick"
-                text="Register">
-            <styleClass>
-                <String fx:value="button-with-hover"/>
-            </styleClass>
+        <HBox alignment="CENTER" spacing="8">
+            <VBox spacing="3">
+                <PasswordField fx:id="passwordField" promptText="Password"/>
+                <Label fx:id="passwordErrorLabel" styleClass="error-label"/>
+            </VBox>
+            <VBox spacing="3">
+                <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password"/>
+                <Label fx:id="confirmPasswordErrorLabel" styleClass="error-label"/>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER" spacing="8">
+            <VBox spacing="3">
+                <TextField fx:id="emailField" promptText="Email"/>
+                <Label fx:id="emailErrorLabel" styleClass="error-label"/>
+            </VBox>
+            <VBox spacing="3">
+                <TextField fx:id="phoneField" promptText="Phone"/>
+                <Label fx:id="phoneErrorLabel" styleClass="error-label"/>
+            </VBox>
+        </HBox>
+
+        <VBox alignment="CENTER" spacing="3">
+            <ComboBox fx:id="roleComboBox" maxWidth="140.0" prefWidth="100.0" promptText="Select Role"/>
+            <Label fx:id="roleErrorLabel" styleClass="error-label">
+                <VBox.margin>
+                    <Insets bottom="20.0"/>
+                </VBox.margin>
+            </Label>
+        </VBox>
+
+        <Button mnemonicParsing="false" onAction="#registerButtonOnClick" text="Register">
         </Button>
 
         <HBox alignment="CENTER" spacing="5">
