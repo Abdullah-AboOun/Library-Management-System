@@ -45,6 +45,7 @@ public class LoginController implements Initializable {
         if (user == null) {
             errorLabel.setText("⚠ Invalid username or password");
             errorLabel.getStyleClass().setAll("error-label");
+            return;
         }
         loggedInUserIndex = userList.indexOf(user);
         errorLabel.setText("Welcome " + userNameField.getText());

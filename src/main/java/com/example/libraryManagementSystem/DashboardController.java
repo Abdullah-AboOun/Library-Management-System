@@ -125,6 +125,10 @@ public class DashboardController implements Initializable {
     public void addButtonOnClick(ActionEvent actionEvent) {
 
 
+        if (roleComboBox.getSelectionModel().getSelectedItem() == null) {
+            roleErrorLabel.setText("Role is required!");
+            return;
+        }
         Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
             case "Admin" -> Role.ADMIN;
             case "Librarian" -> Role.Librarian;
@@ -137,6 +141,31 @@ public class DashboardController implements Initializable {
         String email = emailField.getText();
         String phone = phoneField.getText();
         imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
+        if (userName.isEmpty()) {
+            userNameErrorLabel.setText("Username is required!");
+            return;
+        }
+        if (password.isEmpty()) {
+            passwordErrorLabel.setText("Password is required!");
+            return;
+        }
+        if (!password.equals(confirmPasswordField.getText())) {
+            confirmPasswordErrorLabel.setText("Passwords do not match!");
+            return;
+        }
+        if (fullName.isEmpty()) {
+            fullNameErrorLabel.setText("Full name is required!");
+            return;
+        }
+        if (email.isEmpty()) {
+            emailErrorLabel.setText("Email is required!");
+            return;
+        }
+        if (phone.isEmpty()) {
+            phoneErrorLabel.setText("Phone is required!");
+            return;
+        }
+
         User user = new User(userName, password, fullName, role, email, phone, imagePath);
 
         if (MainApplication.userList.contains(user)) {
