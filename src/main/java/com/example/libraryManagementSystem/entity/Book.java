@@ -121,4 +121,17 @@ public class Book {
                 ", copiesNumber=" + copiesNumber +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+        return ISBN.equals(book.ISBN);
+    }
+
+    @Override
+    public int hashCode() {
+        return ISBN.hashCode();
+    }
 }

@@ -59,10 +59,9 @@ public class BooksDashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
-        String imagePath = loggedInUser.getImagePath();
-        smallProfileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
+        String userImagePath = loggedInUser.getImagePath();
+        smallProfileImageView.setImage(new Image(new File(userImagePath).toURI().toString()));
         usernameLabel.setText(loggedInUser.getFullName());
-
 
         bookCategoryFilterComboBox.getItems().add("All");
         bookCategoryFilterComboBox.getItems().addAll(categories);
@@ -123,10 +122,9 @@ public class BooksDashboardController implements Initializable {
             }
         });
 
-
     }
 
-    public void imageViewOnClick(MouseEvent mouseEvent) {
+    public void bookImageViewOnClick(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         String projectPath = System.getProperty("user.dir");
@@ -141,18 +139,89 @@ public class BooksDashboardController implements Initializable {
     }
 
     public void addButtonOnClick(ActionEvent actionEvent) {
+        boolean isValid = true;
+        if (titleField.getText().isEmpty()) {
+            titleErrorLabel.setText("Title is required");
+            isValid = false;
+        } else {
+            titleErrorLabel.setText("");
+        }
 
-        String title = titleField.getText();
-        String author = authorField.getText();
-        String isbn = isbnField.getText();
-        String date = dateField.getText();
-        String language = languageComboBox.getSelectionModel().getSelectedItem().toString();
-        String category = categoryComboBox.getSelectionModel().getSelectedItem().toString();
-        String publisher = publisherField.getText();
-        int pages = Integer.parseInt(pagesField.getText());
-        int copies = Integer.parseInt(copiesField.getText());
-        imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
-        Book book = new Book(title, author, date, isbn, language, category, publisher, imagePath, pages, copies);
+        if (authorField.getText().isEmpty()) {
+            authorErrorLabel.setText("Author is required");
+            isValid = false;
+        } else {
+            authorErrorLabel.setText("");
+        }
+
+        if (isbnField.getText().isEmpty()) {
+            isbnErrorLabel.setText("ISBN is required");
+            isValid = false;
+        } else {
+            isbnErrorLabel.setText("");
+        }
+
+        if (dateField.getText().isEmpty()) {
+            dateErrorLabel.setText("Date is required");
+            isValid = false;
+        } else {
+            dateErrorLabel.setText("");
+        }
+
+
+        if (languageComboBox.getSelectionModel().isEmpty()) {
+            languageErrorLabel.setText("Language is required");
+            isValid = false;
+        } else {
+            languageErrorLabel.setText("");
+        }
+
+        if (categoryComboBox.getSelectionModel().isEmpty()) {
+            categoryErrorLabel.setText("Category is required");
+            isValid = false;
+        } else {
+            categoryErrorLabel.setText("");
+        }
+
+        if (publisherField.getText().isEmpty()) {
+            publisherErrorLabel.setText("Publisher is required");
+            isValid = false;
+        } else {
+            publisherErrorLabel.setText("");
+        }
+
+        if (pagesField.getText().isEmpty()) {
+            pagesErrorLabel.setText("Pages is required");
+            isValid = false;
+        } else {
+            pagesErrorLabel.setText("");
+        }
+
+        if (copiesField.getText().isEmpty()) {
+            copiesErrorLabel.setText("Copies is required");
+            isValid = false;
+        } else {
+            copiesErrorLabel.setText("");
+        }
+
+        Book book;
+
+
+        if (isValid) {
+            String title = titleField.getText();
+            String author = authorField.getText();
+            String isbn = isbnField.getText();
+            String date = dateField.getText();
+            String language = languageComboBox.getSelectionModel().getSelectedItem().toString();
+            String category = categoryComboBox.getSelectionModel().getSelectedItem().toString();
+            String publisher = publisherField.getText();
+            int pages = Integer.parseInt(pagesField.getText());
+            int copies = Integer.parseInt(copiesField.getText());
+            imagePath = imagePath == null ? MainApplication.defaultBookImagePath : imagePath;
+            book = new Book(title, author, date, isbn, language, category, publisher, imagePath, pages, copies);
+        } else {
+            return;
+        }
 
         if (MainApplication.bookList.contains(book)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -166,6 +235,7 @@ public class BooksDashboardController implements Initializable {
         MainApplication.bookList.add(book);
     }
 
+
     public void updateButtonOnClick(ActionEvent actionEvent) {
         String title = titleField.getText();
         String author = authorField.getText();
@@ -176,7 +246,7 @@ public class BooksDashboardController implements Initializable {
         String publisher = publisherField.getText();
         int pages = Integer.parseInt(pagesField.getText());
         int copies = Integer.parseInt(copiesField.getText());
-        imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
+        imagePath = imagePath == null ? MainApplication.defaultBookImagePath : imagePath;
         Book book = new Book(title, author, date, isbn, language, category, publisher, imagePath, pages, copies);
 
         if (!MainApplication.bookList.contains(book)) {
@@ -200,16 +270,13 @@ public class BooksDashboardController implements Initializable {
         MainApplication.bookList.remove(book);
     }
 
-
     public void cancelButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("dashboard");
     }
 
-
     public void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
         HelperFunctions.switchScene("profileDashboard");
     }
-
 
     public void dashboardButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("dashboard");
