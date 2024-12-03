@@ -140,7 +140,6 @@ public class ProfileDashboardController implements Initializable {
             imagePath = selectedFile.getAbsolutePath();
         }
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
-        System.out.println(imagePath);
     }
 
     public void cancelButtonOnClick(ActionEvent actionEvent) {

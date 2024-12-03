@@ -7,6 +7,7 @@ module com.example.libraryManagementSystem {
     requires transitive javafx.graphics;
     requires java.desktop;
     requires javafx.swing;
+    requires jdk.compiler;
 
     opens com.example.libraryManagementSystem to javafx.fxml;
 

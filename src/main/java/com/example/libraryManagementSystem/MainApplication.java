@@ -20,6 +20,8 @@ public class MainApplication extends Application {
 
     public static ObservableList<Book> bookList = observableArrayList();
     public static ObservableList<User> userList = observableArrayList();
+    public static ObservableList<String> languages = observableArrayList();
+    public static ObservableList<String> categories = observableArrayList();
     static int loggedInUserIndex = 0;
     static String defaultImagePath = "";
     static String defaultBookImagePath = "";
@@ -93,6 +95,8 @@ public class MainApplication extends Application {
                         400, 9)
 
         );
+        languages.addAll("English", "Arabic", "French", "German", "Spanish", "Arabic");
+        categories.addAll("Science", "Art", "History", "Math", "Literature", "Science Fiction");
     }
 
     @Override

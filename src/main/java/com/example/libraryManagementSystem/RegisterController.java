@@ -37,7 +37,9 @@ public class RegisterController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        roleComboBox.getItems().addAll("Admin", "User", "Librarian");
+        roleComboBox.getItems().addAll("ADMIN", "USER", "LIBRARIAN");
+        roleComboBox.setValue("USER");
+        roleComboBox.setDisable(true);
 
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
     }
@@ -94,26 +96,11 @@ public class RegisterController implements Initializable {
             phoneErrorLabel.setText("");
         }
 
-        if (roleComboBox.getSelectionModel().isEmpty()) {
-            roleErrorLabel.setText("Role is required");
-            isValid = false;
-        } else {
-            roleErrorLabel.setText("");
-        }
-
         if (isValid) {
-            String role = roleComboBox.getSelectionModel().getSelectedItem().toString();
-
-            Role userRole = switch (role) {
-                case "Admin" -> Role.ADMIN;
-                case "Librarian" -> Role.LIBRARIAN;
-                default -> Role.USER;
-            };
 
             User user = new User(userNameField.getText(), passwordField.getText(), fullNameField.getText(),
-                    userRole, emailField.getText(), phoneField.getText(), imagePath);
+                    Role.USER, emailField.getText(), phoneField.getText(), imagePath);
             MainApplication.userList.add(user);
-            System.out.println(MainApplication.userList);
             HelperFunctions.switchScene("login");
         }
 
@@ -137,7 +124,6 @@ public class RegisterController implements Initializable {
             imagePath = selectedFile.getAbsolutePath();
         }
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
-        System.out.println(imagePath);
     }
 
 }

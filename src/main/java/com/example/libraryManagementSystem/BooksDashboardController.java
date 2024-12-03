@@ -2,6 +2,7 @@ package com.example.libraryManagementSystem;
 
 import com.example.libraryManagementSystem.entity.Book;
 import com.example.libraryManagementSystem.entity.User;
+import com.sun.tools.javac.Main;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -53,9 +54,6 @@ public class BooksDashboardController implements Initializable {
     public ComboBox bookCategoryFilterComboBox;
     User loggedInUser;
     String imagePath;
-    String[] languages = {"English", "Arabic", "French", "German", "Spanish", "Arabic"};
-    String[] categories = {"Science", "Art", "History", "Math", "Literature", "Science Fiction"};
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
@@ -64,9 +62,9 @@ public class BooksDashboardController implements Initializable {
         usernameLabel.setText(loggedInUser.getFullName());
 
         bookCategoryFilterComboBox.getItems().add("All");
-        bookCategoryFilterComboBox.getItems().addAll(categories);
-        languageComboBox.getItems().addAll(languages);
-        categoryComboBox.getItems().addAll(categories);
+        bookCategoryFilterComboBox.getItems().addAll(MainApplication.categories);
+        languageComboBox.getItems().addAll(MainApplication.languages);
+        categoryComboBox.getItems().addAll(MainApplication.categories);
 
         titleColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getTitle()));

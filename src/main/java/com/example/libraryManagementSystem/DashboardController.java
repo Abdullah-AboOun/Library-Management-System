@@ -228,6 +228,9 @@ public class DashboardController implements Initializable {
         int i = MainApplication.userList.indexOf(user);
         MainApplication.userList.set(i, user);
         userTableView.refresh();
+        if (i == MainApplication.loggedInUserIndex){
+            usernameLabel.setText(user.getFullName());
+        }
     }
 
     public void deleteButtonOnClick(ActionEvent actionEvent) {
