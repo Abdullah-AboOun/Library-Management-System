@@ -251,7 +251,7 @@ public class BooksDashboardController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
-            alert.setContentText("No book found with title: " + title);
+            alert.setContentText("No book found with ISBN: " + isbn);
             alert.showAndWait();
             return;
         }
