@@ -239,6 +239,7 @@ public class DashboardController implements Initializable {
             return;
         }
         MainApplication.userList.remove(user);
+        MainApplication.loggedInUserIndex = MainApplication.userList.indexOf(loggedInUser);
     }
 
     public void cancelButtonOnClick(ActionEvent actionEvent) {
