@@ -19,6 +19,17 @@
     -fx-pref-height: 35;
 }
 
+.label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 0 0 2 0;
+    -fx-alignment: center;
+
+}
+
+
 .button {
     -fx-text-fill: white;
     -fx-font-weight: bold;
