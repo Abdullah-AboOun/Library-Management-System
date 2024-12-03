@@ -61,17 +61,23 @@ public class DashboardController implements Initializable {
         } else if (loggedInUser.getRole() == Role.LIBRARIAN) {
             roleComboBox.getItems().remove("ADMIN");
         }
-        usernameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserName()));
+        usernameColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getUserName()));
 
-        fullNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFullName()));
+        fullNameColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getFullName()));
 
-        emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
+        emailColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getEmail()));
 
-        phoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
+        phoneColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
 
-        roleColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getRole()));
+        roleColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getRole()));
 
-        passwordColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPassword()));
+        passwordColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getPassword()));
 
         profileImageColumn.setCellValueFactory(cellData -> {
             String userImagePath = cellData.getValue().getImagePath();

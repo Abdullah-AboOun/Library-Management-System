@@ -128,9 +128,11 @@ public class ProfileDashboardController implements Initializable {
 
     public void imageViewOnClick(MouseEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         String projectPath = System.getProperty("user.dir");
-        File initialDirectory = new File(projectPath + "/src/main/resources/com/example/libraryManagementSystem/images");
+        File initialDirectory = new File(
+                projectPath + "/src/main/resources/com/example/libraryManagementSystem/images");
         fileChooser.setInitialDirectory(initialDirectory);
 
         File selectedFile = fileChooser.showOpenDialog(null);

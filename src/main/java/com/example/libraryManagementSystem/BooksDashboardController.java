@@ -1,7 +1,6 @@
 package com.example.libraryManagementSystem;
 
 import com.example.libraryManagementSystem.entity.Book;
-import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,7 +18,6 @@ import java.util.ResourceBundle;
 
 public class BooksDashboardController implements Initializable {
 
-    public ImageView profileImageView;
     public ImageView smallProfileImageView;
     public Label usernameLabel;
     public ImageView bookImageView;
@@ -52,8 +50,11 @@ public class BooksDashboardController implements Initializable {
     public TableColumn<Book, Integer> pagesNumberColumn;
     public TableColumn<Book, Integer> copiesNumberColumn;
     public TableColumn<Book, ImageView> bookImageColumn;
+    public ComboBox bookCategoryFilterComboBox;
     User loggedInUser;
     String imagePath;
+    String[] languages = {"English", "Arabic", "French", "German", "Spanish", "Arabic"};
+    String[] categories = {"Science", "Art", "History", "Math", "Literature", "Science Fiction"};
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -62,6 +63,11 @@ public class BooksDashboardController implements Initializable {
         smallProfileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
         usernameLabel.setText(loggedInUser.getFullName());
 
+
+        bookCategoryFilterComboBox.getItems().add("All");
+        bookCategoryFilterComboBox.getItems().addAll(categories);
+        languageComboBox.getItems().addAll(languages);
+        categoryComboBox.getItems().addAll(categories);
 
         titleColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getTitle()));
@@ -100,7 +106,8 @@ public class BooksDashboardController implements Initializable {
 
         bookTableView.setItems(MainApplication.bookList);
 
-        bookTableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+        bookTableView.getSelectionModel().selectedItemProperty().addListener((
+                observableValue, oldValue, newValue) -> {
             if (newValue != null) {
                 Book book = bookTableView.getSelectionModel().getSelectedItem();
                 titleField.setText(book.getTitle());
@@ -195,7 +202,7 @@ public class BooksDashboardController implements Initializable {
 
 
     public void cancelButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("login");
+        HelperFunctions.switchScene("dashboard");
     }
 
 
@@ -208,4 +215,17 @@ public class BooksDashboardController implements Initializable {
         HelperFunctions.switchScene("dashboard");
     }
 
+    public void bookCategoryFilterComboBox(ActionEvent actionEvent) {
+        String category = bookCategoryFilterComboBox.getSelectionModel().getSelectedItem().toString();
+        if (category.equals("All")) {
+            bookTableView.setItems(MainApplication.bookList);
+        } else {
+            bookTableView.setItems(MainApplication.bookList.filtered(book -> book.getCategory().equals(category)));
+        }
+
+    }
+
+    public void addBookCategoryImageViewOnClick(MouseEvent mouseEvent) {
+        HelperFunctions.switchScene("bookCategoryDashboard");
+    }
 }
