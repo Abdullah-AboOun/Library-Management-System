@@ -1,5 +1,6 @@
 package com.example.libraryManagementSystem;
 
+import atlantafx.base.theme.CupertinoDark;
 import com.example.libraryManagementSystem.entity.Book;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
@@ -31,7 +32,7 @@ public class MainApplication extends Application {
     }
 
     private static void initializeData() {
-        URL resourceUrl = MainApplication.class.getResource("/com/example/libraryManagementSystem/images/avatar.png");
+        URL resourceUrl = MainApplication.class.getResource("/com/example/libraryManagementSystem/images/default.png");
         try {
             assert resourceUrl != null;
             defaultImagePath = new File(resourceUrl.toURI()).getAbsolutePath();
@@ -101,6 +102,7 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
         HelperFunctions.setPrimaryStage(stage);
         HelperFunctions.setScene("login-view.fxml", "Login", 300, 400);
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/login.png"))));

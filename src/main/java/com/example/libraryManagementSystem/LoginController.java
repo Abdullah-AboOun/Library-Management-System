@@ -1,5 +1,6 @@
 package com.example.libraryManagementSystem;
 
+import atlantafx.base.theme.Styles;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -44,12 +45,13 @@ public class LoginController implements Initializable {
 
         if (user == null) {
             errorLabel.setText("⚠ Invalid username or password");
-            errorLabel.getStyleClass().setAll("error-label");
+            passwordField.pseudoClassStateChanged(Styles.STATE_DANGER, true);
+            userNameField.pseudoClassStateChanged(Styles.STATE_DANGER, true);
             return;
         }
         loggedInUserIndex = userList.indexOf(user);
-        errorLabel.setText("Welcome " + userNameField.getText());
-        errorLabel.getStyleClass().setAll("success-label");
+        passwordField.pseudoClassStateChanged(Styles.STATE_DANGER, false);
+        userNameField.pseudoClassStateChanged(Styles.STATE_DANGER, false);
         HelperFunctions.switchScene("dashboard");
     }
 

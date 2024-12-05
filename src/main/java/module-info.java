@@ -1,13 +1,11 @@
 module com.example.libraryManagementSystem {
 
-    requires javafx.controls;
-
     requires javafx.fxml;
 
-    requires transitive javafx.graphics;
     requires java.desktop;
     requires javafx.swing;
     requires jdk.compiler;
+    requires atlantafx.base;
 
     opens com.example.libraryManagementSystem to javafx.fxml;
 

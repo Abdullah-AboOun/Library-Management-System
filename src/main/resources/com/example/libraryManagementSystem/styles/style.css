@@ -1,0 +1,27 @@
+.button:hover {
+    -fx-opacity: 0.9;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.label {
+    -fx-text-fill: -color-accent-2;
+}
+
+.error-label {
+    -fx-text-fill: -color-danger-emphasis;
+    -fx-alignment: center;
+}
+
+.table-view .column-header .label,
+.table-view .cell {
+    -fx-alignment: CENTER;
+}
+
+
+.button {
+
+    -fx-pref-width: 90;
+    -fx-pref-height: 35;
+    -fx-cursor: hand;
+}

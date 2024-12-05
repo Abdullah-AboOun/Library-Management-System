@@ -34,7 +34,7 @@ public class HelperFunctions {
                 setScene("register-view.fxml", "Register", 500, 650);
                 break;
             case "dashboard":
-                setScene("dashboard-view.fxml", "Dashboard", 1200, 700);
+                setScene("dashboard-view.fxml", "Dashboard", 1300, 700);
                 break;
             case "profileDashboard":
                 setScene("profile-dashboard-view.fxml", "Profile Dashboard", 600, 700);
