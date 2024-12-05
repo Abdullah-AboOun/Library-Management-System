@@ -66,11 +66,8 @@
             </Label>
         </VBox>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
-            <children>
-
-                <Button onAction="#updateButtonOnClick" text="Update"/>
-                <Button alignment="CENTER" onAction="#cancelButtonOnClick" text="Cancel"/>
-            </children>
+            <Button onAction="#updateButtonOnClick" styleClass="success" text="Update"/>
+            <Button alignment="CENTER" onAction="#cancelButtonOnClick" styleClass="accent" text="Cancel"/>
         </HBox>
     </VBox>
 </FlowPane>

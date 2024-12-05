@@ -6,8 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
-<FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" columnHalignment="CENTER" prefHeight="700.0"
-          prefWidth="1200.0" xmlns="http://javafx.com/javafx/21"
+<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="700.0" prefWidth="1200.0"
+          xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="com.example.libraryManagementSystem.DashboardController">
     <stylesheets>
         <URL value="@styles/style.css"/>
@@ -22,9 +22,10 @@
             <Label fx:id="usernameLabel"/>
 
 
-            <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 120" styleClass="accent" text="Dashboard"/>
-            <Button mnemonicParsing="false" onAction="#bookButtonOnClick" style="-fx-pref-width: 120" styleClass="accent"
-                    text="Books"/>
+            <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 120" styleClass="accent"
+                    text="Dashboard"/>
+            <Button mnemonicParsing="false" onAction="#bookButtonOnClick" style="-fx-pref-width: 120"
+                    styleClass="accent" text="Books"/>
             <VBox.margin>
                 <Insets bottom="40.0"/>
             </VBox.margin>
@@ -91,9 +92,11 @@
 
             <HBox alignment="CENTER" spacing="10.0">
                 <Button mnemonicParsing="false" onAction="#addButtonOnClick" styleClass="success" text="Add"/>
-                <Button mnemonicParsing="false" onAction="#updateButtonOnClick" text="Update"/>
-                <Button mnemonicParsing="false" onAction="#deleteButtonOnClick" text="Delete"/>
-                <Button mnemonicParsing="false" onAction="#cancelButtonOnClick" text="Cancel"/>
+                <Button mnemonicParsing="false" onAction="#updateButtonOnClick"
+                        style="-fx-background-color: -color-warning-4; -fx-text-fill: white;" text="Update"
+                />
+                <Button mnemonicParsing="false" onAction="#deleteButtonOnClick" styleClass="danger" text="Delete"/>
+                <Button mnemonicParsing="false" onAction="#cancelButtonOnClick" styleClass="accent" text="Cancel"/>
             </HBox>
         </VBox>
         <!-- Right Table Section -->

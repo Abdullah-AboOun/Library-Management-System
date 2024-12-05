@@ -9,7 +9,7 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" columnHalignment="CENTER" prefHeight="400.0"
-          prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1"
+          prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12"
           fx:controller="com.example.libraryManagementSystem.LoginController">
     <stylesheets>
         <URL value="@styles/style.css"/>
@@ -46,7 +46,7 @@
             </padding>
         </VBox>
         <HBox alignment="CENTER" spacing="15.0">
-            <Button mnemonicParsing="false" onAction="#loginButtonOnClick" prefWidth="80.0" styleClass="success"
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginButtonOnClick" prefWidth="80.0" styleClass="success"
                     text="Login">
             </Button>
             <Button mnemonicParsing="false" onAction="#registerButtonOnClick" prefWidth="80.0" styleClass="accent"

@@ -6,7 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="600.0" prefWidth="800.0"
-          xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.example.libraryManagementSystem.RegisterController">
+          xmlns="http://javafx.com/javafx/17.0.12"
+          fx:controller="com.example.libraryManagementSystem.RegisterController">
     <stylesheets>
         <URL value="@styles/style.css"/>
     </stylesheets>
@@ -65,7 +66,7 @@
             </VBox.margin>
         </VBox>
 
-        <Button mnemonicParsing="false" onAction="#registerButtonOnClick" styleClass="success" text="Register">
+        <Button mnemonicParsing="false" onAction="#registerButtonOnClick" styleClass="accent" text="Register">
         </Button>
 
         <HBox alignment="CENTER" spacing="5">

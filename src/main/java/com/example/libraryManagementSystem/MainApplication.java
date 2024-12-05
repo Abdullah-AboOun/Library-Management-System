@@ -1,6 +1,9 @@
 package com.example.libraryManagementSystem;
 
 import atlantafx.base.theme.CupertinoDark;
+import atlantafx.base.theme.CupertinoLight;
+import atlantafx.base.theme.PrimerDark;
+import atlantafx.base.theme.PrimerLight;
 import com.example.libraryManagementSystem.entity.Book;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
@@ -50,7 +53,7 @@ public class MainApplication extends Application {
                 new User("nada", "123", "Nada", Role.USER, "nada@gmail.com",
                         "123456789", defaultImagePath));
 
-        resourceUrl = MainApplication.class.getResource("/com/example/libraryManagementSystem/images/open-book.png");
+        resourceUrl = MainApplication.class.getResource("/com/example/libraryManagementSystem/images/book.png");
         try {
             assert resourceUrl != null;
             defaultBookImagePath = new File(resourceUrl.toURI()).getAbsolutePath();
