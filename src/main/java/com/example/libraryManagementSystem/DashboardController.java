@@ -264,6 +264,10 @@ public class DashboardController implements Initializable {
         String fullName = fullNameField.getText();
         String email = emailField.getText();
         String phone = phoneField.getText();
+        if (!passwordField.getText().equals(confirmPasswordField.getText())) {
+            confirmPasswordErrorLabel.setText("Passwords do not match!");
+            return;
+        }
         imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
         Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
             case "ADMIN" -> Role.ADMIN;
