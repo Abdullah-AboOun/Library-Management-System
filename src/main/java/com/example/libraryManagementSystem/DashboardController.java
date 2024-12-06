@@ -5,6 +5,7 @@ import com.example.libraryManagementSystem.entity.User;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,32 +19,84 @@ import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
-    public ImageView profileImageView;
-    public TextField userNameField;
-    public Label userNameErrorLabel;
-    public TextField fullNameField;
-    public Label fullNameErrorLabel;
-    public PasswordField passwordField;
-    public Label passwordErrorLabel;
-    public PasswordField confirmPasswordField;
-    public Label confirmPasswordErrorLabel;
-    public TextField emailField;
-    public Label emailErrorLabel;
-    public TextField phoneField;
-    public Label phoneErrorLabel;
-    public ComboBox roleComboBox;
-    public Label roleErrorLabel;
-    public ImageView smallProfileImageView;
-    public TableView<User> userTableView;
-    public TableColumn<User, String> usernameColumn;
-    public TableColumn<User, String> fullNameColumn;
-    public TableColumn<User, String> emailColumn;
-    public TableColumn<User, String> phoneColumn;
-    public TableColumn<User, Role> roleColumn;
-    public TableColumn<User, String> passwordColumn;
-    public TableColumn<User, ImageView> profileImageColumn;
-    public Label usernameLabel;
-    public ComboBox roleFilterComboBox;
+    @FXML
+    private Label confirmPasswordErrorLabel;
+
+    @FXML
+    private PasswordField confirmPasswordField;
+
+    @FXML
+    private Label usernameLabel;
+
+    @FXML
+    private Label emailErrorLabel;
+
+    @FXML
+    private TextField emailField;
+
+    @FXML
+    private Label fullNameErrorLabel;
+
+    @FXML
+    private TextField fullNameField;
+
+    @FXML
+    private Label passwordErrorLabel;
+
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private Label phoneErrorLabel;
+
+    @FXML
+    private TextField phoneField;
+
+    @FXML
+    private ImageView profileImageView;
+
+    @FXML
+    private ComboBox<String> roleComboBox;
+
+    @FXML
+    private Label roleErrorLabel;
+
+    @FXML
+    private ComboBox<String> roleFilterComboBox;
+
+    @FXML
+    private ImageView smallProfileImageView;
+
+    @FXML
+    private Label userNameErrorLabel;
+
+    @FXML
+    private TextField userNameField;
+
+    @FXML
+    private TableView<User> userTableView;
+
+    @FXML
+    private TableColumn<User, String> emailColumn;
+
+    @FXML
+    private TableColumn<User, String> fullNameColumn;
+
+    @FXML
+    private TableColumn<User, String> passwordColumn;
+
+    @FXML
+    private TableColumn<User, String> phoneColumn;
+
+    @FXML
+    private TableColumn<User, ImageView> profileImageColumn;
+
+    @FXML
+    private TableColumn<User, String> roleColumn;
+
+    @FXML
+    private TableColumn<User, String> usernameColumn;
+
     User loggedInUser;
     String imagePath;
 
@@ -74,7 +127,7 @@ public class DashboardController implements Initializable {
                 new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
 
         roleColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getRole()));
+                new SimpleObjectProperty<>(cellData.getValue().getRole().toString()));
 
         passwordColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getPassword()));
@@ -103,13 +156,13 @@ public class DashboardController implements Initializable {
                 passwordField.setText(user.getPassword());
                 confirmPasswordField.setText(user.getPassword());
                 profileImageView.setImage(new Image(new File(user.getImagePath()).toURI().toString()));
-                smallProfileImageView.setImage(new Image(new File(user.getImagePath()).toURI().toString()));
             }
         });
 
     }
 
-    public void imageViewOnClick(MouseEvent mouseEvent) {
+    @FXML
+    void imageViewOnClick(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
@@ -125,7 +178,8 @@ public class DashboardController implements Initializable {
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
     }
 
-    public void addButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void addButtonOnClick(ActionEvent actionEvent) {
 
         boolean isValid = true;
         if (roleComboBox.getSelectionModel().isEmpty()) {
@@ -202,7 +256,8 @@ public class DashboardController implements Initializable {
         MainApplication.userList.add(user);
     }
 
-    public void updateButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void updateButtonOnClick(ActionEvent actionEvent) {
 
         String userName = userNameField.getText();
         String password = passwordField.getText();
@@ -228,12 +283,13 @@ public class DashboardController implements Initializable {
         int i = MainApplication.userList.indexOf(user);
         MainApplication.userList.set(i, user);
         userTableView.refresh();
-        if (i == MainApplication.loggedInUserIndex){
+        if (i == MainApplication.loggedInUserIndex) {
             usernameLabel.setText(user.getFullName());
         }
     }
 
-    public void deleteButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void deleteButtonOnClick(ActionEvent actionEvent) {
         User user = userTableView.getSelectionModel().getSelectedItem();
         if (user == null) {
             return;
@@ -242,19 +298,23 @@ public class DashboardController implements Initializable {
         MainApplication.loggedInUserIndex = MainApplication.userList.indexOf(loggedInUser);
     }
 
-    public void cancelButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void cancelButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("login");
     }
 
-    public void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
+    @FXML
+    void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
         HelperFunctions.switchScene("profileDashboard");
     }
 
-    public void bookButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void bookButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("bookDashboard");
     }
 
-    public void roleFilterComboBox(ActionEvent actionEvent) {
+    @FXML
+    void roleFilterComboBox(ActionEvent actionEvent) {
         String role = roleFilterComboBox.getSelectionModel().isEmpty() ? "All"
                 : roleFilterComboBox.getSelectionModel().getSelectedItem().toString();
 

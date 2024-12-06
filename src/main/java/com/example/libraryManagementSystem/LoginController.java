@@ -19,15 +19,16 @@ import static com.example.libraryManagementSystem.MainApplication.userList;
 
 public class LoginController implements Initializable {
     @FXML
-    private TextField userNameField;
+    private Label errorLabel;
+
+    @FXML
+    private Button loginButton;
 
     @FXML
     private PasswordField passwordField;
 
     @FXML
-    private Label errorLabel;
-    @FXML
-    private Button loginButton;
+    private TextField userNameField;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -42,9 +43,11 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    private void loginButtonOnClick() {
+    void loginButtonOnClick() {
 
-        User user = userList.parallelStream().filter(u -> u.getUserName().equals(userNameField.getText()) && u.getPassword().equals(passwordField.getText())).findFirst().orElse(null);
+        User user = userList.parallelStream().filter(u ->
+                u.getUserName().equals(userNameField.getText()) &&
+                u.getPassword().equals(passwordField.getText())).findFirst().orElse(null);
 
         if (user == null) {
             errorLabel.setGraphic(new FontIcon(Material2AL.ERROR));
@@ -56,7 +59,7 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    private void registerButtonOnClick() {
+    void registerButtonOnClick() {
         HelperFunctions.switchScene("register");
 
     }

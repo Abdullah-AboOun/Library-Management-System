@@ -3,6 +3,7 @@ package com.example.libraryManagementSystem;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -18,21 +19,47 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable {
-    public TextField fullNameField;
-    public Label fullNameErrorLabel;
-    public TextField userNameField;
-    public Label userNameErrorLabel;
-    public PasswordField passwordField;
-    public Label passwordErrorLabel;
-    public PasswordField confirmPasswordField;
-    public Label confirmPasswordErrorLabel;
-    public TextField emailField;
-    public Label emailErrorLabel;
-    public TextField phoneField;
-    public Label phoneErrorLabel;
-    public ComboBox roleComboBox;
-    public Label roleErrorLabel;
-    public ImageView profileImageView;
+    @FXML
+    private Label confirmPasswordErrorLabel;
+
+    @FXML
+    private PasswordField confirmPasswordField;
+
+    @FXML
+    private Label emailErrorLabel;
+
+    @FXML
+    private TextField emailField;
+
+    @FXML
+    private Label fullNameErrorLabel;
+
+    @FXML
+    private TextField fullNameField;
+
+    @FXML
+    private Label passwordErrorLabel;
+
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private Label phoneErrorLabel;
+
+    @FXML
+    private TextField phoneField;
+
+    @FXML
+    private ImageView profileImageView;
+
+    @FXML
+    private ComboBox<String> roleComboBox;
+
+    @FXML
+    private Label userNameErrorLabel;
+
+    @FXML
+    private TextField userNameField;
     private String imagePath = MainApplication.defaultImagePath;
 
     @Override
@@ -44,7 +71,8 @@ public class RegisterController implements Initializable {
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
     }
 
-    public void registerButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void registerButtonOnClick(ActionEvent actionEvent) {
         boolean isValid = true;
         if (fullNameField.getText().isEmpty()) {
             fullNameErrorLabel.setText("Full name is required");
@@ -106,11 +134,13 @@ public class RegisterController implements Initializable {
 
     }
 
-    public void switchToLogin(ActionEvent actionEvent) {
+    @FXML
+    void switchToLogin(ActionEvent actionEvent) {
         HelperFunctions.switchScene("login");
     }
 
-    public void imageViewOnClick(MouseEvent actionEvent) {
+    @FXML
+    void imageViewOnClick(MouseEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
