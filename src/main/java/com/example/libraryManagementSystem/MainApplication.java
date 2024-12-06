@@ -1,9 +1,6 @@
 package com.example.libraryManagementSystem;
 
 import atlantafx.base.theme.CupertinoDark;
-import atlantafx.base.theme.CupertinoLight;
-import atlantafx.base.theme.PrimerDark;
-import atlantafx.base.theme.PrimerLight;
 import com.example.libraryManagementSystem.entity.Book;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
@@ -96,9 +93,36 @@ public class MainApplication extends Application {
                         400, 9),
                 new Book("العرب والعالم", "عبد العزيز الدريوش", "2010", "76532432",
                         "Arabic", "History", "المكتبة العصرية", defaultBookImagePath,
-                        400, 9)
-
+                        400, 9),
+                new Book("The Hobbit", "J.R.R. Tolkien", "1937", "978-0-345-3968-3",
+                        "English", "Fantasy", "George Allen & Unwin", defaultBookImagePath,
+                        310, 5),
+                new Book("The Lord of the Rings", "J.R.R. Tolkien", "1954", "978-24022-1",
+                        "English", "Fantasy", "George Allen & Unwin", defaultBookImagePath,
+                        1000, 2),
+                new Book("The Silmarillion", "J.R.R. Tolkien", "1977", "978-0-34581-4",
+                        "English", "Fantasy", "George Allen & Unwin", defaultBookImagePath,
+                        365, 3),
+                new Book("The History of the Decline and Fall of the Roman Empire", "Edward Gibbon", "1776", "978-0345-24022-1",
+                        "English", "History", "Strahan & Cadell", defaultBookImagePath,
+                        365, 3),
+                new Book("The War of the Worlds", "H.G. Wells", "1898", "978-0-324022-1",
+                        "English", "Science Fiction", "William Heinemann", defaultBookImagePath,
+                        365, 3),
+                new Book("The Origin of Species", "Charles Darwin", "1859", "978-0-345-242-1",
+                        "English", "Science", "John Murray", defaultBookImagePath,
+                        365, 3),
+                new Book("The Elements", "Euclid", "300 BC", "978-0-345-24022-1",
+                        "English", "Math", "John Murray", defaultBookImagePath,
+                        365, 3),
+                new Book("The Divine Comedy", "Dante Alighieri", "1320", "978-0-35-24022-1",
+                        "Italian", "Literature", "John Murray", defaultBookImagePath,
+                        365, 3),
+                new Book("The Selfish Gene", "Richard Dawkins", "1976", "97-0-345-24022-1",
+                        "English", "Science", "Oxford University Press", defaultBookImagePath,
+                        365, 3)
         );
+
         languages.addAll("English", "Arabic", "French", "German", "Spanish", "Arabic");
         categories.addAll("Science", "Art", "History", "Math", "Literature", "Science Fiction");
     }
