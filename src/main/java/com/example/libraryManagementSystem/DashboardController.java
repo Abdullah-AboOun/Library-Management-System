@@ -229,7 +229,7 @@ public class DashboardController implements Initializable {
             return;
         }
 
-        Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
+        Role role = switch (roleComboBox.getSelectionModel().getSelectedItem()) {
             case "ADMIN" -> Role.ADMIN;
             case "LIBRARIAN" -> Role.LIBRARIAN;
             default -> Role.USER;
@@ -269,7 +269,7 @@ public class DashboardController implements Initializable {
             return;
         }
         imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
-        Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
+        Role role = switch (roleComboBox.getSelectionModel().getSelectedItem()) {
             case "ADMIN" -> Role.ADMIN;
             case "LIBRARIAN" -> Role.LIBRARIAN;
             default -> Role.USER;
@@ -320,7 +320,7 @@ public class DashboardController implements Initializable {
     @FXML
     void roleFilterComboBox(ActionEvent actionEvent) {
         String role = roleFilterComboBox.getSelectionModel().isEmpty() ? "All"
-                : roleFilterComboBox.getSelectionModel().getSelectedItem().toString();
+                : roleFilterComboBox.getSelectionModel().getSelectedItem();
 
         if (role.equals("All")) {
             userTableView.setItems(MainApplication.userList);

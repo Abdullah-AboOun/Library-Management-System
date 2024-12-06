@@ -279,8 +279,8 @@ public class BooksDashboardController implements Initializable {
             String author = authorField.getText();
             String isbn = isbnField.getText();
             String date = dateField.getText();
-            String language = languageComboBox.getSelectionModel().getSelectedItem().toString();
-            String category = categoryComboBox.getSelectionModel().getSelectedItem().toString();
+            String language = languageComboBox.getSelectionModel().getSelectedItem();
+            String category = categoryComboBox.getSelectionModel().getSelectedItem();
             String publisher = publisherField.getText();
             int pages = Integer.parseInt(pagesField.getText());
             int copies = Integer.parseInt(copiesField.getText());
@@ -309,8 +309,8 @@ public class BooksDashboardController implements Initializable {
         String author = authorField.getText();
         String isbn = isbnField.getText();
         String date = dateField.getText();
-        String language = languageComboBox.getSelectionModel().getSelectedItem().toString();
-        String category = categoryComboBox.getSelectionModel().getSelectedItem().toString();
+        String language = languageComboBox.getSelectionModel().getSelectedItem();
+        String category = categoryComboBox.getSelectionModel().getSelectedItem();
         String publisher = publisherField.getText();
         int pages = Integer.parseInt(pagesField.getText());
         int copies = Integer.parseInt(copiesField.getText());
@@ -356,7 +356,7 @@ public class BooksDashboardController implements Initializable {
 
     @FXML
     void bookCategoryFilterComboBox(ActionEvent actionEvent) {
-        String category = bookCategoryFilterComboBox.getSelectionModel().getSelectedItem().toString();
+        String category = bookCategoryFilterComboBox.getSelectionModel().getSelectedItem();
         if (category.equals("All")) {
             bookTableView.setItems(MainApplication.bookList);
         } else {

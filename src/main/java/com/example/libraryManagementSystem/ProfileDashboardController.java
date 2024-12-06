@@ -142,7 +142,7 @@ public class ProfileDashboardController implements Initializable {
             String email = emailField.getText();
             String phone = phoneField.getText();
             imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
-            Role role = switch (roleComboBox.getSelectionModel().getSelectedItem().toString()) {
+            Role role = switch (roleComboBox.getSelectionModel().getSelectedItem()) {
                 case "Admin" -> Role.ADMIN;
                 case "Librarian" -> Role.LIBRARIAN;
                 default -> Role.USER;
