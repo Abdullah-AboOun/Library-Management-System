@@ -2,10 +2,10 @@ package com.example.libraryManagementSystem;
 
 import com.example.libraryManagementSystem.entity.Book;
 import com.example.libraryManagementSystem.entity.User;
-import com.sun.tools.javac.Main;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -19,41 +19,108 @@ import java.util.ResourceBundle;
 
 public class BooksDashboardController implements Initializable {
 
-    public ImageView smallProfileImageView;
-    public Label usernameLabel;
-    public ImageView bookImageView;
-    public TextField titleField;
-    public Label titleErrorLabel;
-    public TextField authorField;
-    public Label authorErrorLabel;
-    public TextField isbnField;
-    public Label isbnErrorLabel;
-    public TextField dateField;
-    public Label dateErrorLabel;
-    public ComboBox languageComboBox;
-    public Label languageErrorLabel;
-    public ComboBox categoryComboBox;
-    public Label categoryErrorLabel;
-    public TextField publisherField;
-    public Label publisherErrorLabel;
-    public TextField pagesField;
-    public Label pagesErrorLabel;
-    public TextField copiesField;
-    public Label copiesErrorLabel;
-    public TableView<Book> bookTableView;
-    public TableColumn<Book, String> titleColumn;
-    public TableColumn<Book, String> authorColumn;
-    public TableColumn<Book, String> dateOfPublicationColumn;
-    public TableColumn<Book, String> isbnColumn;
-    public TableColumn<Book, String> languageColumn;
-    public TableColumn<Book, String> categoryColumn;
-    public TableColumn<Book, String> publisherColumn;
-    public TableColumn<Book, Integer> pagesNumberColumn;
-    public TableColumn<Book, Integer> copiesNumberColumn;
-    public TableColumn<Book, ImageView> bookImageColumn;
-    public ComboBox bookCategoryFilterComboBox;
+    @FXML
+    private Label authorErrorLabel;
+
+    @FXML
+    private TextField authorField;
+
+    @FXML
+    private ImageView bookImageView;
+
+    @FXML
+    private Label categoryErrorLabel;
+
+    @FXML
+    private Label copiesErrorLabel;
+
+    @FXML
+    private TextField copiesField;
+
+    @FXML
+    private Label dateErrorLabel;
+
+    @FXML
+    private TextField dateField;
+
+    @FXML
+    private Label isbnErrorLabel;
+
+    @FXML
+    private TextField isbnField;
+
+    @FXML
+    private Label languageErrorLabel;
+
+    @FXML
+    private Label pagesErrorLabel;
+
+    @FXML
+    private TextField pagesField;
+
+    @FXML
+    private Label publisherErrorLabel;
+
+    @FXML
+    private TextField publisherField;
+
+    @FXML
+    private ImageView smallProfileImageView;
+
+    @FXML
+    private Label titleErrorLabel;
+
+    @FXML
+    private TextField titleField;
+
+    @FXML
+    private TableView<Book> bookTableView;
+
+    @FXML
+    private TableColumn<Book, String> languageColumn;
+
+    @FXML
+    private TableColumn<Book, String> titleColumn;
+
+    @FXML
+    private TableColumn<Book, Integer> pagesNumberColumn;
+
+    @FXML
+    private TableColumn<Book, String> publisherColumn;
+
+    @FXML
+    private TableColumn<Book, String> dateOfPublicationColumn;
+
+    @FXML
+    private TableColumn<Book, String> isbnColumn;
+
+    @FXML
+    private TableColumn<Book, Integer> copiesNumberColumn;
+
+    @FXML
+    private TableColumn<Book, String> categoryColumn;
+
+    @FXML
+    private TableColumn<Book, ImageView> bookImageColumn;
+
+    @FXML
+    private TableColumn<Book, String> authorColumn;
+
+    @FXML
+    private ComboBox<String> categoryComboBox;
+
+    @FXML
+    private ComboBox<String> bookCategoryFilterComboBox;
+
+    @FXML
+    private ComboBox<String> languageComboBox;
+
+    @FXML
+    private Label usernameLabel;
+
     User loggedInUser;
     String imagePath;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
@@ -122,7 +189,8 @@ public class BooksDashboardController implements Initializable {
 
     }
 
-    public void bookImageViewOnClick(MouseEvent mouseEvent) {
+    @FXML
+    void bookImageViewOnClick(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         String projectPath = System.getProperty("user.dir");
@@ -136,7 +204,8 @@ public class BooksDashboardController implements Initializable {
         bookImageView.setImage(new Image(new File(imagePath).toURI().toString()));
     }
 
-    public void addButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void addButtonOnClick(ActionEvent actionEvent) {
         boolean isValid = true;
         if (titleField.getText().isEmpty()) {
             titleErrorLabel.setText("Title is required");
@@ -234,7 +303,8 @@ public class BooksDashboardController implements Initializable {
     }
 
 
-    public void updateButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void updateButtonOnClick(ActionEvent actionEvent) {
         String title = titleField.getText();
         String author = authorField.getText();
         String isbn = isbnField.getText();
@@ -260,7 +330,8 @@ public class BooksDashboardController implements Initializable {
         bookTableView.refresh();
     }
 
-    public void deleteButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void deleteButtonOnClick(ActionEvent actionEvent) {
         Book book = bookTableView.getSelectionModel().getSelectedItem();
         if (book == null) {
             return;
@@ -268,19 +339,23 @@ public class BooksDashboardController implements Initializable {
         MainApplication.bookList.remove(book);
     }
 
-    public void cancelButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void cancelButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("dashboard");
     }
 
-    public void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
+    @FXML
+    void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
         HelperFunctions.switchScene("profileDashboard");
     }
 
-    public void dashboardButtonOnClick(ActionEvent actionEvent) {
+    @FXML
+    void dashboardButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("dashboard");
     }
 
-    public void bookCategoryFilterComboBox(ActionEvent actionEvent) {
+    @FXML
+    void bookCategoryFilterComboBox(ActionEvent actionEvent) {
         String category = bookCategoryFilterComboBox.getSelectionModel().getSelectedItem().toString();
         if (category.equals("All")) {
             bookTableView.setItems(MainApplication.bookList);
@@ -290,7 +365,8 @@ public class BooksDashboardController implements Initializable {
 
     }
 
-    public void addBookCategoryImageViewOnClick(MouseEvent mouseEvent) {
+    @FXML
+    void addBookCategoryImageViewOnClick(MouseEvent mouseEvent) {
         HelperFunctions.switchScene("bookCategoryDashboard");
     }
 }
