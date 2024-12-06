@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ProfileDashboardController implements Initializable {
+
     @FXML
     private Label confirmPasswordErrorLabel;
 
