@@ -1,5 +1,6 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,7 +56,11 @@ public class LoginController implements Initializable {
             return;
         }
         loggedInUserIndex = userList.indexOf(user);
-        HelperFunctions.switchScene("adminDashboard");
+        if (user.getRole().equals(Role.ADMIN)) {
+            HelperFunctions.switchScene("adminDashboard");
+        } else {
+            HelperFunctions.switchScene("userDashboard");
+        }
     }
 
     @FXML

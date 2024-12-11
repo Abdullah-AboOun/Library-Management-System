@@ -154,7 +154,11 @@ public class ProfileDashboardController implements Initializable {
 
 
         MainApplication.userList.set(MainApplication.loggedInUserIndex, user);
-        HelperFunctions.switchScene("adminDashboard");
+        if (user.getRole().equals(Role.ADMIN)) {
+            HelperFunctions.switchScene("adminDashboard");
+        } else {
+            HelperFunctions.switchScene("userDashboard");
+        }
     }
 
 
@@ -177,6 +181,9 @@ public class ProfileDashboardController implements Initializable {
 
     @FXML
     void cancelButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("adminDashboard");
+        if (loggedInUser.getRole().equals(Role.ADMIN))
+            HelperFunctions.switchScene("adminDashboard");
+        else
+            HelperFunctions.switchScene("userDashboard");
     }
 }

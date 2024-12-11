@@ -46,7 +46,7 @@ public class HelperFunctions {
                 setScene("books-category-view.fxml", "Add Category", 300, 300);
                 break;
             case "userDashboard":
-                setScene("user-dashboard-view.fxml", "User Dashboard", 300, 300);
+                setScene("user-dashboard-view.fxml", "User Dashboard", 1200, 700);
                 break;
 
         }
