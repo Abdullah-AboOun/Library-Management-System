@@ -9,6 +9,7 @@ module com.example.libraryManagementSystem {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.material2;
 
+    opens com.example.libraryManagementSystem.entity to javafx.base;
     opens com.example.libraryManagementSystem to javafx.fxml;
 
     exports com.example.libraryManagementSystem;

@@ -3,11 +3,11 @@ package com.example.libraryManagementSystem;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -114,23 +114,12 @@ public class DashboardController implements Initializable {
         } else if (loggedInUser.getRole() == Role.LIBRARIAN) {
             roleComboBox.getItems().remove("ADMIN");
         }
-        usernameColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getUserName()));
-
-        fullNameColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFullName()));
-
-        emailColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getEmail()));
-
-        phoneColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
-
-        roleColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getRole().toString()));
-
-        passwordColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getPassword()));
+        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        fullNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
 
         profileImageColumn.setCellValueFactory(cellData -> {
             String userImagePath = cellData.getValue().getImagePath();
@@ -139,7 +128,6 @@ public class DashboardController implements Initializable {
             imageView.setFitWidth(30);
             return new SimpleObjectProperty<>(imageView);
         });
-
         userTableView.setItems(MainApplication.userList);
 
         userTableView.getSelectionModel().selectedItemProperty().addListener((
@@ -254,6 +242,12 @@ public class DashboardController implements Initializable {
         }
 
         MainApplication.userList.add(user);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("User added successfully!");
+        alert.showAndWait();
     }
 
     @FXML
@@ -290,6 +284,11 @@ public class DashboardController implements Initializable {
         if (i == MainApplication.loggedInUserIndex) {
             usernameLabel.setText(user.getFullName());
         }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("User updated successfully!");
+        alert.showAndWait();
     }
 
     @FXML
@@ -300,6 +299,12 @@ public class DashboardController implements Initializable {
         }
         MainApplication.userList.remove(user);
         MainApplication.loggedInUserIndex = MainApplication.userList.indexOf(loggedInUser);
+        userTableView.refresh();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("User deleted successfully!");
+        alert.showAndWait();
     }
 
     @FXML
@@ -326,7 +331,8 @@ public class DashboardController implements Initializable {
             userTableView.setItems(MainApplication.userList);
             return;
         }
-        userTableView.setItems(MainApplication.userList.filtered(user -> user.getRole().toString().equals(role)));
+        userTableView.setItems(MainApplication.userList.filtered(user ->
+                user.getRole().toString().equals(role)));
 
     }
 }

@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -133,32 +134,15 @@ public class BooksDashboardController implements Initializable {
         languageComboBox.getItems().addAll(MainApplication.languages);
         categoryComboBox.getItems().addAll(MainApplication.categories);
 
-        titleColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getTitle()));
-
-        authorColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getAuthor()));
-
-        dateOfPublicationColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getDateOfPublication()));
-
-        isbnColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getISBN()));
-
-        languageColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getLanguage()));
-
-        categoryColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getCategory()));
-
-        publisherColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getPublisher()));
-
-        pagesNumberColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getPagesNumber()));
-
-        copiesNumberColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getCopiesNumber()));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+        dateOfPublicationColumn.setCellValueFactory(new PropertyValueFactory<>("dateOfPublication"));
+        isbnColumn.setCellValueFactory(new PropertyValueFactory<>("ISBN"));
+        languageColumn.setCellValueFactory(new PropertyValueFactory<>("language"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        publisherColumn.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+        pagesNumberColumn.setCellValueFactory(new PropertyValueFactory<>("pagesNumber"));
+        copiesNumberColumn.setCellValueFactory(new PropertyValueFactory<>("copiesNumber"));
 
         bookImageColumn.setCellValueFactory(cellData -> {
             String bookImagePath = cellData.getValue().getImagePath();
@@ -167,7 +151,6 @@ public class BooksDashboardController implements Initializable {
             imageView.setFitWidth(30);
             return new SimpleObjectProperty<>(imageView);
         });
-
         bookTableView.setItems(MainApplication.bookList);
 
         bookTableView.getSelectionModel().selectedItemProperty().addListener((
@@ -300,6 +283,12 @@ public class BooksDashboardController implements Initializable {
         }
 
         MainApplication.bookList.add(book);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Book added successfully!");
+        alert.showAndWait();
+
     }
 
 
@@ -328,6 +317,13 @@ public class BooksDashboardController implements Initializable {
         int i = MainApplication.bookList.indexOf(book);
         MainApplication.bookList.set(i, book);
         bookTableView.refresh();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Book updated successfully!");
+        alert.showAndWait();
+
     }
 
     @FXML
@@ -337,6 +333,12 @@ public class BooksDashboardController implements Initializable {
             return;
         }
         MainApplication.bookList.remove(book);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Book deleted successfully!");
+        alert.showAndWait();
     }
 
     @FXML
