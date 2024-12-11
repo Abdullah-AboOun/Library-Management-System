@@ -154,7 +154,7 @@ public class ProfileDashboardController implements Initializable {
 
 
         MainApplication.userList.set(MainApplication.loggedInUserIndex, user);
-        HelperFunctions.switchScene("dashboard");
+        HelperFunctions.switchScene("adminDashboard");
     }
 
 
@@ -177,6 +177,6 @@ public class ProfileDashboardController implements Initializable {
 
     @FXML
     void cancelButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("dashboard");
+        HelperFunctions.switchScene("adminDashboard");
     }
 }

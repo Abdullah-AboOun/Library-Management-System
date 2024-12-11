@@ -3,7 +3,6 @@ package com.example.libraryManagementSystem;
 import com.example.libraryManagementSystem.entity.Book;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,12 +12,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material2.Material2AL;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BooksDashboardController implements Initializable {
+
+    @FXML
+    private Button logoutButton;
 
     @FXML
     private Label authorErrorLabel;
@@ -124,6 +128,8 @@ public class BooksDashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        logoutButton.setGraphic(new FontIcon(Material2AL.LOG_OUT));
+
         loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
         String userImagePath = loggedInUser.getImagePath();
         smallProfileImageView.setImage(new Image(new File(userImagePath).toURI().toString()));
@@ -343,7 +349,7 @@ public class BooksDashboardController implements Initializable {
 
     @FXML
     void cancelButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("dashboard");
+        HelperFunctions.switchScene("adminDashboard");
     }
 
     @FXML
@@ -353,7 +359,7 @@ public class BooksDashboardController implements Initializable {
 
     @FXML
     void dashboardButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("dashboard");
+        HelperFunctions.switchScene("adminDashboard");
     }
 
     @FXML
@@ -370,5 +376,11 @@ public class BooksDashboardController implements Initializable {
     @FXML
     void addBookCategoryImageViewOnClick(MouseEvent mouseEvent) {
         HelperFunctions.switchScene("bookCategoryDashboard");
+    }
+
+    @FXML
+    void logoutButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("login");
+
     }
 }

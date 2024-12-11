@@ -33,8 +33,8 @@ public class HelperFunctions {
             case "register":
                 setScene("register-view.fxml", "Register", 500, 650);
                 break;
-            case "dashboard":
-                setScene("dashboard-view.fxml", "Dashboard", 1300, 700);
+            case "adminDashboard":
+                setScene("admin-dashboard-view.fxml", "Admin Dashboard", 1300, 700);
                 break;
             case "profileDashboard":
                 setScene("profile-dashboard-view.fxml", "Profile Dashboard", 600, 700);
@@ -45,6 +45,10 @@ public class HelperFunctions {
             case "bookCategoryDashboard":
                 setScene("books-category-view.fxml", "Add Category", 300, 300);
                 break;
+            case "userDashboard":
+                setScene("user-dashboard-view.fxml", "User Dashboard", 300, 300);
+                break;
+
         }
     }
 

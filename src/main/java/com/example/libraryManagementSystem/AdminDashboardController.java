@@ -12,12 +12,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material2.Material2AL;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DashboardController implements Initializable {
+public class AdminDashboardController implements Initializable {
+
+    @FXML
+    private Button logoutButton;
 
     @FXML
     private Label confirmPasswordErrorLabel;
@@ -102,6 +107,8 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        logoutButton.setGraphic(new FontIcon(Material2AL.LOG_OUT));
+
         roleComboBox.getItems().addAll("ADMIN", "USER", "LIBRARIAN");
         roleFilterComboBox.getItems().addAll("All", "ADMIN", "USER", "LIBRARIAN");
         loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
@@ -333,6 +340,12 @@ public class DashboardController implements Initializable {
         }
         userTableView.setItems(MainApplication.userList.filtered(user ->
                 user.getRole().toString().equals(role)));
+
+    }
+
+    @FXML
+    void logoutButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("login");
 
     }
 }

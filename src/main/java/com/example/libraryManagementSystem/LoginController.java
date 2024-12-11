@@ -55,7 +55,7 @@ public class LoginController implements Initializable {
             return;
         }
         loggedInUserIndex = userList.indexOf(user);
-        HelperFunctions.switchScene("dashboard");
+        HelperFunctions.switchScene("adminDashboard");
     }
 
     @FXML
