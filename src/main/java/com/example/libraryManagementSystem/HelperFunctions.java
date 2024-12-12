@@ -1,10 +1,12 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.entity.Book;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class HelperFunctions {
     private static Stage primaryStage;
@@ -48,8 +50,28 @@ public class HelperFunctions {
             case "userDashboard":
                 setScene("user-dashboard-view.fxml", "User Dashboard", 900, 700);
                 break;
+            case "adminWelcome":
+                setScene("admin-welcome-view.fxml", "Welcome", 700, 500);
+                break;
+            case "userWelcome":
+                setScene("user-welcome-view.fxml", "Welcome", 700, 500);
+                break;
 
         }
     }
 
+//    public static List<Book> getBorrowedBooks() {
+//        List books = MainApplication.userBookMap.get(MainApplication.userList.get(MainApplication.loggedInUserIndex));
+//        if (books == null) {
+//            MainApplication.userBookMap.put(MainApplication.userList.get(MainApplication.loggedInUserIndex), List.of());
+//            return null;
+//        }
+//        return books;
+//    }
+//
+//    public static void addBorrowedBook(Book book) {
+//        List<Book> books = getBorrowedBooks();
+//        books.add(book);
+//        MainApplication.userBookMap.put(MainApplication.userList.get(MainApplication.loggedInUserIndex), books);
+//    }
 }

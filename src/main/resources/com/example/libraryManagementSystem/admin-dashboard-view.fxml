@@ -40,7 +40,10 @@
             <!-- Left Sidebar -->
             <VBox alignment="CENTER" prefHeight="640.0" prefWidth="233.0" spacing="20.0"
                   style="-fx-background-color: #141515;">
-                <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150" styleClass="accent"
+                <Button mnemonicParsing="false" onAction="#welcomeButtonOnClick" style="-fx-pref-width: 150" styleClass="accent"
+                        text="Welcome Screen"/>
+                <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150"
+                        styleClass="accent"
                         text="User Management"/>
                 <Button mnemonicParsing="false" onAction="#bookButtonOnClick" style="-fx-pref-width: 150"
                         styleClass="accent" text="Book Management"/>

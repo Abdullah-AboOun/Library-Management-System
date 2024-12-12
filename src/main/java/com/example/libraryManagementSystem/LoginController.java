@@ -57,9 +57,9 @@ public class LoginController implements Initializable {
         }
         loggedInUserIndex = userList.indexOf(user);
         if (user.getRole().equals(Role.ADMIN)) {
-            HelperFunctions.switchScene("adminDashboard");
+            HelperFunctions.switchScene("adminWelcome");
         } else {
-            HelperFunctions.switchScene("userDashboard");
+            HelperFunctions.switchScene("userWelcome");
         }
     }
 

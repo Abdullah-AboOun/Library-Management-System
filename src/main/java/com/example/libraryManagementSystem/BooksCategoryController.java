@@ -15,7 +15,7 @@ public class BooksCategoryController {
         if (category.isEmpty()) {
             return;
         }
-        MainApplication.categories.add(category);
+        MainApplication.categoriesList.add(category);
         HelperFunctions.switchScene("bookDashboard");
     }
 

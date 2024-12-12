@@ -136,9 +136,9 @@ public class BooksDashboardController implements Initializable {
         usernameLabel.setText(loggedInUser.getFullName());
 
         bookCategoryFilterComboBox.getItems().add("All");
-        bookCategoryFilterComboBox.getItems().addAll(MainApplication.categories);
-        languageComboBox.getItems().addAll(MainApplication.languages);
-        categoryComboBox.getItems().addAll(MainApplication.categories);
+        bookCategoryFilterComboBox.getItems().addAll(MainApplication.categoriesList);
+        languageComboBox.getItems().addAll(MainApplication.languagesList);
+        categoryComboBox.getItems().addAll(MainApplication.categoriesList);
 
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -181,9 +181,11 @@ public class BooksDashboardController implements Initializable {
     @FXML
     void bookImageViewOnClick(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         String projectPath = System.getProperty("user.dir");
-        File initialDirectory = new File(projectPath + "/src/main/resources/com/example/libraryManagementSystem/images");
+        File initialDirectory = new File(projectPath +
+                                         "/src/main/resources/com/example/libraryManagementSystem/images");
         fileChooser.setInitialDirectory(initialDirectory);
 
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -382,5 +384,10 @@ public class BooksDashboardController implements Initializable {
     void logoutButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("login");
 
+    }
+
+    @FXML
+    void welcomeButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("adminWelcome");
     }
 }

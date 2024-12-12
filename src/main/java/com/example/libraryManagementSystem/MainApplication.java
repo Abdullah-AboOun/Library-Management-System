@@ -6,6 +6,7 @@ import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -13,16 +14,19 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 
 import static javafx.collections.FXCollections.observableArrayList;
+import static javafx.collections.FXCollections.observableHashMap;
 
 public class MainApplication extends Application {
 
     public static ObservableList<Book> bookList = observableArrayList();
     public static ObservableList<User> userList = observableArrayList();
-    public static ObservableList<String> languages = observableArrayList();
-    public static ObservableList<String> categories = observableArrayList();
+    public static ObservableList<String> languagesList = observableArrayList();
+    public static ObservableList<String> categoriesList = observableArrayList();
+//    public static ObservableMap<User, List<Book>> userBookMap = observableHashMap();
     static int loggedInUserIndex = 0;
     static String defaultImagePath = "";
     static String defaultBookImagePath = "";
@@ -123,8 +127,8 @@ public class MainApplication extends Application {
                         365, 3)
         );
 
-        languages.addAll("English", "Arabic", "French", "German", "Spanish", "Arabic");
-        categories.addAll("Science", "Art", "History", "Math", "Literature", "Science Fiction");
+        languagesList.addAll("English", "Arabic", "French", "German", "Spanish", "Arabic");
+        categoriesList.addAll("Science", "Art", "History", "Math", "Literature", "Science Fiction");
     }
 
     @Override

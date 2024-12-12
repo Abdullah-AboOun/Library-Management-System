@@ -1,5 +1,6 @@
 package com.example.libraryManagementSystem.entity;
 
+import java.util.Collection;
 import java.util.Objects;
 
 public class User {

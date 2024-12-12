@@ -346,6 +346,10 @@ public class AdminDashboardController implements Initializable {
     @FXML
     void logoutButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("login");
+    }
 
+    @FXML
+    void welcomeButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("adminWelcome");
     }
 }

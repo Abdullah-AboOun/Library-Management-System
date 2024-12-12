@@ -5,13 +5,12 @@ import com.example.libraryManagementSystem.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material2.Material2AL;
 
 import java.io.File;
 import java.net.URL;
@@ -19,6 +18,9 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class UserDashboardController implements Initializable {
+
+    @FXML
+    private Button borrowButton;
 
     @FXML
     private ComboBox<String> bookCategoryComboBox;
@@ -97,8 +99,9 @@ public class UserDashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        logoutButton.setGraphic(new FontIcon(Material2AL.LOG_OUT));
         bookCategoryComboBox.getItems().setAll("All");
-        bookCategoryComboBox.getItems().addAll(MainApplication.categories);
+        bookCategoryComboBox.getItems().addAll(MainApplication.categoriesList);
         bookSelectComboBox.getItems().setAll(MainApplication.bookList
                 .stream()
                 .map(Book::getTitle)
@@ -128,28 +131,45 @@ public class UserDashboardController implements Initializable {
             pagesField.setText(String.valueOf(book.getPagesNumber()));
             copiesField.setText(String.valueOf(book.getCopiesNumber()));
             bookImageView.setImage(new Image(new File(book.getImagePath()).toURI().toString()));
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Book not found");
+            alert.setContentText("The book you are looking for is not found");
+            alert.showAndWait();
         }
-
-
     }
 
     @FXML
     void borrowButtonOnClick(ActionEvent event) {
-
+//        String selectedBook = bookSelectComboBox.getValue();
+//        Book book = MainApplication.bookList.stream()
+//                .filter(b -> b.getTitle().equals(selectedBook))
+//                .findFirst().orElse(null);
+//
+//        if (book == null) {
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Error");
+//            alert.setHeaderText("Book not found");
+//            alert.setContentText("The book you are looking for is not found");
+//            alert.showAndWait();
+//            return;
+//        }
+//
+//        var borrowedBooks = HelperFunctions.getBorrowedBooks();
+//        if (borrowedBooks == null || !borrowedBooks.contains(book)) {
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//            alert.setTitle("Success");
+//            alert.setContentText("Pending borrow approval successfully");
+//            alert.showAndWait();
+//            HelperFunctions.addBorrowedBook(book);
+//            HelperFunctions.switchScene("userDashboard");
+//        }
     }
 
     @FXML
     void clearButtonOnClick(ActionEvent event) {
-        titleField.clear();
-        authorField.clear();
-        isbnField.clear();
-        languageField.clear();
-        publisherField.clear();
-        categoryField.clear();
-        dateField.clear();
-        pagesField.clear();
-        copiesField.clear();
-        bookImageView.setImage(null);
+        HelperFunctions.switchScene("userDashboard");
     }
 
 
@@ -182,4 +202,13 @@ public class UserDashboardController implements Initializable {
         }
     }
 
+    @FXML
+    void welcomeButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("userWelcome");
+    }
+
+    @FXML
+    void borrowedButtonOnClick(ActionEvent actionEvent) {
+
+    }
 }

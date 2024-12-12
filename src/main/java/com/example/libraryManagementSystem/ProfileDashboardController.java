@@ -154,11 +154,11 @@ public class ProfileDashboardController implements Initializable {
 
 
         MainApplication.userList.set(MainApplication.loggedInUserIndex, user);
-        if (user.getRole().equals(Role.ADMIN)) {
+        if (loggedInUser.getRole().equals(Role.ADMIN))
             HelperFunctions.switchScene("adminDashboard");
-        } else {
+        else
             HelperFunctions.switchScene("userDashboard");
-        }
+
     }
 
 
