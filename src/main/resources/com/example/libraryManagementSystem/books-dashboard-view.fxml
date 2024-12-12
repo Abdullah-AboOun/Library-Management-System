@@ -9,7 +9,7 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="700.0" prefWidth="1400.0"
-          xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+          xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="com.example.libraryManagementSystem.BooksDashboardController">
 
     <stylesheets>
@@ -39,7 +39,8 @@
         </HBox>
         <HBox alignment="CENTER" prefHeight="700.0" prefWidth="1400.0" spacing="15">
             <!-- Left Sidebar -->
-            <VBox alignment="CENTER" prefHeight="639.0" prefWidth="180.0" spacing="20.0" style="-fx-padding: 15;">
+            <VBox alignment="CENTER" prefHeight="640.0" prefWidth="221.0" spacing="20.0"
+                  style="-fx-padding: 15; -fx-background-color: #141515;">
                 <Button mnemonicParsing="false" onAction="#dashboardButtonOnClick" style="-fx-pref-width: 150"
                         styleClass="accent" text="User Management"/>
                 <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150" styleClass="accent"
@@ -47,7 +48,9 @@
                 <VBox.margin>
                     <Insets bottom="40.0"/>
                 </VBox.margin>
-
+                <effect>
+                    <DropShadow/>
+                </effect>
             </VBox>
 
             <!-- Middle Form Section -->
