@@ -13,6 +13,10 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static com.example.libraryManagementSystem.MainApplication.loggedInUserIndex;
@@ -46,9 +50,27 @@ public class LoginController implements Initializable {
     @FXML
     void loginButtonOnClick() {
 
-        User user = userList.parallelStream().filter(u ->
-                u.getUserName().equals(userNameField.getText()) &&
-                u.getPassword().equals(passwordField.getText())).findFirst().orElse(null);
+        User user = null;
+        String query = "SELECT * FROM users WHERE userName = ? AND password = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userNameField.getText());
+            preparedStatement.setString(2, passwordField.getText());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                user = new User(
+                        resultSet.getString("userName"),
+                        resultSet.getString("password"),
+                        resultSet.getString("fullName"),
+                        Role.valueOf(resultSet.getString("role")),
+                        resultSet.getString("email"),
+                        resultSet.getString("phoneNumber"),
+                        resultSet.getString("imagePath")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         if (user == null) {
             errorLabel.setGraphic(new FontIcon(Material2AL.ERROR));

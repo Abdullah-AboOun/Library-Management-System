@@ -6,7 +6,6 @@ import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -14,11 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.List;
 import java.util.Objects;
 
 import static javafx.collections.FXCollections.observableArrayList;
-import static javafx.collections.FXCollections.observableHashMap;
 
 public class MainApplication extends Application {
 
@@ -26,12 +23,18 @@ public class MainApplication extends Application {
     public static ObservableList<User> userList = observableArrayList();
     public static ObservableList<String> languagesList = observableArrayList();
     public static ObservableList<String> categoriesList = observableArrayList();
-//    public static ObservableMap<User, List<Book>> userBookMap = observableHashMap();
+    //    public static ObservableMap<User, List<Book>> userBookMap = observableHashMap();
     static int loggedInUserIndex = 0;
     static String defaultImagePath = "";
     static String defaultBookImagePath = "";
 
     public static void main(String[] args) {
+        try {
+            HelperFunctions.runPythonScript("setup_db.py");
+        } catch (Exception e) {
+            System.err.println("Warning: Failed to execute Python script. Continuing without it.");
+            e.printStackTrace();
+        }
         launch(args);
     }
 

@@ -1,12 +1,12 @@
 package com.example.libraryManagementSystem;
 
-import com.example.libraryManagementSystem.entity.Book;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.List;
+import java.io.InputStreamReader;
 
 public class HelperFunctions {
     private static Stage primaryStage;
@@ -57,6 +57,24 @@ public class HelperFunctions {
                 setScene("user-welcome-view.fxml", "Welcome", 700, 500);
                 break;
 
+        }
+    }
+
+    public static void runPythonScript(String scriptName) {
+        ProcessBuilder processBuilder = new ProcessBuilder("python", scriptName);
+        processBuilder.redirectErrorStream(true);
+
+        try {
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            int exitCode = process.waitFor();
+            System.out.println("Exited with code: " + exitCode);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
