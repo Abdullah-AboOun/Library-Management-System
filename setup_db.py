@@ -3,12 +3,12 @@ import os
 
 def init_database():
     # Delete existing database if it exists
-    if os.path.exists('src/main/resources/src/main/resources/database.db'):
+    if os.path.exists('./src/main/resources/database.db'):
 #         exit() # exit the code if the database already exists
-        os.remove('src/main/resources/database.db')
+        os.remove('./src/main/resources/database.db')
     
     # Connect to database (creates if not exists)
-    conn = sqlite3.connect('src/main/resources/database.db')
+    conn = sqlite3.connect('./src/main/resources/database.db')
     cursor = conn.cursor()
     
     # Read and execute schema
@@ -16,8 +16,8 @@ def init_database():
         cursor.executescript(schema_file.read())
     
     # Read and execute seed data
-#     with open('seed.sql', 'r') as seed_file:
-#         cursor.executescript(seed_file.read())
+    with open('seed.sql', 'r') as seed_file:
+        cursor.executescript(seed_file.read())
     
     # Commit and close
     conn.commit()
