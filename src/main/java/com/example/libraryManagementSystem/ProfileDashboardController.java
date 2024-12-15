@@ -1,14 +1,12 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.DBCode.UserRepository;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -16,6 +14,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ProfileDashboardController implements Initializable {
@@ -67,11 +66,12 @@ public class ProfileDashboardController implements Initializable {
 
     private String imagePath;
     User loggedInUser;
+    UserRepository userRepository;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
-
+        loggedInUser = HelperFunctions.getLoggedInUser();
+        userRepository = new UserRepository();
         roleComboBox.getItems().addAll("Admin", "User", "Librarian");
 
         fullNameField.setText(loggedInUser.getFullName());
@@ -80,87 +80,47 @@ public class ProfileDashboardController implements Initializable {
         phoneField.setText(loggedInUser.getPhoneNumber());
         passwordField.setText(loggedInUser.getPassword());
         confirmPasswordField.setText(loggedInUser.getPassword());
-        roleComboBox.setValue(loggedInUser.getRole().toString());
+        int roleIndex = roleComboBox.getItems().indexOf(loggedInUser.getRole().toString());
+        roleComboBox.getSelectionModel().select(roleIndex);
 
         imagePath = loggedInUser.getImagePath();
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
-
 
     }
 
     @FXML
     void updateButtonOnClick(ActionEvent actionEvent) {
 
-        boolean isValid = true;
-        if (fullNameField.getText().isEmpty()) {
-            fullNameErrorLabel.setText("Full name is required");
-            isValid = false;
-        } else {
-            fullNameErrorLabel.setText("");
-        }
-
-        if (userNameField.getText().isEmpty()) {
-            userNameErrorLabel.setText("Username is required");
-            isValid = false;
-        } else {
-            userNameErrorLabel.setText("");
-        }
-
-        if (emailField.getText().isEmpty()) {
-            emailErrorLabel.setText("Email is required");
-            isValid = false;
-        } else {
-            emailErrorLabel.setText("");
-        }
-
-        if (phoneField.getText().isEmpty()) {
-            phoneErrorLabel.setText("Phone number is required");
-            isValid = false;
-        } else {
-            phoneErrorLabel.setText("");
-        }
-
-        if (passwordField.getText().isEmpty()) {
-            passwordErrorLabel.setText("Password is required");
-            isValid = false;
-        } else {
-            passwordErrorLabel.setText("");
-        }
-
-        if (!passwordField.getText().equals(confirmPasswordField.getText())) {
-            confirmPasswordErrorLabel.setText("Passwords do not match");
-            isValid = false;
-        } else {
-            confirmPasswordErrorLabel.setText("");
-        }
-
         User user;
-        if (isValid) {
+        if (validateInputs()) {
             String userName = userNameField.getText();
             String password = passwordField.getText();
             String fullName = fullNameField.getText();
             String email = emailField.getText();
             String phone = phoneField.getText();
             imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
-            Role role = switch (roleComboBox.getSelectionModel().getSelectedItem()) {
-                case "Admin" -> Role.ADMIN;
-                case "Librarian" -> Role.LIBRARIAN;
-                default -> Role.USER;
-            };
+            Role role = Role.valueOf(roleComboBox.getValue().toUpperCase());
             user = new User(userName, password, fullName, role, email, phone, imagePath);
         } else {
             return;
         }
 
-
-        MainApplication.userList.set(MainApplication.loggedInUserIndex, user);
-        if (loggedInUser.getRole().equals(Role.ADMIN))
-            HelperFunctions.switchScene("adminDashboard");
-        else
-            HelperFunctions.switchScene("userDashboard");
+        try {
+            if (userRepository.updateUser(user)) {
+                if (loggedInUser.getRole().equals(Role.ADMIN)) {
+                    HelperFunctions.switchScene("adminDashboard");
+                } else {
+                    HelperFunctions.switchScene("userDashboard");
+                }
+            } else {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to update user profile");
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Database error occurred");
+        }
 
     }
-
 
     @FXML
     void imageViewOnClick(MouseEvent actionEvent) {
@@ -185,5 +145,54 @@ public class ProfileDashboardController implements Initializable {
             HelperFunctions.switchScene("adminDashboard");
         else
             HelperFunctions.switchScene("userDashboard");
+    }
+
+    private boolean validateInputs() {
+        boolean isValid = true;
+
+        if (roleComboBox.getSelectionModel().isEmpty()) {
+            roleErrorLabel.setText("Role is required!");
+            isValid = false;
+        } else {
+            roleErrorLabel.setText("");
+        }
+        if (userNameField.getText().isEmpty()) {
+            userNameErrorLabel.setText("Username is required!");
+            isValid = false;
+        } else {
+            userNameErrorLabel.setText("");
+        }
+        if (passwordField.getText().isEmpty()) {
+            passwordErrorLabel.setText("Password is required!");
+            isValid = false;
+        } else {
+            passwordErrorLabel.setText("");
+        }
+        if (!passwordField.getText().equals(confirmPasswordField.getText())) {
+            confirmPasswordErrorLabel.setText("Passwords do not match!");
+            isValid = false;
+        } else {
+            confirmPasswordErrorLabel.setText("");
+        }
+        if (fullNameField.getText().isEmpty()) {
+            fullNameErrorLabel.setText("Full name is required!");
+            isValid = false;
+        } else {
+            fullNameErrorLabel.setText("");
+        }
+        if (emailField.getText().isEmpty()) {
+            emailErrorLabel.setText("Email is required!");
+            isValid = false;
+        } else {
+            emailErrorLabel.setText("");
+        }
+        if (phoneField.getText().isEmpty()) {
+            phoneErrorLabel.setText("Phone is required!");
+            isValid = false;
+        } else {
+            phoneErrorLabel.setText("");
+        }
+
+        return isValid;
     }
 }
