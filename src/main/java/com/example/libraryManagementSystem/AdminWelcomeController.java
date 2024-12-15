@@ -32,7 +32,7 @@ public class AdminWelcomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         User loggedInUser = HelperFunctions.getLoggedInUser();
-        usernameLabel.setText(loggedInUser.getUserName());
+        usernameLabel.setText(loggedInUser.getFullName());
         smallProfileImageView.setImage(new Image(new File(loggedInUser.getImagePath()).toURI().toString()));
         logoutButton.setGraphic(new FontIcon(Material2AL.LOG_OUT));
     }

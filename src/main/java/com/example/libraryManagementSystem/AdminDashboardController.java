@@ -1,8 +1,11 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.DBCode.UserRepository;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,7 +20,10 @@ import org.kordamp.ikonli.material2.Material2AL;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class AdminDashboardController implements Initializable {
 
@@ -31,7 +37,7 @@ public class AdminDashboardController implements Initializable {
     private PasswordField confirmPasswordField;
 
     @FXML
-    private Label usernameLabel;
+    private Label TopFullnameLabel;
 
     @FXML
     private Label emailErrorLabel;
@@ -102,25 +108,22 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private TableColumn<User, String> usernameColumn;
 
-    User loggedInUser;
-    String imagePath;
+    private User loggedInUser;
+    private String imagePath;
+    UserRepository userRepository;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        userRepository = new UserRepository();
         logoutButton.setGraphic(new FontIcon(Material2AL.LOG_OUT));
-
         roleComboBox.getItems().addAll("ADMIN", "USER", "LIBRARIAN");
         roleFilterComboBox.getItems().addAll("All", "ADMIN", "USER", "LIBRARIAN");
-        loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
+        loggedInUser = HelperFunctions.getLoggedInUser();
         String imagePath = loggedInUser.getImagePath();
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
         smallProfileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
-        usernameLabel.setText(loggedInUser.getFullName());
-        if (loggedInUser.getRole() == Role.USER) {
-            roleComboBox.setDisable(true);
-        } else if (loggedInUser.getRole() == Role.LIBRARIAN) {
-            roleComboBox.getItems().remove("ADMIN");
-        }
+        TopFullnameLabel.setText(loggedInUser.getFullName());
+
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
         fullNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -135,7 +138,8 @@ public class AdminDashboardController implements Initializable {
             imageView.setFitWidth(30);
             return new SimpleObjectProperty<>(imageView);
         });
-        userTableView.setItems(MainApplication.userList);
+
+        setUserTableFromDB();
 
         userTableView.getSelectionModel().selectedItemProperty().addListener((
                 observableValue, oldValue, newValue) -> {
@@ -175,8 +179,184 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     void addButtonOnClick(ActionEvent actionEvent) {
+        if (!validateInputs()) {
+            return;
+        }
 
+        try {
+            User user = new User(
+                    userNameField.getText(),
+                    passwordField.getText(),
+                    fullNameField.getText(),
+                    Role.valueOf(roleComboBox.getSelectionModel().getSelectedItem()),
+                    emailField.getText(),
+                    phoneField.getText(),
+                    imagePath == null ? MainApplication.defaultImagePath : imagePath);
+
+            if (userRepository.getUserByUsername(user.getUserName()) != null) {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "User already exists!");
+                return;
+            }
+
+            if (userRepository.addUser(user)) {
+                HelperFunctions.showAlert(Alert.AlertType.INFORMATION, "Success", "User added successfully!");
+                clearFields();
+            } else {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to add user!");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Database error occurred!");
+        }
+        setUserTableFromDB();
+    }
+
+    @FXML
+    void updateButtonOnClick(ActionEvent actionEvent) {
+        if (!validateInputs()) {
+            return;
+        }
+
+        String finalImagPath = imagePath;
+        try {
+            User user = new User(
+                    userNameField.getText(),
+                    passwordField.getText(),
+                    fullNameField.getText(),
+                    Role.valueOf(roleComboBox.getSelectionModel().getSelectedItem()),
+                    emailField.getText(),
+                    phoneField.getText(),
+                    imagePath == null ? MainApplication.defaultImagePath : imagePath);
+
+            if (userRepository.getUserByUsername(user.getUserName()) == null) {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error",
+                        "No user found with username: " + user.getUserName());
+                return;
+            }
+
+            if (userRepository.updateUser(user)) {
+                HelperFunctions.showAlert(Alert.AlertType.INFORMATION, "Success", "User updated successfully!");
+                clearFields();
+                setUserTableFromDB();
+
+                if (userTableView.getSelectionModel().getSelectedItem().getUserName()
+                        .equals(loggedInUser.getUserName())) {
+                    TopFullnameLabel.setText(user.getFullName());
+                    smallProfileImageView.setImage(new Image(new File(finalImagPath).toURI().toString()));
+
+                }
+            } else {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to update user!");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Database error occurred!");
+        }
+        setUserTableFromDB();
+
+    }
+
+    @FXML
+    void deleteButtonOnClick(ActionEvent actionEvent) {
+        User selectedUser = userTableView.getSelectionModel().getSelectedItem();
+        if (selectedUser == null) {
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Please select a user to delete");
+            return;
+        }
+
+        try {
+            if (userRepository.deleteUser(selectedUser.getUserName())) {
+                HelperFunctions.showAlert(Alert.AlertType.INFORMATION, "Success", "User deleted successfully!");
+                setUserTableFromDB();
+
+                if (selectedUser.getUserName().equals(loggedInUser.getUserName())) {
+                    HelperFunctions.switchScene("login");
+                }
+            } else {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete user");
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error while deleting user: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Database error occurred");
+        }
+        setUserTableFromDB();
+    }
+
+    @FXML
+    void cancelButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("login");
+    }
+
+    @FXML
+    void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
+        HelperFunctions.switchScene("profileDashboard");
+    }
+
+    @FXML
+    void bookButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("bookDashboard");
+    }
+
+    @FXML
+    void roleFilterComboBox(ActionEvent actionEvent) {
+        try {
+            String selectedRole = roleFilterComboBox.getSelectionModel().isEmpty() ? "All"
+                    : roleFilterComboBox.getSelectionModel().getSelectedItem();
+
+            List<User> filteredUsers;
+            if (selectedRole.equals("All")) {
+                filteredUsers = userRepository.getAllUsers();
+            } else {
+                filteredUsers = userRepository.getAllUsers().stream()
+                        .filter(user -> user.getRole().toString().equals(selectedRole))
+                        .collect(Collectors.toList());
+            }
+
+            userTableView.setItems(FXCollections.observableArrayList(filteredUsers));
+
+        } catch (SQLException e) {
+            System.err.println("Error filtering users: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to filter users");
+        }
+    }
+
+    @FXML
+    void logoutButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("login");
+    }
+
+    @FXML
+    void welcomeButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("adminWelcome");
+    }
+
+    private void clearFields() {
+        userNameField.clear();
+        passwordField.clear();
+        confirmPasswordField.clear();
+        fullNameField.clear();
+        emailField.clear();
+        phoneField.clear();
+        roleComboBox.getSelectionModel().clearSelection();
+        imagePath = null;
+    }
+
+    private void setUserTableFromDB() {
+        try {
+            ObservableList<User> users = FXCollections.observableArrayList(userRepository.getAllUsers());
+            userTableView.setItems(users);
+            userTableView.refresh();
+        } catch (SQLException e) {
+            System.err.println("Error loading users: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to load users");
+        }
+    }
+
+    private boolean validateInputs() {
         boolean isValid = true;
+
         if (roleComboBox.getSelectionModel().isEmpty()) {
             roleErrorLabel.setText("Role is required!");
             isValid = false;
@@ -220,136 +400,6 @@ public class AdminDashboardController implements Initializable {
             phoneErrorLabel.setText("");
         }
 
-        if (!isValid) {
-            return;
-        }
-
-        Role role = switch (roleComboBox.getSelectionModel().getSelectedItem()) {
-            case "ADMIN" -> Role.ADMIN;
-            case "LIBRARIAN" -> Role.LIBRARIAN;
-            default -> Role.USER;
-        };
-
-        String userName = userNameField.getText();
-        String password = passwordField.getText();
-        String fullName = fullNameField.getText();
-        String email = emailField.getText();
-        String phone = phoneField.getText();
-        imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
-
-        User user = new User(userName, password, fullName, role, email, phone, imagePath);
-
-        if (MainApplication.userList.contains(user)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("User already exists!");
-            alert.showAndWait();
-            return;
-        }
-
-        MainApplication.userList.add(user);
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("User added successfully!");
-        alert.showAndWait();
-    }
-
-    @FXML
-    void updateButtonOnClick(ActionEvent actionEvent) {
-
-        String userName = userNameField.getText();
-        String password = passwordField.getText();
-        String fullName = fullNameField.getText();
-        String email = emailField.getText();
-        String phone = phoneField.getText();
-        if (!passwordField.getText().equals(confirmPasswordField.getText())) {
-            confirmPasswordErrorLabel.setText("Passwords do not match!");
-            return;
-        }
-        imagePath = imagePath == null ? MainApplication.defaultImagePath : imagePath;
-        Role role = switch (roleComboBox.getSelectionModel().getSelectedItem()) {
-            case "ADMIN" -> Role.ADMIN;
-            case "LIBRARIAN" -> Role.LIBRARIAN;
-            default -> Role.USER;
-        };
-        User user = new User(userName, password, fullName, role, email, phone, imagePath);
-
-        if (!MainApplication.userList.contains(user)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("No user found with user name: " + userName);
-            alert.showAndWait();
-            return;
-        }
-        int i = MainApplication.userList.indexOf(user);
-        MainApplication.userList.set(i, user);
-        userTableView.refresh();
-        if (i == MainApplication.loggedInUserIndex) {
-            usernameLabel.setText(user.getFullName());
-        }
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("User updated successfully!");
-        alert.showAndWait();
-    }
-
-    @FXML
-    void deleteButtonOnClick(ActionEvent actionEvent) {
-        User user = userTableView.getSelectionModel().getSelectedItem();
-        if (user == null) {
-            return;
-        }
-        MainApplication.userList.remove(user);
-        MainApplication.loggedInUserIndex = MainApplication.userList.indexOf(loggedInUser);
-        userTableView.refresh();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("User deleted successfully!");
-        alert.showAndWait();
-    }
-
-    @FXML
-    void cancelButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("login");
-    }
-
-    @FXML
-    void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
-        HelperFunctions.switchScene("profileDashboard");
-    }
-
-    @FXML
-    void bookButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("bookDashboard");
-    }
-
-    @FXML
-    void roleFilterComboBox(ActionEvent actionEvent) {
-        String role = roleFilterComboBox.getSelectionModel().isEmpty() ? "All"
-                : roleFilterComboBox.getSelectionModel().getSelectedItem();
-
-        if (role.equals("All")) {
-            userTableView.setItems(MainApplication.userList);
-            return;
-        }
-        userTableView.setItems(MainApplication.userList.filtered(user ->
-                user.getRole().toString().equals(role)));
-
-    }
-
-    @FXML
-    void logoutButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("login");
-    }
-
-    @FXML
-    void welcomeButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("adminWelcome");
+        return isValid;
     }
 }

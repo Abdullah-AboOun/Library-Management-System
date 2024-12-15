@@ -4,6 +4,7 @@ import com.example.libraryManagementSystem.DBCode.UserRepository;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -90,6 +91,14 @@ public class HelperFunctions {
             throw new RuntimeException(e);
         }
         return loggedInUser;
+    }
+
+    public static void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
 //    public static List<Book> getBorrowedBooks() {

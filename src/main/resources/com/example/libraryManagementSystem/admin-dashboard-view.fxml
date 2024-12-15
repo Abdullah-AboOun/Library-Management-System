@@ -19,7 +19,7 @@
             <ImageView fx:id="smallProfileImageView" fitHeight="40.0" fitWidth="40.0"
                        onMouseClicked="#smallProfileImageViewOnClick" pickOnBounds="true" preserveRatio="true">
             </ImageView>
-            <Label fx:id="usernameLabel"/>
+            <Label fx:id="TopFullnameLabel"/>
             <Pane nodeOrientation="RIGHT_TO_LEFT" HBox.hgrow="ALWAYS">
                 <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnClick" styleClass="danger"
                         text="logout"/>

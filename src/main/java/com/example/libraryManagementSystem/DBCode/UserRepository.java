@@ -160,4 +160,19 @@ public class UserRepository {
         }
         return -1;
     }
+
+    public List<User> getUsersByRole(Role role) throws SQLException {
+        String query = "SELECT * FROM users WHERE role = ?";
+        try (Connection connection = dbConnection.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, role.toString());
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<User> users = new ArrayList<>();
+                while (rs.next()) {
+                    users.add(extractUserFromResultSet(rs));
+                }
+                return users;
+            }
+        }
+    }
 }
