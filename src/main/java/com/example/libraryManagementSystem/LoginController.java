@@ -1,5 +1,7 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.DBCode.DatabaseConnection;
+import com.example.libraryManagementSystem.DBCode.UserRepository;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.fxml.FXML;
@@ -49,39 +51,38 @@ public class LoginController implements Initializable {
 
     @FXML
     void loginButtonOnClick() {
+        String username = userNameField.getText();
+        String password = passwordField.getText();
 
-        User user = null;
-        String query = "SELECT * FROM users WHERE userName = ? AND password = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, userNameField.getText());
-            preparedStatement.setString(2, passwordField.getText());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                user = new User(
-                        resultSet.getString("userName"),
-                        resultSet.getString("password"),
-                        resultSet.getString("fullName"),
-                        Role.valueOf(resultSet.getString("role")),
-                        resultSet.getString("email"),
-                        resultSet.getString("phoneNumber"),
-                        resultSet.getString("imagePath")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (user == null) {
-            errorLabel.setGraphic(new FontIcon(Material2AL.ERROR));
-            errorLabel.setText("Invalid username or password");
+        if (username.isEmpty() || password.isEmpty()) {
+            showError("Username and password are required");
             return;
         }
-        loggedInUserIndex = userList.indexOf(user);
-        if (user.getRole().equals(Role.ADMIN)) {
-            HelperFunctions.switchScene("adminWelcome");
-        } else {
-            HelperFunctions.switchScene("userWelcome");
+
+        try {
+            UserRepository userRepository = new UserRepository();
+
+            if (userRepository.authenticateUser(username, password)) {
+                User user = userRepository.getUserByUsername(username);
+
+                if (user != null) {
+                    MainApplication.loggedInUserId = UserRepository.getUserIdByUsername(username);
+
+                    // Route to appropriate view
+                    if (user.getRole().equals(Role.ADMIN)) {
+                        HelperFunctions.switchScene("adminWelcome");
+                    } else {
+                        HelperFunctions.switchScene("userWelcome");
+                    }
+                } else {
+                    showError("User not found");
+                }
+            } else {
+                showError("Invalid username or password");
+            }
+        } catch (SQLException e) {
+            System.err.println("Login error: " + e.getMessage());
+            showError("Database error occurred");
         }
     }
 
@@ -89,6 +90,11 @@ public class LoginController implements Initializable {
     void registerButtonOnClick() {
         HelperFunctions.switchScene("register");
 
+    }
+
+    private void showError(String message) {
+        errorLabel.setGraphic(new FontIcon(Material2AL.ERROR));
+        errorLabel.setText(message);
     }
 
 }

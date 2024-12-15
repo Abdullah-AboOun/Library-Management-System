@@ -1,5 +1,7 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.DBCode.DatabaseConnection;
+import com.example.libraryManagementSystem.DBCode.UserRepository;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +16,7 @@ import org.kordamp.ikonli.material2.Material2AL;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AdminWelcomeController implements Initializable {
@@ -26,12 +29,16 @@ public class AdminWelcomeController implements Initializable {
     @FXML
     private Label usernameLabel;
 
-    private final User loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        usernameLabel.setText(loggedInUser.getFullName());
+        UserRepository userRepository = new UserRepository();
+        User loggedInUser;
+        try {
+            loggedInUser = userRepository.getUserById(MainApplication.loggedInUserId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        usernameLabel.setText(loggedInUser.getUserName());
         smallProfileImageView.setImage(new Image(new File(loggedInUser.getImagePath()).toURI().toString()));
         logoutButton.setGraphic(new FontIcon(Material2AL.LOG_OUT));
     }
@@ -40,7 +47,6 @@ public class AdminWelcomeController implements Initializable {
     void bookButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("bookDashboard");
     }
-
 
     @FXML
     void logoutButtonOnClick(ActionEvent actionEvent) {
@@ -52,11 +58,9 @@ public class AdminWelcomeController implements Initializable {
         HelperFunctions.switchScene("profileDashboard");
     }
 
-
     @FXML
     void dashboardButtonOnClick(ActionEvent actionEvent) {
         HelperFunctions.switchScene("adminDashboard");
     }
 
 }
-

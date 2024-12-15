@@ -1,6 +1,5 @@
 package com.example.libraryManagementSystem.entity;
 
-import java.util.Collection;
 import java.util.Objects;
 
 public class User {
@@ -10,7 +9,7 @@ public class User {
     private Role role;
     private String email;
     private String phoneNumber;
-    private String imagePath; // New field
+    private String imagePath;
 
     public User(String userName, String password, String fullName, Role role, String email, String phoneNumber, String imagePath) {
         this.userName = userName;
@@ -93,13 +92,13 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", role=" + role +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", imagePath='" + imagePath + '\'' +
-                '}';
+               "userName='" + userName + '\'' +
+               ", password='" + password + '\'' +
+               ", fullName='" + fullName + '\'' +
+               ", role=" + role +
+               ", email='" + email + '\'' +
+               ", phoneNumber='" + phoneNumber + '\'' +
+               ", imagePath='" + imagePath + '\'' +
+               '}';
     }
 }

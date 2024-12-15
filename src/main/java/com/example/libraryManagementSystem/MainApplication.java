@@ -27,6 +27,7 @@ public class MainApplication extends Application {
     static int loggedInUserIndex = 0;
     static String defaultImagePath = "";
     static String defaultBookImagePath = "";
+    static int loggedInUserId;
 
     public static void main(String[] args) {
         try {

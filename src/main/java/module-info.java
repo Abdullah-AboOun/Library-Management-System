@@ -14,5 +14,9 @@ module com.example.libraryManagementSystem {
     opens com.example.libraryManagementSystem to javafx.fxml;
 
     exports com.example.libraryManagementSystem;
+    exports com.example.libraryManagementSystem.DBCode;
+    opens com.example.libraryManagementSystem.DBCode to javafx.fxml;
+    exports com.example.libraryManagementSystem.entity;
+
 
 }
