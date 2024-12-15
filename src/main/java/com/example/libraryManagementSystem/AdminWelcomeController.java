@@ -31,13 +31,7 @@ public class AdminWelcomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        UserRepository userRepository = new UserRepository();
-        User loggedInUser;
-        try {
-            loggedInUser = userRepository.getUserById(MainApplication.loggedInUserId);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        User loggedInUser = HelperFunctions.getLoggedInUser();
         usernameLabel.setText(loggedInUser.getUserName());
         smallProfileImageView.setImage(new Image(new File(loggedInUser.getImagePath()).toURI().toString()));
         logoutButton.setGraphic(new FontIcon(Material2AL.LOG_OUT));

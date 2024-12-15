@@ -1,13 +1,13 @@
 -- Seeding users
 INSERT INTO users (userName, password, fullName, role, email, phoneNumber, imagePath)
 VALUES ('ahmad', '123', 'Ahmad', 'ADMIN', 'ahmad@gmail.com', '123456789',
-        'com/example/libraryManagementSystem/images/default.png'),
+        'src/main/resources/com/example/libraryManagementSystem/images/default.png'),
        ('ali', '123', 'Ali', 'ADMIN', 'ali@gmail.com', '123456789',
-        'com/example/libraryManagementSystem/images/default.png'),
+        'src/main/resources/com/example/libraryManagementSystem/images/default.png'),
        ('sara', '123', 'Sara', 'LIBRARIAN', 'Sara@gmail.com', '123456789',
-        'com/example/libraryManagementSystem/images/default.png'),
+        'src/main/resources/com/example/libraryManagementSystem/images/default.png'),
        ('nada', '123', 'Nada', 'USER', 'nada@gmail.com', '123456789',
-        'com/example/libraryManagementSystem/images/default.png');
+        'src/main/resources/com/example/libraryManagementSystem/images/default.png');
 
 -- Seeding books
 INSERT INTO books (title, author, dateOfPublication, ISBN, language, category, publisher, imagePath, pagesNumber,
@@ -34,6 +34,6 @@ VALUES ('The Great Gatsby', 'F. Scott Fitzgerald', '1925', '34556545', 'English'
         8),
        ('La Peste', 'Albert Camus', '1947', '23765451', 'French', 'Literature', 'Gallimard',
         'com/example/libraryManagementSystem/images/book.png', 300, 6),
-        ('La Chute', 'Albert Camus', '1956', '23765452', 'French', 'Literature', 'Gallimard',
+       ('La Chute', 'Albert Camus', '1956', '23765452', 'French', 'Literature', 'Gallimard',
         'com/example/libraryManagementSystem/images/book.png', 200, 5);
         

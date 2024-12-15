@@ -17,11 +17,16 @@ public class UserRepository {
     public User getUserById(int userId) throws SQLException {
         String query = "SELECT * FROM users WHERE id = ?";
         try (Connection connection = dbConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
             stmt.setInt(1, userId);
-            if (rs.next()) {
-                return extractUserFromResultSet(rs);
+            System.out.println("Executing query for userId: " + userId); // Debug log
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return extractUserFromResultSet(rs);
+                }
+                System.out.println("No user found for id: " + userId); // Debug log
             }
         }
         return null;
@@ -30,14 +35,22 @@ public class UserRepository {
     public User getUserByUsername(String username) throws SQLException {
         String query = "SELECT * FROM users WHERE userName = ?";
         try (Connection connection = dbConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
             stmt.setString(1, username);
-            if (rs.next()) {
-                return extractUserFromResultSet(rs);
+            System.out.println("Executing query for username: " + username); // Debug log
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return extractUserFromResultSet(rs);
+                }
+                System.out.println("No user found for username: " + username); // Debug log
+                return null;
             }
+        } catch (SQLException e) {
+            System.err.println("Error fetching user: " + e.getMessage());
+            throw e;
         }
-        return null;
     }
 
     public boolean addUser(User user) throws SQLException {
@@ -46,7 +59,7 @@ public class UserRepository {
                 VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
         try (Connection connection = dbConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+                PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, user.getUserName());
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getFullName());
@@ -64,7 +77,7 @@ public class UserRepository {
                 SET password=?, fullName=?, role=?, email=?, phoneNumber=?, imagePath=? WHERE userName=?
                 """;
         try (Connection connection = dbConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+                PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, user.getPassword());
             stmt.setString(2, user.getFullName());
             stmt.setString(3, user.getRole().toString());
@@ -79,7 +92,7 @@ public class UserRepository {
     public boolean deleteUser(String username) throws SQLException {
         String query = "DELETE FROM users WHERE userName = ?";
         try (Connection connection = dbConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+                PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
             return stmt.executeUpdate() > 0;
         }
@@ -89,8 +102,8 @@ public class UserRepository {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users";
         try (Connection connection = dbConnection.getConnection();
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 users.add(extractUserFromResultSet(rs));
             }
@@ -98,22 +111,26 @@ public class UserRepository {
         return users;
     }
 
-    public boolean authenticateUser(String username, String password) throws SQLException {
-        String query = "SELECT * FROM users WHERE userName = ?";
+    public User authenticateUser(String username, String password) throws SQLException {
+        String query = "SELECT * FROM users WHERE userName = ? AND password = ?";
         try (Connection connection = dbConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+                PreparedStatement stmt = connection.prepareStatement(query)) {
+
             stmt.setString(1, username);
+            stmt.setString(2, password);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getString("password").equals(password);
+                    return extractUserFromResultSet(rs);
                 } else {
-                    return false;
+                    System.out.println("No user found for username: " + username); // Debug log
+                    return null;
                 }
-            } catch (SQLException e) {
-                System.err.println("Error authenticating user: " + e.getMessage());
-                throw e;
+
             }
+        } catch (SQLException e) {
+            System.err.println("Authentication error for user " + username + ": " + e.getMessage());
+            throw e;
         }
     }
 
@@ -131,7 +148,7 @@ public class UserRepository {
     public static int getUserIdByUsername(String username) {
         String query = "SELECT id FROM users WHERE userName = ?";
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+                PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {

@@ -61,25 +61,16 @@ public class LoginController implements Initializable {
 
         try {
             UserRepository userRepository = new UserRepository();
+            User user = userRepository.authenticateUser(username, password);
 
-            if (userRepository.authenticateUser(username, password)) {
-                User user = userRepository.getUserByUsername(username);
-
-                if (user != null) {
-                    MainApplication.loggedInUserId = UserRepository.getUserIdByUsername(username);
-
-                    // Route to appropriate view
-                    if (user.getRole().equals(Role.ADMIN)) {
-                        HelperFunctions.switchScene("adminWelcome");
-                    } else {
-                        HelperFunctions.switchScene("userWelcome");
-                    }
-                } else {
-                    showError("User not found");
-                }
-            } else {
+            if (user == null) {
                 showError("Invalid username or password");
+                return;
             }
+
+            MainApplication.loggedInUserId = UserRepository.getUserIdByUsername(username);
+            HelperFunctions.switchScene(user.getRole() == Role.ADMIN ? "adminWelcome" : "userWelcome");
+
         } catch (SQLException e) {
             System.err.println("Login error: " + e.getMessage());
             showError("Database error occurred");

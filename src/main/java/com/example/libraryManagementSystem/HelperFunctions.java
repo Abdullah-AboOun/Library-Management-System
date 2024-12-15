@@ -1,5 +1,7 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.DBCode.UserRepository;
+import com.example.libraryManagementSystem.entity.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -7,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 
 public class HelperFunctions {
     private static Stage primaryStage;
@@ -76,6 +79,17 @@ public class HelperFunctions {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static User getLoggedInUser() {
+        UserRepository userRepository = new UserRepository();
+        User loggedInUser;
+        try {
+            loggedInUser = userRepository.getUserById(MainApplication.loggedInUserId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return loggedInUser;
     }
 
 //    public static List<Book> getBorrowedBooks() {
