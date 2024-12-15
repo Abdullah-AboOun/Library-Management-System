@@ -27,8 +27,7 @@ CREATE TABLE IF NOT EXISTS book_registrations
 (
     user_id  INTEGER NOT NULL,
     book_id  INTEGER NOT NULL,
-    semester TEXT,
-    grade    REAL,
+    isApproved BOOLEAN DEFAULT 0,
     PRIMARY KEY (user_id, book_id),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE ON UPDATE CASCADE
