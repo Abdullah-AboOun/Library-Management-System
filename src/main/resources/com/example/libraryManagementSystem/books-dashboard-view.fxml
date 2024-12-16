@@ -36,7 +36,7 @@
             <!-- Left Sidebar -->
             <VBox alignment="CENTER" prefHeight="640.0" prefWidth="221.0" spacing="20.0" style="-fx-padding: 15; -fx-background-color: #141515;">
                 <Button mnemonicParsing="false" onAction="#welcomeButtonOnClick" style="-fx-pref-width: 150" styleClass="accent" text="Welcome Screen" />
-                <Button mnemonicParsing="false" style="-fx-pref-width: 150" styleClass="accent" text="User Management" />
+                <Button mnemonicParsing="false" onAction="#dashboardButtonOnClick" style="-fx-pref-width: 150" styleClass="accent" text="User Management" />
                 <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150" styleClass="accent" text="Book Management" />
                 <VBox.margin>
                     <Insets bottom="40.0" />

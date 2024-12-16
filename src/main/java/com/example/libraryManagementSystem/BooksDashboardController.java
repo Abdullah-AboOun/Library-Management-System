@@ -1,8 +1,11 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.DBCode.BookRepository;
 import com.example.libraryManagementSystem.entity.Book;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +20,8 @@ import org.kordamp.ikonli.material2.Material2AL;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class BooksDashboardController implements Initializable {
@@ -125,20 +130,39 @@ public class BooksDashboardController implements Initializable {
 
     User loggedInUser;
     String imagePath;
+    private BookRepository bookRepository;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         logoutButton.setGraphic(new FontIcon(Material2AL.LOG_OUT));
+        bookRepository = new BookRepository();
 
-        loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
+        loggedInUser = HelperFunctions.getLoggedInUser();
         String userImagePath = loggedInUser.getImagePath();
         smallProfileImageView.setImage(new Image(new File(userImagePath).toURI().toString()));
         usernameLabel.setText(loggedInUser.getFullName());
 
+        List<String> categories = null;
+        List<String> languages = null;
+        try {
+            categories = bookRepository.getCategories();
+            languages = bookRepository.getLanguages();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Error");
+            alert.setContentText("Failed to load categories and languages");
+            alert.showAndWait();
+        }
+
+        bookCategoryFilterComboBox.getItems().clear();
         bookCategoryFilterComboBox.getItems().add("All");
-        bookCategoryFilterComboBox.getItems().addAll(MainApplication.categoriesList);
-        languageComboBox.getItems().addAll(MainApplication.languagesList);
-        categoryComboBox.getItems().addAll(MainApplication.categoriesList);
+        bookCategoryFilterComboBox.getItems().addAll(categories);
+
+        languageComboBox.getItems().clear();
+        languageComboBox.getItems().addAll(languages);
+        categoryComboBox.getItems().clear();
+        categoryComboBox.getItems().addAll(categories);
 
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -157,8 +181,7 @@ public class BooksDashboardController implements Initializable {
             imageView.setFitWidth(30);
             return new SimpleObjectProperty<>(imageView);
         });
-        bookTableView.setItems(MainApplication.bookList);
-
+        setBookTableFromDB();
         bookTableView.getSelectionModel().selectedItemProperty().addListener((
                 observableValue, oldValue, newValue) -> {
             if (newValue != null) {
@@ -197,6 +220,171 @@ public class BooksDashboardController implements Initializable {
 
     @FXML
     void addButtonOnClick(ActionEvent actionEvent) {
+        if (!validateInputs()) {
+            return;
+        }
+
+        try {
+            Book book = createBookFromFields();
+
+            if (bookRepository.getBookByISBN(book.getISBN()) != null) {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Book already exists!");
+                return;
+            }
+
+            if (bookRepository.addBook(book)) {
+                HelperFunctions.showAlert(Alert.AlertType.INFORMATION, "Success", "Book added successfully!");
+                clearFields();
+            } else {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to add book!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Database error occurred!");
+        }
+        setBookTableFromDB();
+    }
+
+    @FXML
+    void updateButtonOnClick(ActionEvent actionEvent) {
+        if (!validateInputs()) {
+            return;
+        }
+
+        try {
+            Book book = createBookFromFields();
+
+            if (bookRepository.getBookByISBN(book.getISBN()) == null) {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error",
+                        "No book found with ISBN: " + book.getISBN());
+                return;
+            }
+
+            if (bookRepository.updateBook(book)) {
+                HelperFunctions.showAlert(Alert.AlertType.INFORMATION, "Success", "Book updated successfully!");
+                clearFields();
+            } else {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to update book!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Database error occurred!");
+        }
+        setBookTableFromDB();
+    }
+
+    @FXML
+    void deleteButtonOnClick(ActionEvent actionEvent) {
+        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+        if (selectedBook == null) {
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Please select a book to delete");
+            return;
+        }
+
+        try {
+            if (bookRepository.deleteBook(selectedBook.getISBN())) {
+                HelperFunctions.showAlert(Alert.AlertType.INFORMATION, "Success", "Book deleted successfully!");
+                clearFields();
+            } else {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete book");
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error while deleting book: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Database error occurred");
+        }
+        setBookTableFromDB();
+    }
+
+    private Book createBookFromFields() {
+        return new Book(
+                titleField.getText(),
+                authorField.getText(),
+                dateField.getText(),
+                isbnField.getText(),
+                languageComboBox.getValue(),
+                categoryComboBox.getValue(),
+                publisherField.getText(),
+                imagePath == null ? MainApplication.defaultBookImagePath : imagePath,
+                Integer.parseInt(pagesField.getText()),
+                Integer.parseInt(copiesField.getText()));
+    }
+
+    private void clearFields() {
+        titleField.clear();
+        authorField.clear();
+        isbnField.clear();
+        dateField.clear();
+        languageComboBox.getSelectionModel().clearSelection();
+        categoryComboBox.getSelectionModel().clearSelection();
+        publisherField.clear();
+        pagesField.clear();
+        copiesField.clear();
+        bookImageView.setImage(new Image(new File(MainApplication.defaultBookImagePath).toURI().toString()));
+        imagePath = null;
+    }
+
+    @FXML
+    void bookCategoryFilterComboBox(ActionEvent actionEvent) {
+        try {
+            String selectedCategory = bookCategoryFilterComboBox.getValue();
+            List<Book> books;
+
+            if (selectedCategory == null || selectedCategory.equals("All")) {
+                books = bookRepository.getAllBooks();
+            } else {
+                books = bookRepository.getBooksByCategory(selectedCategory);
+            }
+
+            bookTableView.setItems(FXCollections.observableArrayList(books));
+        } catch (SQLException e) {
+            System.err.println("Error filtering books: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to filter books");
+        }
+    }
+
+    @FXML
+    void addBookCategoryImageViewOnClick(MouseEvent mouseEvent) {
+        HelperFunctions.switchScene("bookCategoryDashboard");
+    }
+
+    @FXML
+    void logoutButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("login");
+
+    }
+
+    @FXML
+    void welcomeButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("adminWelcome");
+    }
+
+    private void setBookTableFromDB() {
+        try {
+            ObservableList<Book> books = FXCollections.observableArrayList(bookRepository.getAllBooks());
+            bookTableView.setItems(books);
+            bookTableView.refresh();
+        } catch (SQLException e) {
+            System.err.println("Error loading books: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to load books");
+        }
+    }
+
+    @FXML
+    void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
+        HelperFunctions.switchScene("profileDashboard");
+    }
+
+    @FXML
+    void cancelButtonOnClick(ActionEvent actionEvent) {
+        clearFields();
+    }
+
+    @FXML
+    void dashboardButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("adminDashboard");
+    }
+
+    private boolean validateInputs() {
         boolean isValid = true;
         if (titleField.getText().isEmpty()) {
             titleErrorLabel.setText("Title is required");
@@ -226,15 +414,14 @@ public class BooksDashboardController implements Initializable {
             dateErrorLabel.setText("");
         }
 
-
-        if (languageComboBox.getSelectionModel().isEmpty()) {
+        if (languageComboBox.getValue() == null) {
             languageErrorLabel.setText("Language is required");
             isValid = false;
         } else {
             languageErrorLabel.setText("");
         }
 
-        if (categoryComboBox.getSelectionModel().isEmpty()) {
+        if (categoryComboBox.getValue() == null) {
             categoryErrorLabel.setText("Category is required");
             isValid = false;
         } else {
@@ -262,132 +449,6 @@ public class BooksDashboardController implements Initializable {
             copiesErrorLabel.setText("");
         }
 
-        Book book;
-
-
-        if (isValid) {
-            String title = titleField.getText();
-            String author = authorField.getText();
-            String isbn = isbnField.getText();
-            String date = dateField.getText();
-            String language = languageComboBox.getSelectionModel().getSelectedItem();
-            String category = categoryComboBox.getSelectionModel().getSelectedItem();
-            String publisher = publisherField.getText();
-            int pages = Integer.parseInt(pagesField.getText());
-            int copies = Integer.parseInt(copiesField.getText());
-            imagePath = imagePath == null ? MainApplication.defaultBookImagePath : imagePath;
-            book = new Book(title, author, date, isbn, language, category, publisher, imagePath, pages, copies);
-        } else {
-            return;
-        }
-
-        if (MainApplication.bookList.contains(book)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Book already exists!");
-            alert.showAndWait();
-            return;
-        }
-
-        MainApplication.bookList.add(book);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("Book added successfully!");
-        alert.showAndWait();
-
-    }
-
-
-    @FXML
-    void updateButtonOnClick(ActionEvent actionEvent) {
-        String title = titleField.getText();
-        String author = authorField.getText();
-        String isbn = isbnField.getText();
-        String date = dateField.getText();
-        String language = languageComboBox.getSelectionModel().getSelectedItem();
-        String category = categoryComboBox.getSelectionModel().getSelectedItem();
-        String publisher = publisherField.getText();
-        int pages = Integer.parseInt(pagesField.getText());
-        int copies = Integer.parseInt(copiesField.getText());
-        imagePath = imagePath == null ? MainApplication.defaultBookImagePath : imagePath;
-        Book book = new Book(title, author, date, isbn, language, category, publisher, imagePath, pages, copies);
-
-        if (!MainApplication.bookList.contains(book)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("No book found with ISBN: " + isbn);
-            alert.showAndWait();
-            return;
-        }
-        int i = MainApplication.bookList.indexOf(book);
-        MainApplication.bookList.set(i, book);
-        bookTableView.refresh();
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("Book updated successfully!");
-        alert.showAndWait();
-
-    }
-
-    @FXML
-    void deleteButtonOnClick(ActionEvent actionEvent) {
-        Book book = bookTableView.getSelectionModel().getSelectedItem();
-        if (book == null) {
-            return;
-        }
-        MainApplication.bookList.remove(book);
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("Book deleted successfully!");
-        alert.showAndWait();
-    }
-
-    @FXML
-    void cancelButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("adminDashboard");
-    }
-
-    @FXML
-    void smallProfileImageViewOnClick(MouseEvent mouseEvent) {
-        HelperFunctions.switchScene("profileDashboard");
-    }
-
-    @FXML
-    void dashboardButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("adminDashboard");
-    }
-
-    @FXML
-    void bookCategoryFilterComboBox(ActionEvent actionEvent) {
-        String category = bookCategoryFilterComboBox.getSelectionModel().getSelectedItem();
-        if (category.equals("All")) {
-            bookTableView.setItems(MainApplication.bookList);
-        } else {
-            bookTableView.setItems(MainApplication.bookList.filtered(book -> book.getCategory().equals(category)));
-        }
-
-    }
-
-    @FXML
-    void addBookCategoryImageViewOnClick(MouseEvent mouseEvent) {
-        HelperFunctions.switchScene("bookCategoryDashboard");
-    }
-
-    @FXML
-    void logoutButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("login");
-
-    }
-
-    @FXML
-    void welcomeButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("adminWelcome");
+        return isValid;
     }
 }

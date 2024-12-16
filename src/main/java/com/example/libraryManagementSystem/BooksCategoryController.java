@@ -1,7 +1,12 @@
 package com.example.libraryManagementSystem;
 
+import java.sql.SQLException;
+
+import com.example.libraryManagementSystem.DBCode.BookRepository;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 public class BooksCategoryController {
@@ -11,12 +16,20 @@ public class BooksCategoryController {
 
     @FXML
     void addCategoryButtonOnClick(ActionEvent actionEvent) {
-        String category = categoryField.getText();
+        BookRepository bookRepository = new BookRepository();
+        String category = categoryField.getText().trim();
         if (category.isEmpty()) {
             return;
         }
-        MainApplication.categoriesList.add(category);
-        HelperFunctions.switchScene("bookDashboard");
+
+        try {
+            if (bookRepository.addCategory(category)) {
+                categoryField.clear();
+                HelperFunctions.switchScene("bookDashboard");
+            }
+        } catch (SQLException e) {
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to add category");
+        }
     }
 
     @FXML

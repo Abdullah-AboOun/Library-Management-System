@@ -72,7 +72,7 @@ public class ProfileDashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loggedInUser = HelperFunctions.getLoggedInUser();
         userRepository = new UserRepository();
-        roleComboBox.getItems().addAll("Admin", "User", "Librarian");
+        roleComboBox.getItems().addAll("ADMIN", "USER", "LIBRARIAN");
 
         fullNameField.setText(loggedInUser.getFullName());
         userNameField.setText(loggedInUser.getUserName());

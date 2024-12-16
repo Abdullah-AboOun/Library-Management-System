@@ -286,7 +286,7 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     void cancelButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("login");
+        clearFields();
     }
 
     @FXML

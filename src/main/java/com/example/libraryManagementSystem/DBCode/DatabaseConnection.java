@@ -10,7 +10,7 @@ public class DatabaseConnection {
     private static DatabaseConnection instance;
     private Connection connection;
 
-    private DatabaseConnection() {
+    DatabaseConnection() {
         try {
             this.connection = DriverManager.getConnection(URL);
             try (Statement stmt = connection.createStatement()) {
