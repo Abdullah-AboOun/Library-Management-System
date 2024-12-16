@@ -82,7 +82,7 @@ public class ProfileDashboardController implements Initializable {
         confirmPasswordField.setText(loggedInUser.getPassword());
         int roleIndex = roleComboBox.getItems().indexOf(loggedInUser.getRole().toString());
         roleComboBox.getSelectionModel().select(roleIndex);
-
+        roleComboBox.setDisable(true);
         imagePath = loggedInUser.getImagePath();
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
 
@@ -106,7 +106,7 @@ public class ProfileDashboardController implements Initializable {
         }
 
         try {
-            if (userRepository.updateUser(user)) {
+            if (userRepository.updateUser(user, MainApplication.loggedInUserId)) {
                 if (loggedInUser.getRole().equals(Role.ADMIN)) {
                     HelperFunctions.switchScene("adminDashboard");
                 } else {

@@ -1,138 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
-<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.libraryManagementSystem.BooksDashboardController">
+<?import java.lang.String?>
+<?import java.net.URL?>
+<FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" columnHalignment="CENTER" prefHeight="700.0"
+          prefWidth="1400.0" xmlns="http://javafx.com/javafx/17.0.12"
+          fx:controller="com.example.libraryManagementSystem.BooksDashboardController">
 
     <stylesheets>
-        <URL value="@styles/style.css" />
+        <URL value="@styles/style.css"/>
     </stylesheets>
     <VBox prefHeight="700.0" prefWidth="1400.0">
-        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" spacing="20.0" style="-fx-background-color: #282a2e;" VBox.vgrow="ALWAYS">
-            <ImageView fx:id="smallProfileImageView" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#smallProfileImageViewOnClick" pickOnBounds="true" preserveRatio="true">
+        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0"
+              spacing="20.0" style="-fx-background-color: #282a2e;" VBox.vgrow="ALWAYS">
+            <ImageView fx:id="smallProfileImageView" fitHeight="40.0" fitWidth="40.0"
+                       onMouseClicked="#smallProfileImageViewOnClick" pickOnBounds="true"
+                       preserveRatio="true">
             </ImageView>
-            <Label fx:id="usernameLabel" />
+            <Label fx:id="usernameLabel"/>
             <Pane nodeOrientation="RIGHT_TO_LEFT" HBox.hgrow="ALWAYS">
-                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnClick" styleClass="danger" text="logout" />
+                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnClick"
+                        styleClass="danger" text="logout"/>
             </Pane>
 
             <VBox.margin>
-                <Insets />
+                <Insets/>
             </VBox.margin>
             <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </padding>
             <effect>
-                <DropShadow />
+                <DropShadow/>
             </effect>
         </HBox>
         <HBox alignment="CENTER" prefHeight="700.0" prefWidth="1400.0" spacing="15">
             <!-- Left Sidebar -->
-            <VBox alignment="CENTER" prefHeight="640.0" prefWidth="221.0" spacing="20.0" style="-fx-padding: 15; -fx-background-color: #141515;">
-                <Button mnemonicParsing="false" onAction="#welcomeButtonOnClick" style="-fx-pref-width: 150" styleClass="accent" text="Welcome Screen" />
-                <Button mnemonicParsing="false" onAction="#dashboardButtonOnClick" style="-fx-pref-width: 150" styleClass="accent" text="User Management" />
-                <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150" styleClass="accent" text="Book Management" />
+            <VBox alignment="CENTER" prefHeight="640.0" prefWidth="221.0" spacing="20.0"
+                  style="-fx-padding: 15; -fx-background-color: #141515;">
+                <Button mnemonicParsing="false" onAction="#welcomeButtonOnClick"
+                        style="-fx-pref-width: 150" styleClass="accent" text="Welcome Screen"/>
+                <Button mnemonicParsing="false" onAction="#dashboardButtonOnClick"
+                        style="-fx-pref-width: 150" styleClass="accent" text="User Management"/>
+                <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150"
+                        styleClass="accent" text="Book Management"/>
                 <VBox.margin>
-                    <Insets bottom="40.0" />
+                    <Insets bottom="40.0"/>
                 </VBox.margin>
                 <effect>
-                    <DropShadow />
+                    <DropShadow/>
                 </effect>
             </VBox>
 
             <!-- Middle Form Section -->
-            <VBox alignment="CENTER" prefHeight="700.0" prefWidth="450.0" spacing="10" style="-fx-padding: 10;">
-                <ImageView fx:id="bookImageView" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#bookImageViewOnClick" pickOnBounds="true" preserveRatio="true">
+            <VBox alignment="CENTER" prefHeight="700.0" prefWidth="450.0" spacing="10"
+                  style="-fx-padding: 10;">
+                <ImageView fx:id="bookImageView" fitHeight="100.0" fitWidth="100.0"
+                           onMouseClicked="#bookImageViewOnClick" pickOnBounds="true" preserveRatio="true">
                     <VBox.margin>
-                        <Insets bottom="30.0" />
+                        <Insets bottom="30.0"/>
                     </VBox.margin>
                 </ImageView>
 
                 <HBox alignment="CENTER" spacing="8">
                     <VBox spacing="3">
-                        <Label text="Title" />
-                        <TextField fx:id="titleField" prefWidth="140" promptText="Title" />
-                        <Label fx:id="titleErrorLabel" styleClass="error-label" />
+                        <Label text="Title"/>
+                        <TextField fx:id="titleField" prefWidth="140" promptText="Title"/>
+                        <Label fx:id="titleErrorLabel" styleClass="error-label"/>
                     </VBox>
                     <VBox spacing="3">
-                        <Label text="Author" />
-                        <TextField fx:id="authorField" prefWidth="140" promptText="Author" />
-                        <Label fx:id="authorErrorLabel" styleClass="error-label" />
+                        <Label text="Author"/>
+                        <TextField fx:id="authorField" prefWidth="140" promptText="Author"/>
+                        <Label fx:id="authorErrorLabel" styleClass="error-label"/>
                     </VBox>
                     <VBox spacing="3">
-                        <Label text="ISBN" />
-                        <TextField fx:id="isbnField" prefWidth="140" promptText="ISBN" />
-                        <Label fx:id="isbnErrorLabel" styleClass="error-label" />
-                    </VBox>
-                </HBox>
-
-                <HBox alignment="CENTER" spacing="8">
-                    <VBox spacing="3">
-                        <Label text="Publication Date" />
-                        <TextField fx:id="dateField" prefWidth="140" promptText="Publication Date" />
-                        <Label fx:id="dateErrorLabel" styleClass="error-label" />
-                    </VBox>
-                    <VBox spacing="3">
-                        <Label text="Language" />
-                        <ComboBox fx:id="languageComboBox" prefWidth="140" promptText="Language" />
-                        <Label fx:id="languageErrorLabel" styleClass="error-label" />
-                    </VBox>
-                    <VBox spacing="3">
-                        <Label text="Category" />
-                        <ComboBox fx:id="categoryComboBox" prefWidth="140" promptText="Category" />
-                        <Label fx:id="categoryErrorLabel" styleClass="error-label" />
+                        <Label text="ISBN"/>
+                        <TextField fx:id="isbnField" prefWidth="140" promptText="ISBN"/>
+                        <Label fx:id="isbnErrorLabel" styleClass="error-label"/>
                     </VBox>
                 </HBox>
 
                 <HBox alignment="CENTER" spacing="8">
                     <VBox spacing="3">
-                        <Label text="Publisher" />
-                        <TextField fx:id="publisherField" prefWidth="140" promptText="Publisher" />
-                        <Label fx:id="publisherErrorLabel" styleClass="error-label" />
+                        <Label text="Publication Date"/>
+                        <TextField fx:id="dateField" prefWidth="140" promptText="Publication Date"/>
+                        <Label fx:id="dateErrorLabel" styleClass="error-label"/>
                     </VBox>
                     <VBox spacing="3">
-                        <Label text="Number of Pages" />
-                        <TextField fx:id="pagesField" prefWidth="140" promptText="Number of Pages" />
-                        <Label fx:id="pagesErrorLabel" styleClass="error-label" />
+                        <Label text="Language"/>
+                        <ComboBox fx:id="languageComboBox" prefWidth="140" promptText="Language"/>
+                        <Label fx:id="languageErrorLabel" styleClass="error-label"/>
                     </VBox>
                     <VBox spacing="3">
-                        <Label text="Number of Copies" />
-                        <TextField fx:id="copiesField" prefWidth="140" promptText="Number of Copies" />
-                        <Label fx:id="copiesErrorLabel" styleClass="error-label" />
+                        <Label text="Category"/>
+                        <ComboBox fx:id="categoryComboBox" prefWidth="140" promptText="Category"/>
+                        <Label fx:id="categoryErrorLabel" styleClass="error-label"/>
+                    </VBox>
+                </HBox>
+
+                <HBox alignment="CENTER" spacing="8">
+                    <VBox spacing="3">
+                        <Label text="Publisher"/>
+                        <TextField fx:id="publisherField" prefWidth="140" promptText="Publisher"/>
+                        <Label fx:id="publisherErrorLabel" styleClass="error-label"/>
+                    </VBox>
+                    <VBox spacing="3">
+                        <Label text="Number of Pages"/>
+                        <TextField fx:id="pagesField" prefWidth="140" promptText="Number of Pages"/>
+                        <Label fx:id="pagesErrorLabel" styleClass="error-label"/>
+                    </VBox>
+                    <VBox spacing="3">
+                        <Label text="Number of Copies"/>
+                        <TextField fx:id="copiesField" prefWidth="140" promptText="Number of Copies"/>
+                        <Label fx:id="copiesErrorLabel" styleClass="error-label"/>
                     </VBox>
                 </HBox>
 
                 <HBox alignment="CENTER" spacing="10.0">
-                    <Button mnemonicParsing="false" onAction="#addButtonOnClick" styleClass="success" text="Add" />
-                    <Button mnemonicParsing="false" onAction="#updateButtonOnClick" style="-fx-background-color: -color-warning-4; -fx-text-fill: white;" text="Update" />
-                    <Button mnemonicParsing="false" onAction="#deleteButtonOnClick" styleClass="danger" text="Delete" />
-                    <Button mnemonicParsing="false" onAction="#cancelButtonOnClick" styleClass="accent" text="Cancel" />
+                    <Button mnemonicParsing="false" onAction="#addButtonOnClick"
+                            styleClass="success" text="Add"/>
+                    <Button mnemonicParsing="false" onAction="#updateButtonOnClick"
+                            style="-fx-background-color: -color-warning-4; -fx-text-fill: white;"
+                            text="Update"/>
+                    <Button mnemonicParsing="false" onAction="#deleteButtonOnClick"
+                            styleClass="danger" text="Delete"/>
+                    <Button mnemonicParsing="false" onAction="#cancelButtonOnClick"
+                            styleClass="accent" text="Clear"/>
                 </HBox>
             </VBox>
 
             <!-- Right Table Section -->
-            <VBox alignment="CENTER" prefHeight="700.0" prefWidth="700.0" spacing="10" style="-fx-padding: 10;">
+            <VBox alignment="CENTER" prefHeight="700.0" prefWidth="700.0" spacing="10"
+                  style="-fx-padding: 10;">
                 <HBox alignment="CENTER" spacing="10">
                     <Label text="Book Category Filter:">
                         <padding>
-                            <Insets right="5.0" />
+                            <Insets right="5.0"/>
                         </padding>
                     </Label>
-                    <ComboBox fx:id="bookCategoryFilterComboBox" onAction="#bookCategoryFilterComboBox" prefWidth="130" promptText="Select Category">
+                    <ComboBox fx:id="bookCategoryFilterComboBox"
+                              onAction="#bookCategoryFilterComboBox" prefWidth="130"
+                              promptText="Select Category">
                         <HBox.margin>
-                            <Insets right="20.0" />
+                            <Insets right="20.0"/>
                         </HBox.margin>
                     </ComboBox>
-                    <ImageView fitHeight="60.0" fitWidth="40.0" onMouseClicked="#addBookCategoryImageViewOnClick" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@./images/book.png" />
+                    <ImageView fitHeight="60.0" fitWidth="40.0"
+                               onMouseClicked="#addBookCategoryImageViewOnClick" pickOnBounds="true"
+                               preserveRatio="true">
+                        <Image url="@./images/book.png"/>
                         <VBox.margin>
-                            <Insets top="5.0" />
+                            <Insets top="5.0"/>
                         </VBox.margin>
                     </ImageView>
                 </HBox>
@@ -144,7 +166,8 @@
                         </TableColumn>
                         <TableColumn fx:id="authorColumn" prefWidth="80" text="Author">
                         </TableColumn>
-                        <TableColumn fx:id="dateOfPublicationColumn" prefWidth="80" text="Publication Date">
+                        <TableColumn fx:id="dateOfPublicationColumn" prefWidth="80"
+                                     text="Publication Date">
                         </TableColumn>
                         <TableColumn fx:id="isbnColumn" prefWidth="80" text="ISBN">
                         </TableColumn>
@@ -160,11 +183,11 @@
                         </TableColumn>
                     </columns>
                     <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets top="10.0"/>
                     </VBox.margin>
                     <styleClass>
-                        <String fx:value="striped" />
-                        <String fx:value="bordered" />
+                        <String fx:value="striped"/>
+                        <String fx:value="bordered"/>
                     </styleClass>
                 </TableView>
             </VBox>

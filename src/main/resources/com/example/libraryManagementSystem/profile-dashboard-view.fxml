@@ -5,7 +5,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="700.0" prefWidth="600.0"
+<FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="700.0"
+          prefWidth="600.0"
           xmlns="http://javafx.com/javafx/17.0.12"
           fx:controller="com.example.libraryManagementSystem.ProfileDashboardController">
     <stylesheets>
@@ -13,7 +14,8 @@
     </stylesheets>
     <VBox alignment="CENTER" spacing="15">
         <VBox alignment="CENTER" spacing="5">
-            <ImageView fx:id="profileImageView" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#imageViewOnClick"
+            <ImageView fx:id="profileImageView" fitHeight="100.0" fitWidth="100.0"
+                       onMouseClicked="#imageViewOnClick"
                        pickOnBounds="true" preserveRatio="true"/>
         </VBox>
 
@@ -58,7 +60,8 @@
 
         <VBox alignment="CENTER" spacing="3">
             <Label text="Role"/>
-            <ComboBox fx:id="roleComboBox" maxWidth="140.0" prefWidth="100.0" promptText="Select Role"/>
+            <ComboBox fx:id="roleComboBox" maxWidth="140.0" prefWidth="100.0"
+                      promptText="Select Role"/>
             <Label fx:id="roleErrorLabel" styleClass="error-label">
                 <VBox.margin>
                     <Insets bottom="20.0"/>
@@ -67,7 +70,8 @@
         </VBox>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
             <Button onAction="#updateButtonOnClick" styleClass="success" text="Update"/>
-            <Button alignment="CENTER" onAction="#cancelButtonOnClick" styleClass="accent" text="Cancel"/>
+            <Button alignment="CENTER" onAction="#cancelButtonOnClick" styleClass="accent"
+                    text="Cancel"/>
         </HBox>
     </VBox>
 </FlowPane>

@@ -8,7 +8,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
-<FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" columnHalignment="CENTER" prefHeight="300.0"
+<FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" columnHalignment="CENTER"
+          prefHeight="300.0"
           prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.12"
           fx:controller="com.example.libraryManagementSystem.BooksCategoryController">
 
@@ -23,9 +24,11 @@
             </VBox.margin>
         </TextField>
         <HBox alignment="CENTER" spacing="10.0">
-            <Button mnemonicParsing="false" styleClass="success" onAction="#addCategoryButtonOnClick"
+            <Button mnemonicParsing="false" styleClass="success"
+                    onAction="#addCategoryButtonOnClick"
                     text="Add"/>
-            <Button mnemonicParsing="false" styleClass="accent" onAction="#cancelCategoryButtonOnClick"
+            <Button mnemonicParsing="false" styleClass="accent"
+                    onAction="#cancelCategoryButtonOnClick"
                     text="Cancel"/>
         </HBox>
     </VBox>

@@ -19,7 +19,7 @@ public class BookRepository {
     public Book getBookByISBN(String isbn) throws SQLException {
         String query = "SELECT * FROM books WHERE ISBN = ?";
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, isbn);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -34,8 +34,8 @@ public class BookRepository {
         String query = "SELECT * FROM books ORDER BY title";
 
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query);
-                ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
 
             if (!connection.isValid(5)) {
                 throw new SQLException("Database connection validation failed");
@@ -61,7 +61,7 @@ public class BookRepository {
     public boolean addBook(Book book) throws SQLException {
         String query = "INSERT INTO books (title, author, dateOfPublication, ISBN, language, category, publisher, imagePath, pagesNumber, copiesNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             setBookParameters(stmt, book);
             return stmt.executeUpdate() > 0;
         }
@@ -70,7 +70,7 @@ public class BookRepository {
     public boolean updateBook(Book book) throws SQLException {
         String query = "UPDATE books SET title=?, author=?, dateOfPublication=?, language=?, category=?, publisher=?, imagePath=?, pagesNumber=?, copiesNumber=? WHERE ISBN=?";
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, book.getTitle());
             stmt.setString(2, book.getAuthor());
             stmt.setString(3, book.getDateOfPublication());
@@ -88,7 +88,7 @@ public class BookRepository {
     public boolean deleteBook(String isbn) throws SQLException {
         String query = "DELETE FROM books WHERE ISBN=?";
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, isbn);
             return stmt.executeUpdate() > 0;
         }
@@ -99,7 +99,7 @@ public class BookRepository {
         List<Book> books = new ArrayList<>();
 
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, category);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -114,8 +114,8 @@ public class BookRepository {
         List<String> categories = new ArrayList<>();
 
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query);
-                ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 categories.add(rs.getString("name"));
             }
@@ -125,15 +125,15 @@ public class BookRepository {
 
     public boolean addCategory(String categoryName) throws SQLException {
         String query = "INSERT INTO book_categories (name) VALUES (?)";
-        
+
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
-            
+
             stmt.setString(1, categoryName);
-            
+
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
-            
+
         } catch (SQLException e) {
             if (e.getMessage().contains("UNIQUE constraint failed")) {
                 throw new SQLException("Category already exists");
@@ -141,18 +141,141 @@ public class BookRepository {
             throw e;
         }
     }
+
     public List<String> getLanguages() throws SQLException {
         String query = "SELECT name FROM book_languages ORDER BY name";
         List<String> languages = new ArrayList<>();
 
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query);
-                ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 languages.add(rs.getString("name"));
             }
         }
         return languages;
+    }
+
+    // book registration code
+    public void addBorrowRegistration(String isbn, String username) throws SQLException {
+        String getBookIdQuery = "SELECT id FROM books WHERE ISBN = ?";
+        String getUserIdQuery = "SELECT id FROM users WHERE userName = ?";
+        String insertQuery = "INSERT INTO book_registrations (user_id, book_id) VALUES (?, ?)";
+
+        try (Connection connection = dbConnection.getConnection()) {
+            // Get book ID
+            int bookId;
+            try (PreparedStatement stmt = connection.prepareStatement(getBookIdQuery)) {
+                stmt.setString(1, isbn);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) {
+                    throw new SQLException("Book not found");
+                }
+                bookId = rs.getInt("id");
+            }
+
+            // Get user ID
+            int userId;
+            try (PreparedStatement stmt = connection.prepareStatement(getUserIdQuery)) {
+                stmt.setString(1, username);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) {
+                    throw new SQLException("User not found");
+                }
+                userId = rs.getInt("id");
+            }
+
+            // Insert registration
+            try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
+                stmt.setInt(1, userId);
+                stmt.setInt(2, bookId);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                if (e.getMessage().contains("UNIQUE constraint failed")) {
+                    throw new SQLException("Registration already exists");
+                }
+                throw e;
+            }
+        }
+    }
+
+    // add a method to approve registration
+    public boolean approveBorrowRegistration(String isbn, String username) throws SQLException {
+        String getBookIdQuery = "SELECT id FROM books WHERE ISBN = ?";
+        String getUserIdQuery = "SELECT id FROM users WHERE userName = ?";
+        String updateQuery = "UPDATE book_registrations SET approved = 1 WHERE user_id = ? AND book_id = ?";
+
+        try (Connection connection = dbConnection.getConnection()) {
+            // Get book ID
+            int bookId;
+            try (PreparedStatement stmt = connection.prepareStatement(getBookIdQuery)) {
+                stmt.setString(1, isbn);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) {
+                    throw new SQLException("Book not found");
+                }
+                bookId = rs.getInt("id");
+            }
+
+            // Get user ID
+            int userId;
+            try (PreparedStatement stmt = connection.prepareStatement(getUserIdQuery)) {
+                stmt.setString(1, username);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) {
+                    throw new SQLException("User not found");
+                }
+                userId = rs.getInt("id");
+            }
+
+            // Update registration
+            try (PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
+                stmt.setInt(1, userId);
+                stmt.setInt(2, bookId);
+                return stmt.executeUpdate() > 0;
+            }
+        }
+    }
+
+    public Boolean getBorrowStatusForUser(String isbn, String username) throws SQLException {
+        String getBookIdQuery = "SELECT id FROM books WHERE ISBN = ?";
+        String getUserIdQuery = "SELECT id FROM users WHERE userName = ?";
+        String selectQuery = "SELECT isApproved FROM book_registrations WHERE user_id = ? AND book_id = ?";
+
+        try (Connection connection = dbConnection.getConnection()) {
+            // Get book ID
+            int bookId;
+            try (PreparedStatement stmt = connection.prepareStatement(getBookIdQuery)) {
+                stmt.setString(1, isbn);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) {
+                    throw new SQLException("Book not found");
+                }
+                bookId = rs.getInt("id");
+            }
+
+            // Get user ID
+            int userId;
+            try (PreparedStatement stmt = connection.prepareStatement(getUserIdQuery)) {
+                stmt.setString(1, username);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) {
+                    throw new SQLException("User not found");
+                }
+                userId = rs.getInt("id");
+            }
+
+            // Get registration
+            try (PreparedStatement stmt = connection.prepareStatement(selectQuery)) {
+                stmt.setInt(1, userId);
+                stmt.setInt(2, bookId);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) {
+                    return null;
+                }
+                return rs.getBoolean("isApproved");
+            }
+        }
     }
 
     private Book extractBookFromResultSet(ResultSet rs) throws SQLException {
@@ -181,4 +304,5 @@ public class BookRepository {
         stmt.setInt(9, book.getPagesNumber());
         stmt.setInt(10, book.getCopiesNumber());
     }
+
 }

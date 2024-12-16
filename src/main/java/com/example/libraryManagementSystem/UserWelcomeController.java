@@ -26,7 +26,7 @@ public class UserWelcomeController implements Initializable {
     @FXML
     private Label usernameLabel;
 
-    private final User loggedInUser = MainApplication.userList.get(MainApplication.loggedInUserIndex);
+    private final User loggedInUser = HelperFunctions.getLoggedInUser();
 
 
     @Override

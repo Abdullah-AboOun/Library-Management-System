@@ -17,7 +17,7 @@ public class UserRepository {
     public User getUserById(int userId) throws SQLException {
         String query = "SELECT * FROM users WHERE id = ?";
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, userId);
             System.out.println("Executing query for userId: " + userId); // Debug log
@@ -35,7 +35,7 @@ public class UserRepository {
     public User getUserByUsername(String username) throws SQLException {
         String query = "SELECT * FROM users WHERE userName = ?";
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, username);
             System.out.println("Executing query for username: " + username); // Debug log
@@ -59,7 +59,7 @@ public class UserRepository {
                 VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, user.getUserName());
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getFullName());
@@ -71,28 +71,31 @@ public class UserRepository {
         }
     }
 
-    public boolean updateUser(User user) throws SQLException {
+    public boolean updateUser(User user, int userId) throws SQLException {
         String query = """
                 UPDATE users
-                SET password=?, fullName=?, role=?, email=?, phoneNumber=?, imagePath=? WHERE userName=?
+                SET userName = ?, password = ?, fullName = ?, role = ?, email = ?, phoneNumber = ?, imagePath = ?
+                WHERE id = ?
                 """;
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, user.getPassword());
-            stmt.setString(2, user.getFullName());
-            stmt.setString(3, user.getRole().toString());
-            stmt.setString(4, user.getEmail());
-            stmt.setString(5, user.getPhoneNumber());
-            stmt.setString(6, user.getImagePath());
-            stmt.setString(7, user.getUserName());
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, user.getUserName());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getFullName());
+            stmt.setString(4, user.getRole().toString());
+            stmt.setString(5, user.getEmail());
+            stmt.setString(6, user.getPhoneNumber());
+            stmt.setString(7, user.getImagePath());
+            stmt.setInt(8, userId);
             return stmt.executeUpdate() > 0;
         }
+        
     }
 
     public boolean deleteUser(String username) throws SQLException {
         String query = "DELETE FROM users WHERE userName = ?";
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
             return stmt.executeUpdate() > 0;
         }
@@ -102,8 +105,8 @@ public class UserRepository {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users";
         try (Connection connection = dbConnection.getConnection();
-                Statement stmt = connection.createStatement();
-                ResultSet rs = stmt.executeQuery(query)) {
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 users.add(extractUserFromResultSet(rs));
             }
@@ -114,7 +117,7 @@ public class UserRepository {
     public User authenticateUser(String username, String password) throws SQLException {
         String query = "SELECT * FROM users WHERE userName = ? AND password = ?";
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, username);
             stmt.setString(2, password);
@@ -148,7 +151,7 @@ public class UserRepository {
     public static int getUserIdByUsername(String username) {
         String query = "SELECT id FROM users WHERE userName = ?";
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -164,7 +167,7 @@ public class UserRepository {
     public List<User> getUsersByRole(Role role) throws SQLException {
         String query = "SELECT * FROM users WHERE role = ?";
         try (Connection connection = dbConnection.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, role.toString());
             try (ResultSet rs = stmt.executeQuery()) {
                 List<User> users = new ArrayList<>();
@@ -172,6 +175,17 @@ public class UserRepository {
                     users.add(extractUserFromResultSet(rs));
                 }
                 return users;
+            }
+        }
+    }
+
+    public boolean isUsernameExists(String username) throws SQLException {
+        String query = "SELECT * FROM users WHERE userName = ?";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
             }
         }
     }

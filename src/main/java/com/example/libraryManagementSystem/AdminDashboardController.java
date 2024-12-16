@@ -235,7 +235,7 @@ public class AdminDashboardController implements Initializable {
                 return;
             }
 
-            if (userRepository.updateUser(user)) {
+            if (userRepository.updateUser(user, MainApplication.loggedInUserId)) {
                 HelperFunctions.showAlert(Alert.AlertType.INFORMATION, "Success", "User updated successfully!");
                 clearFields();
                 setUserTableFromDB();

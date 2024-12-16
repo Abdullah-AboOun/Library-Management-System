@@ -1,14 +1,12 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.DBCode.UserRepository;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -16,6 +14,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable {
@@ -61,14 +60,16 @@ public class RegisterController implements Initializable {
 
     @FXML
     private TextField userNameField;
+
     private String imagePath = MainApplication.defaultImagePath;
+    UserRepository userRepository = new UserRepository();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         roleComboBox.getItems().addAll("ADMIN", "USER", "LIBRARIAN");
         roleComboBox.setValue("USER");
         roleComboBox.setDisable(true);
-
+        userRepository = new UserRepository();
         profileImageView.setImage(new Image(new File(imagePath).toURI().toString()));
     }
 
@@ -88,9 +89,14 @@ public class RegisterController implements Initializable {
         } else {
             userNameErrorLabel.setText("");
         }
-        if (MainApplication.userList.parallelStream()
-                .anyMatch(user -> user.getUserName().equals(userNameField.getText()))) {
-            userNameErrorLabel.setText("Username already exists");
+        try {
+            if (userRepository.isUsernameExists(userNameField.getText())) {
+                userNameErrorLabel.setText("Username already exists");
+                isValid = false;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking username: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while checking username");
             isValid = false;
         }
 
@@ -125,13 +131,19 @@ public class RegisterController implements Initializable {
             phoneErrorLabel.setText("");
         }
 
-        if (isValid) {
-
-            User user = new User(userNameField.getText(), passwordField.getText(), fullNameField.getText(),
-                    Role.USER, emailField.getText(), phoneField.getText(), imagePath);
-            MainApplication.userList.add(user);
-            HelperFunctions.switchScene("login");
+        if (!isValid) {
+            return;
         }
+        User user = new User(userNameField.getText(), passwordField.getText(), fullNameField.getText(),
+                Role.USER, emailField.getText(), phoneField.getText(), imagePath);
+        try {
+            userRepository.addUser(user);
+        } catch (SQLException e) {
+            System.err.println("Error filtering users: " + e.getMessage());
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error",
+                    "An error occurred while registering user");
+        }
+        HelperFunctions.switchScene("login");
 
     }
 

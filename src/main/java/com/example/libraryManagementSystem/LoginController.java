@@ -21,8 +21,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static com.example.libraryManagementSystem.MainApplication.loggedInUserIndex;
-import static com.example.libraryManagementSystem.MainApplication.userList;
 
 public class LoginController implements Initializable {
     @FXML
@@ -44,7 +42,6 @@ public class LoginController implements Initializable {
                 loginButtonOnClick();
             }
         });
-        loggedInUserIndex = 0;
         loginButton.setGraphic(new FontIcon(Material2AL.LOGIN));
 
     }

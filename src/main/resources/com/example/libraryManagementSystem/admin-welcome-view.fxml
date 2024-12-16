@@ -7,21 +7,24 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
-<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="500.0" prefWidth="700.0"
-          xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+<FlowPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" columnHalignment="CENTER" prefHeight="500.0"
+          prefWidth="700.0" xmlns="http://javafx.com/javafx/21"
           fx:controller="com.example.libraryManagementSystem.AdminWelcomeController">
     <stylesheets>
         <URL value="@styles/style.css"/>
     </stylesheets>
     <VBox prefHeight="500.0" prefWidth="700.0">
-        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" spacing="20.0"
+        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0"
+              spacing="20.0"
               style="-fx-background-color: #282a2e;" VBox.vgrow="ALWAYS">
             <ImageView fx:id="smallProfileImageView" fitHeight="40.0" fitWidth="40.0"
-                       onMouseClicked="#smallProfileImageViewOnClick" pickOnBounds="true" preserveRatio="true">
+                       onMouseClicked="#smallProfileImageViewOnClick" pickOnBounds="true"
+                       preserveRatio="true">
             </ImageView>
             <Label fx:id="usernameLabel"/>
             <Pane nodeOrientation="RIGHT_TO_LEFT" HBox.hgrow="ALWAYS">
-                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnClick" styleClass="danger"
+                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnClick"
+                        styleClass="danger"
                         text="logout"/>
             </Pane>
 
@@ -40,11 +43,14 @@
             <!-- Left Sidebar -->
             <VBox alignment="CENTER" prefHeight="440.0" prefWidth="173.0" spacing="20.0"
                   style="-fx-background-color: #141515;">
-                <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150" styleClass="accent"
+                <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150"
+                        styleClass="accent"
                         text="Welcome Screen"/>
-                <Button mnemonicParsing="false" onAction="#dashboardButtonOnClick" style="-fx-pref-width: 150"
+                <Button mnemonicParsing="false" onAction="#dashboardButtonOnClick"
+                        style="-fx-pref-width: 150"
                         styleClass="accent" text="User Management"/>
-                <Button mnemonicParsing="false" onAction="#bookButtonOnClick" style="-fx-pref-width: 150"
+                <Button mnemonicParsing="false" onAction="#bookButtonOnClick"
+                        style="-fx-pref-width: 150"
                         styleClass="accent" text="Book Management"/>
                 <VBox.margin>
                     <Insets bottom="40.0"/>
