@@ -20,13 +20,11 @@ public class UserRepository {
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, userId);
-            System.out.println("Executing query for userId: " + userId); // Debug log
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return extractUserFromResultSet(rs);
                 }
-                System.out.println("No user found for id: " + userId); // Debug log
             }
         }
         return null;
@@ -38,13 +36,10 @@ public class UserRepository {
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, username);
-            System.out.println("Executing query for username: " + username); // Debug log
-
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return extractUserFromResultSet(rs);
                 }
-                System.out.println("No user found for username: " + username); // Debug log
                 return null;
             }
         } catch (SQLException e) {
@@ -89,7 +84,7 @@ public class UserRepository {
             stmt.setInt(8, userId);
             return stmt.executeUpdate() > 0;
         }
-        
+
     }
 
     public boolean deleteUser(String username) throws SQLException {
@@ -126,7 +121,6 @@ public class UserRepository {
                 if (rs.next()) {
                     return extractUserFromResultSet(rs);
                 } else {
-                    System.out.println("No user found for username: " + username); // Debug log
                     return null;
                 }
 

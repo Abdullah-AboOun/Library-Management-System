@@ -1,6 +1,5 @@
 package com.example.libraryManagementSystem;
 
-import com.example.libraryManagementSystem.DBCode.DatabaseConnection;
 import com.example.libraryManagementSystem.DBCode.UserRepository;
 import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
@@ -15,9 +14,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 

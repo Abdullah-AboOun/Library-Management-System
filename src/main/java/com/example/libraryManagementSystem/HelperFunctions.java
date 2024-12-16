@@ -100,19 +100,4 @@ public class HelperFunctions {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
-//    public static List<Book> getBorrowedBooks() {
-//        List books = MainApplication.userBookMap.get(MainApplication.userList.get(MainApplication.loggedInUserIndex));
-//        if (books == null) {
-//            MainApplication.userBookMap.put(MainApplication.userList.get(MainApplication.loggedInUserIndex), List.of());
-//            return null;
-//        }
-//        return books;
-//    }
-//
-//    public static void addBorrowedBook(Book book) {
-//        List<Book> books = getBorrowedBooks();
-//        books.add(book);
-//        MainApplication.userBookMap.put(MainApplication.userList.get(MainApplication.loggedInUserIndex), books);
-//    }
 }

@@ -47,7 +47,6 @@ public class BookRepository {
                     books.add(book);
                 } catch (SQLException e) {
                     System.err.println("Error extracting book from result set: " + e.getMessage());
-                    // Continue processing other records even if one fails
                 }
             }
         } catch (SQLException e) {
@@ -59,7 +58,10 @@ public class BookRepository {
     }
 
     public boolean addBook(Book book) throws SQLException {
-        String query = "INSERT INTO books (title, author, dateOfPublication, ISBN, language, category, publisher, imagePath, pagesNumber, copiesNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = """
+                INSERT INTO books (title, author, dateOfPublication, ISBN, language, category,
+                                   publisher, imagePath, pagesNumber, copiesNumber)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""";
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             setBookParameters(stmt, book);
@@ -68,7 +70,9 @@ public class BookRepository {
     }
 
     public boolean updateBook(Book book) throws SQLException {
-        String query = "UPDATE books SET title=?, author=?, dateOfPublication=?, language=?, category=?, publisher=?, imagePath=?, pagesNumber=?, copiesNumber=? WHERE ISBN=?";
+        String query = """
+                UPDATE books SET title=?, author=?, dateOfPublication=?, language=?, category=?,
+                                 publisher=?, imagePath=?, pagesNumber=?, copiesNumber=? WHERE ISBN=?""";
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, book.getTitle());
@@ -80,7 +84,7 @@ public class BookRepository {
             stmt.setString(7, book.getImagePath());
             stmt.setInt(8, book.getPagesNumber());
             stmt.setInt(9, book.getCopiesNumber());
-            stmt.setString(10, book.getISBN()); // WHERE clause parameter
+            stmt.setString(10, book.getISBN());
             return stmt.executeUpdate() > 0;
         }
     }
@@ -199,11 +203,10 @@ public class BookRepository {
         }
     }
 
-    // add a method to approve registration
     public boolean approveBorrowRegistration(String isbn, String username) throws SQLException {
         String getBookIdQuery = "SELECT id FROM books WHERE ISBN = ?";
         String getUserIdQuery = "SELECT id FROM users WHERE userName = ?";
-        String updateQuery = "UPDATE book_registrations SET approved = 1 WHERE user_id = ? AND book_id = ?";
+        String updateQuery = "UPDATE book_registrations SET isApproved = TRUE WHERE user_id = ? AND book_id = ?";
 
         try (Connection connection = dbConnection.getConnection()) {
             // Get book ID
@@ -228,7 +231,6 @@ public class BookRepository {
                 userId = rs.getInt("id");
             }
 
-            // Update registration
             try (PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
                 stmt.setInt(1, userId);
                 stmt.setInt(2, bookId);

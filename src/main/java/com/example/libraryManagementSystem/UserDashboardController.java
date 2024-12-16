@@ -119,7 +119,6 @@ public class UserDashboardController implements Initializable {
 
             bookCategoryComboBox.setOnAction(this::onCategorySelected);
 
-            // Set user profile
             smallProfileImageView.setImage(new Image(new File(loggedInUser.getImagePath()).toURI().toString()));
             usernameLabel.setText(loggedInUser.getFullName());
 

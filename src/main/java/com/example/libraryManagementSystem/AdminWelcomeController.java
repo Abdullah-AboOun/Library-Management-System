@@ -1,7 +1,5 @@
 package com.example.libraryManagementSystem;
 
-import com.example.libraryManagementSystem.DBCode.DatabaseConnection;
-import com.example.libraryManagementSystem.DBCode.UserRepository;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +14,6 @@ import org.kordamp.ikonli.material2.Material2AL;
 
 import java.io.File;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AdminWelcomeController implements Initializable {
