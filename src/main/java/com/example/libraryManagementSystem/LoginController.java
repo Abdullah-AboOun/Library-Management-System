@@ -62,7 +62,14 @@ public class LoginController implements Initializable {
             }
 
             MainApplication.loggedInUserId = UserRepository.getUserIdByUsername(username);
-            HelperFunctions.switchScene(user.getRole() == Role.ADMIN ? "adminWelcome" : "userWelcome");
+            Role role = user.getRole();
+            if (role == Role.ADMIN) {
+                HelperFunctions.switchScene("adminWelcome");
+            } else if (role == Role.USER) {
+                HelperFunctions.switchScene("userWelcome");
+            } else if (role == Role.LIBRARIAN) {
+                HelperFunctions.switchScene("librarianWelcome");
+            }
 
         } catch (SQLException e) {
             System.err.println("Login error: " + e.getMessage());

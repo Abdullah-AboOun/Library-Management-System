@@ -109,8 +109,10 @@ public class ProfileDashboardController implements Initializable {
             if (userRepository.updateUser(user, MainApplication.loggedInUserId)) {
                 if (loggedInUser.getRole().equals(Role.ADMIN)) {
                     HelperFunctions.switchScene("adminDashboard");
-                } else {
+                } else if (loggedInUser.getRole().equals(Role.USER)) {
                     HelperFunctions.switchScene("userDashboard");
+                } else if (loggedInUser.getRole().equals((Role.LIBRARIAN))) {
+                    HelperFunctions.switchScene("borrowManagement");
                 }
             } else {
                 HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Failed to update user profile");
@@ -125,11 +127,9 @@ public class ProfileDashboardController implements Initializable {
     @FXML
     void imageViewOnClick(MouseEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         String projectPath = System.getProperty("user.dir");
-        File initialDirectory = new File(
-                projectPath + "/src/main/resources/com/example/libraryManagementSystem/images");
+        File initialDirectory = new File(projectPath + "/src/main/resources/com/example/libraryManagementSystem/images");
         fileChooser.setInitialDirectory(initialDirectory);
 
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -141,10 +141,13 @@ public class ProfileDashboardController implements Initializable {
 
     @FXML
     void cancelButtonOnClick(ActionEvent actionEvent) {
-        if (loggedInUser.getRole().equals(Role.ADMIN))
+        if (loggedInUser.getRole().equals(Role.ADMIN)) {
             HelperFunctions.switchScene("adminDashboard");
-        else
+        } else if (loggedInUser.getRole().equals(Role.USER)) {
             HelperFunctions.switchScene("userDashboard");
+        } else if (loggedInUser.getRole().equals((Role.LIBRARIAN))) {
+            HelperFunctions.switchScene("borrowManagement");
+        }
     }
 
     private boolean validateInputs() {

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="700.0" prefWidth="1100.0"
+          xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.example.libraryManagementSystem.BorrowManagementController">
+
+    <stylesheets>
+        <URL value="@styles/style.css"/>
+    </stylesheets>
+    <VBox prefHeight="700.0" prefWidth="1100.0">
+        <!-- Top Nav bar -->
+        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" spacing="20.0"
+              style="-fx-background-color: #282a2e;" VBox.vgrow="ALWAYS">
+            <ImageView fx:id="smallProfileImageView" fitHeight="40.0" fitWidth="40.0"
+                       onMouseClicked="#smallProfileImageViewOnClick" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+            <Label fx:id="usernameLabel"/>
+            <Pane nodeOrientation="RIGHT_TO_LEFT" HBox.hgrow="ALWAYS">
+                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnClick" styleClass="danger"
+                        text="logout"/>
+            </Pane>
+
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+            <effect>
+                <DropShadow/>
+            </effect>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="700.0" prefWidth="1100.0">
+            <!-- Left Sidebar -->
+            <VBox alignment="CENTER" prefHeight="640.0" prefWidth="235.0" spacing="20.0"
+                  style="-fx-background-color: #141515;">
+                <Button minWidth="180.0" mnemonicParsing="false" onAction="#welcomeButtonOnClick"
+                        style="-fx-pref-width: 150" styleClass="accent" text="Welcome Screen"/>
+                <Button disable="true" minWidth="180.0" mnemonicParsing="false" prefWidth="180.0"
+                        style="-fx-pref-width: 150" styleClass="accent" text="Borrowing Management"/>
+                <Button minWidth="180.0" mnemonicParsing="false" onAction="#statisticsButtonOnClick"
+                        style="-fx-pref-width: 150" styleClass="accent" text="Statistics"/>
+                <VBox.margin>
+                    <Insets bottom="40.0"/>
+                </VBox.margin>
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </VBox>
+
+            <!-- Right Sidebar -->
+            <VBox alignment="TOP_CENTER" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                <Label text="Borrow Book Management">
+                    <font>
+                        <Font name="System Bold Italic" size="21.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets top="10.0"/>
+                    </VBox.margin>
+                </Label>
+                <ComboBox fx:id="selectStatusComboBox" onAction="#selectStatusOnAction" prefWidth="150.0" promptText="Select status">
+                    <VBox.margin>
+                        <Insets bottom="20" top="10.0"/>
+                    </VBox.margin>
+                </ComboBox>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0"/>
+                    </VBox.margin>
+                    <Button mnemonicParsing="false" onAction="#approveButtonOnClick" styleClass="success"
+                            text="Approve"/>
+                    <Button mnemonicParsing="false" onAction="#rejectButtonOnClick" styleClass="danger" text="Reject"/>
+                </HBox>
+                <TableView fx:id="theTableView" maxHeight="Infinity" prefHeight="700.0" prefWidth="637.0">
+                    <columns>
+                        <TableColumn fx:id="userIdColumn" prefWidth="70.0" text="User ID"/>
+                        <TableColumn fx:id="userNameColumn" prefWidth="140.0" text="User Name"/>
+                        <TableColumn fx:id="userImageColumn" prefWidth="110.0" text="User Image"/>
+                        <TableColumn fx:id="bookIdColumn" prefWidth="70.0" text="Book ID"/>
+                        <TableColumn fx:id="bookTitleColumn" prefWidth="200.0" text="Book Title"/>
+                        <TableColumn fx:id="bookImageColumn" prefWidth="110.0" text="Book Image"/>
+                        <TableColumn fx:id="borrowStatusColumn" prefWidth="160.0" text="Borrow Status"/>
+                    </columns>
+                    <styleClass>
+                        <String fx:value="striped"/>
+                        <String fx:value="bordered"/>
+                    </styleClass>
+                </TableView>
+            </VBox>
+        </HBox>
+    </VBox>
+</FlowPane>

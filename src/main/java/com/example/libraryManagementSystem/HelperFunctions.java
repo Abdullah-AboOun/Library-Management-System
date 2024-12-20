@@ -60,6 +60,12 @@ public class HelperFunctions {
             case "userWelcome":
                 setScene("user-welcome-view.fxml", "Welcome", 700, 500);
                 break;
+            case "librarianWelcome":
+                setScene("librarian-welcome-view.fxml", "Welcome", 700, 500);
+                break;
+            case "borrowManagement":
+                setScene("borrow-management-view.fxml", "Borrow Management", 1100, 700);
+                break;
 
         }
     }

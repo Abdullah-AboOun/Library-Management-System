@@ -1,5 +1,6 @@
 package com.example.libraryManagementSystem.DBCode;
 
+import com.example.libraryManagementSystem.BorrowManagementTable;
 import com.example.libraryManagementSystem.entity.Book;
 
 import java.sql.Connection;
@@ -59,7 +60,7 @@ public class BookRepository {
 
     public boolean addBook(Book book) throws SQLException {
         String query = """
-                INSERT INTO books (title, author, dateOfPublication, ISBN, language, category,
+                 INSERT INTO books (title, author, dateOfPublication, ISBN, language, category,
                                    publisher, imagePath, pagesNumber, copiesNumber)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""";
         try (Connection connection = dbConnection.getConnection();
@@ -111,6 +112,45 @@ public class BookRepository {
             }
         }
         return books;
+    }
+
+    public List<BorrowManagementTable> getBorrowRequests() throws SQLException {
+        String query = """
+                SELECT
+                    br.book_id,
+                    b.title AS bookTitle,
+                    b.imagePath AS bookImagePath,
+                    br.user_id,
+                    u.userName,
+                    u.imagePath AS userImagePath,
+                    br.isApproved AS borrowStatus
+                FROM
+                    book_registrations br
+                JOIN
+                    books b ON br.book_id = b.id
+                JOIN
+                    users u ON br.user_id = u.id
+                """;
+
+        List<BorrowManagementTable> borrowRequests = new ArrayList<>();
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int userId = rs.getInt("user_id");
+                String userName = rs.getString("userName");
+
+                int bookId = rs.getInt("book_id");
+                String bookTitle = rs.getString("bookTitle");
+
+                String borrowStatus = rs.getBoolean("borrowStatus") ? "Approved" : "Pending";
+
+                BorrowManagementTable request = new BorrowManagementTable(userId, userName, rs.getString("userImagePath"), bookId, bookTitle, rs.getString("bookImagePath"), borrowStatus);
+                borrowRequests.add(request);
+            }
+        }
+        return borrowRequests;
     }
 
     public List<String> getCategories() throws SQLException {
@@ -238,6 +278,15 @@ public class BookRepository {
             }
         }
     }
+    public void rejectRegistration(int userId, int bookId) throws SQLException {
+        String query = "DELETE FROM book_registrations WHERE user_id = ? AND book_id = ?";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, bookId);
+            stmt.executeUpdate();
+        }
+    }
 
     public Boolean getBorrowStatusForUser(String isbn, String username) throws SQLException {
         String getBookIdQuery = "SELECT id FROM books WHERE ISBN = ?";
@@ -279,6 +328,7 @@ public class BookRepository {
             }
         }
     }
+
 
     private Book extractBookFromResultSet(ResultSet rs) throws SQLException {
         return new Book(

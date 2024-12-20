@@ -209,3 +209,14 @@ VALUES ('English'),
        ('Chinese'),
        ('Japanese'),
        ('Russian');
+-- Seed book registrations
+INSERT INTO book_registrations (user_id, book_id, isApproved)
+VALUES (1, 1, TRUE),
+       (1, 2, FALSE),
+       (1, 3, TRUE),
+       (3, 4, TRUE),
+       (4, 5, TRUE),
+       (1, 6, FALSE),
+       (2, 7, FALSE),
+       (1, 8, TRUE);
+
