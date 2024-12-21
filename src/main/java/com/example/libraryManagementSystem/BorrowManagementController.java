@@ -146,7 +146,19 @@ public class BorrowManagementController implements Initializable {
 
     @FXML
     void approveButtonOnClick(ActionEvent actionEvent) {
-        // TODO implement approve button, and reimplement borrowing by user to check if book has copies
+        BorrowManagementTable selectedRow = theTableView.getSelectionModel().getSelectedItem();
+        if (selectedRow != null) {
+            try {
+                bookRepository.approveBorrowRegistration(selectedRow.getUserId(), selectedRow.getBookId());
+            } catch (SQLException e) {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Error in approving registration");
+            }
+        } else {
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Please select a row to approve");
+            return;
+        }
+        HelperFunctions.showAlert(Alert.AlertType.INFORMATION, "Success", "Registration approved successfully");
+        setTheTableView();
     }
 
     @FXML

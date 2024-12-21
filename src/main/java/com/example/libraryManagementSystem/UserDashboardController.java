@@ -178,6 +178,16 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     void borrowButtonOnClick(ActionEvent event) {
+        try {
+            if (!bookRepository.isBookCopiesAvailable(isbnField.getText())) {
+                HelperFunctions.showAlert(Alert.AlertType.ERROR,
+                        "Failed to borrow book", "No copies available");
+                return;
+            }
+        } catch (SQLException e) {
+            HelperFunctions.showAlert(Alert.AlertType.ERROR,
+                    "Failed to borrow book", e.getMessage());
+        }
         String selectedBookISBN = isbnField.getText();
 
         try {
@@ -186,6 +196,13 @@ public class UserDashboardController implements Initializable {
             HelperFunctions.showAlert(Alert.AlertType.ERROR,
                     "Failed to borrow book", e.getMessage());
         }
+        try {
+            bookRepository.decrementBookCopies(isbnField.getText());
+        } catch (SQLException e) {
+            HelperFunctions.showAlert(Alert.AlertType.ERROR,
+                    "Failed to borrow book", e.getMessage());
+        }
+
         HelperFunctions.showAlert(Alert.AlertType.INFORMATION,
                 "Book Borrowed", "Book borrowed successfully \nPending approval...");
         borrowButton.setText("Pending Approval");

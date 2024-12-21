@@ -5,6 +5,7 @@ import os
 def init_database():
     # Delete existing database if it exists
     if os.path.exists("./src/main/resources/database.db"):
+        exit("Database already exists! Please delete it first.")
         os.remove("./src/main/resources/database.db")
 
     # Connect to database (creates if not exists)

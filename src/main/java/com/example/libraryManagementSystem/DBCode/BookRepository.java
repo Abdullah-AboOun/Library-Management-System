@@ -242,40 +242,62 @@ public class BookRepository {
             }
         }
     }
+    public boolean isBookCopiesAvailable(String isbn) throws SQLException {
+        String query = "SELECT copiesNumber FROM books WHERE ISBN = ?";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, isbn);
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next()) {
+                throw new SQLException("Book not found");
+            }
+            return rs.getInt("copiesNumber") > 0;
+        }
+    }
 
-    public boolean approveBorrowRegistration(String isbn, String username) throws SQLException {
-        String getBookIdQuery = "SELECT id FROM books WHERE ISBN = ?";
-        String getUserIdQuery = "SELECT id FROM users WHERE userName = ?";
-        String updateQuery = "UPDATE book_registrations SET isApproved = TRUE WHERE user_id = ? AND book_id = ?";
+    public void approveBorrowRegistration(int userId, int bookId) throws SQLException {
+        String updateRegistrationQuery = "UPDATE book_registrations SET isApproved = TRUE WHERE user_id = ? AND book_id = ?";
+        String updateCopiesQuery = "UPDATE books SET copiesNumber = copiesNumber - 1 WHERE id = ?";
+        String checkCopiesQuery = "SELECT copiesNumber FROM books WHERE id = ?";
 
         try (Connection connection = dbConnection.getConnection()) {
-            // Get book ID
-            int bookId;
-            try (PreparedStatement stmt = connection.prepareStatement(getBookIdQuery)) {
-                stmt.setString(1, isbn);
+            connection.setAutoCommit(false);
+
+            // Check if copies are available
+            try (PreparedStatement stmt = connection.prepareStatement(checkCopiesQuery)) {
+                stmt.setInt(1, bookId);
                 ResultSet rs = stmt.executeQuery();
                 if (!rs.next()) {
                     throw new SQLException("Book not found");
                 }
-                bookId = rs.getInt("id");
-            }
-
-            // Get user ID
-            int userId;
-            try (PreparedStatement stmt = connection.prepareStatement(getUserIdQuery)) {
-                stmt.setString(1, username);
-                ResultSet rs = stmt.executeQuery();
-                if (!rs.next()) {
-                    throw new SQLException("User not found");
+                if (rs.getInt("copiesNumber") <= 0) {
+                    throw new SQLException("No copies available for the book with ID: " + bookId);
                 }
-                userId = rs.getInt("id");
             }
 
-            try (PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
+            // Approve user-borrow registration
+            try (PreparedStatement stmt = connection.prepareStatement(updateRegistrationQuery)) {
                 stmt.setInt(1, userId);
                 stmt.setInt(2, bookId);
-                return stmt.executeUpdate() > 0;
+                int rowsUpdated = stmt.executeUpdate();
+                if (rowsUpdated == 0) {
+                    throw new SQLException("Failed to approve borrow registration");
+                }
             }
+
+            // Decrease book copies by 1
+            try (PreparedStatement stmt = connection.prepareStatement(updateCopiesQuery)) {
+                stmt.setInt(1, bookId);
+                int rowsUpdated = stmt.executeUpdate();
+                if (rowsUpdated == 0) {
+                    throw new SQLException("Failed to update book copies");
+                }
+            }
+
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
         }
     }
     public void rejectRegistration(int userId, int bookId) throws SQLException {
@@ -357,4 +379,13 @@ public class BookRepository {
         stmt.setInt(10, book.getCopiesNumber());
     }
 
+    public void decrementBookCopies(String bookISBN) throws SQLException {
+        String query = "UPDATE books SET copiesNumber = copiesNumber - 1 WHERE ISBN = ?";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, bookISBN);
+            stmt.executeUpdate();
+        }
+
+    }
 }
