@@ -402,4 +402,9 @@ public class AdminDashboardController implements Initializable {
 
         return isValid;
     }
+
+    @FXML
+    void statisticsButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("adminStatisticsDashboard");
+    }
 }

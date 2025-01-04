@@ -66,7 +66,9 @@ public class HelperFunctions {
             case "borrowManagement":
                 setScene("borrow-management-view.fxml", "Borrow Management", 1100, 700);
                 break;
-
+            case "adminStatisticsDashboard":
+                setScene("admin-statistics-view.fxml", "Statistics", 800, 600);
+                break;
         }
     }
 

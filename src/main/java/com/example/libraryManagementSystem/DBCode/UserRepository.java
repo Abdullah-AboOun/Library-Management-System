@@ -183,4 +183,16 @@ public class UserRepository {
             }
         }
     }
+
+    public int getUsersCount() throws SQLException {
+        String query = "SELECT COUNT(*) FROM users";
+        try (Connection connection = dbConnection.getConnection();
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
 }

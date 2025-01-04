@@ -48,6 +48,8 @@
                         style="-fx-pref-width: 150" styleClass="accent" text="User Management"/>
                 <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150"
                         styleClass="accent" text="Book Management"/>
+                <Button mnemonicParsing="false" onAction="#statisticsButtonOnClick"
+                        style="-fx-pref-width: 150" styleClass="accent" text="Statistics"/>
                 <VBox.margin>
                     <Insets bottom="40.0"/>
                 </VBox.margin>

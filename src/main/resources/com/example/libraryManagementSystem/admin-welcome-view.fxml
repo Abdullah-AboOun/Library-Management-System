@@ -1,54 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.libraryManagementSystem.AdminWelcomeController">
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="500.0" prefWidth="700.0"
+          xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.example.libraryManagementSystem.AdminWelcomeController">
     <stylesheets>
-        <URL value="@styles/style.css" />
+        <URL value="@styles/style.css"/>
     </stylesheets>
     <VBox prefHeight="500.0" prefWidth="700.0">
-        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" spacing="20.0" style="-fx-background-color: #282a2e;" VBox.vgrow="ALWAYS">
-            <ImageView fx:id="smallProfileImageView" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#smallProfileImageViewOnClick" pickOnBounds="true" preserveRatio="true">
+        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" spacing="20.0"
+              style="-fx-background-color: #282a2e;" VBox.vgrow="ALWAYS">
+            <ImageView fx:id="smallProfileImageView" fitHeight="40.0" fitWidth="40.0"
+                       onMouseClicked="#smallProfileImageViewOnClick" pickOnBounds="true" preserveRatio="true">
             </ImageView>
-            <Label fx:id="usernameLabel" />
+            <Label fx:id="usernameLabel"/>
             <Pane nodeOrientation="RIGHT_TO_LEFT" HBox.hgrow="ALWAYS">
-                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnClick" styleClass="danger" text="logout" />
+                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnClick" styleClass="danger"
+                        text="logout"/>
             </Pane>
 
             <VBox.margin>
-                <Insets />
+                <Insets/>
             </VBox.margin>
             <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </padding>
             <effect>
-                <DropShadow />
+                <DropShadow/>
             </effect>
         </HBox>
 
         <HBox alignment="CENTER" prefHeight="500.0" prefWidth="700.0" spacing="15">
             <!-- Left Sidebar -->
-            <VBox alignment="CENTER" prefHeight="440.0" prefWidth="173.0" spacing="20.0" style="-fx-background-color: #141515;">
-                <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150" styleClass="accent" text="Welcome Screen" />
-                <Button mnemonicParsing="false" onAction="#dashboardButtonOnClick" style="-fx-pref-width: 150" styleClass="accent" text="User Management" />
-                <Button mnemonicParsing="false" onAction="#bookButtonOnClick" style="-fx-pref-width: 150" styleClass="accent" text="Book Management" />
+            <VBox alignment="CENTER" prefHeight="440.0" prefWidth="173.0" spacing="20.0"
+                  style="-fx-background-color: #141515;">
+                <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150" styleClass="accent"
+                        text="Welcome Screen"/>
+                <Button mnemonicParsing="false" onAction="#dashboardButtonOnClick" style="-fx-pref-width: 150"
+                        styleClass="accent" text="User Management"/>
+                <Button mnemonicParsing="false" onAction="#bookButtonOnClick" style="-fx-pref-width: 150"
+                        styleClass="accent" text="Book Management"/>
+                <Button mnemonicParsing="false" onAction="#statisticsButtonOnClick"
+                        style="-fx-pref-width: 150" styleClass="accent" text="Statistics"/>
                 <VBox.margin>
-                    <Insets bottom="40.0" />
+                    <Insets bottom="40.0"/>
                 </VBox.margin>
                 <effect>
-                    <DropShadow />
+                    <DropShadow/>
                 </effect>
             </VBox>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" HBox.hgrow="ALWAYS">
                 <Label text="Welcome Admin">
                     <font>
-                        <Font name="System Bold" size="48.0" />
+                        <Font name="System Bold" size="48.0"/>
                     </font>
                 </Label>
             </FlowPane>
