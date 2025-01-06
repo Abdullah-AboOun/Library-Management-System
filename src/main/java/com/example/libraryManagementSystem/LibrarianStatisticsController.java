@@ -1,22 +1,39 @@
 package com.example.libraryManagementSystem;
 
+import com.example.libraryManagementSystem.DBCode.BookRepository;
+import com.example.libraryManagementSystem.entity.Book;
+import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
-public class LibrarianWelcomeController implements Initializable {
+public class LibrarianStatisticsController implements Initializable {
+    @FXML
+    private VBox mainVBox;
+    @FXML
+    private Label allBooksCountLabel;
+    @FXML
+    private Label borrowedBooksCountLabel;
+    @FXML
+    private Label pendingBooksCountLabel;
+    @FXML
+    private Label approvedBooksCountLabel;
     @FXML
     private Button logoutButton;
 
@@ -28,12 +45,18 @@ public class LibrarianWelcomeController implements Initializable {
 
     private final User loggedInUser = HelperFunctions.getLoggedInUser();
 
+    TableView<Book> tableView = new TableView<>();
+    BookRepository bookRepository = new BookRepository();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         usernameLabel.setText(loggedInUser.getFullName());
         smallProfileImageView.setImage(new Image(new File(loggedInUser.getImagePath()).toURI().toString()));
         logoutButton.setGraphic(new FontIcon(Material2AL.LOG_OUT));
+
+        List<Book> allBooks = null;
+        tableView = new TableView<>();
     }
 
     @FXML
@@ -51,9 +74,30 @@ public class LibrarianWelcomeController implements Initializable {
         HelperFunctions.switchScene("borrowManagement");
     }
 
+
     @FXML
-    void statisticsButtonOnClick(ActionEvent actionEvent) {
-        HelperFunctions.switchScene("librarianStatisticsDashboard");
+    void borrowedBooksImageOnClick(MouseEvent mouseEvent) {
     }
+
+    @FXML
+    void allBooksImageOnClick(MouseEvent mouseEvent) {
+    }
+
+    @FXML
+    void approvedBooksImageOnClick(MouseEvent mouseEvent) {
+    }
+
+    @FXML
+    void pendingBooksImageOnClick(MouseEvent mouseEvent) {
+    }
+    private void initializeTable() {
+    }
+
+    @FXML
+    void welcomeButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("librarianWelcome");
+    }
+
+
 }
 

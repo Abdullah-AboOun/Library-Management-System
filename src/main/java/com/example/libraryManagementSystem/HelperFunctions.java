@@ -69,6 +69,9 @@ public class HelperFunctions {
             case "adminStatisticsDashboard":
                 setScene("admin-statistics-view.fxml", "Statistics", 1000, 700);
                 break;
+            case "librarianStatisticsDashboard":
+                setScene("librarian-statistics-view.fxml", "Statistics", 1000, 700);
+                break;
         }
     }
 

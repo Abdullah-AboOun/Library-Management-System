@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="500.0" prefWidth="700.0"
+          xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.example.libraryManagementSystem.LibrarianStatisticsController">
+    <stylesheets>
+        <URL value="@styles/style.css"/>
+    </stylesheets>
+    <VBox prefHeight="500.0" prefWidth="700.0">
+        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" spacing="20.0"
+              style="-fx-background-color: #282a2e;" VBox.vgrow="ALWAYS">
+            <ImageView fx:id="smallProfileImageView" fitHeight="40.0" fitWidth="40.0"
+                       onMouseClicked="#smallProfileImageViewOnClick" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+            <Label fx:id="usernameLabel"/>
+            <Pane nodeOrientation="RIGHT_TO_LEFT" HBox.hgrow="ALWAYS">
+                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnClick" styleClass="danger"
+                        text="logout"/>
+            </Pane>
+
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+            <effect>
+                <DropShadow/>
+            </effect>
+        </HBox>
+
+        <HBox alignment="CENTER" prefHeight="500.0" prefWidth="700.0" spacing="15">
+            <!-- Left Sidebar -->
+            <VBox alignment="CENTER" prefHeight="440.0" prefWidth="173.0" spacing="20.0"
+                  style="-fx-background-color: #141515;">
+                <Button minWidth="180.0" mnemonicParsing="false" onAction="#welcomeButtonOnClick"
+                        style="-fx-pref-width: 150" styleClass="accent" text="Welcome Screen"/>
+                <Button mnemonicParsing="false" onAction="#borrowButtonOnClick" style="-fx-pref-width: 150"
+                        styleClass="accent" text="Borrowing Management"/>
+                <Button mnemonicParsing="false" disable="true" style="-fx-pref-width: 150"
+                        styleClass="accent" text="Statistics"/>
+                <VBox.margin>
+                    <Insets bottom="40.0"/>
+                </VBox.margin>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </VBox>
+            <VBox fx:id="mainVBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="70.0"
+                  HBox.hgrow="ALWAYS">
+                <VBox alignment="CENTER" spacing="10.0">
+                    <Label text="All books in the system"/>
+                    <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#allBooksImageOnClick"
+                               pickOnBounds="true" preserveRatio="true">
+                        <Image url="@images/book.png"/>
+                    </ImageView>
+                    <Label fx:id="allBooksCountLabel"/>
+                </VBox>
+                <HBox alignment="CENTER" spacing="70.0">
+                    <VBox alignment="CENTER">
+                        <Label text="All Borrowed Books"/>
+                        <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#borrowedBooksImageOnClick"
+                                   pickOnBounds="true" preserveRatio="true">
+                            <Image url="@images/book.png"/>
+                        </ImageView>
+                        <Label fx:id="borrowedBooksCountLabel"/>
+                    </VBox>
+                    <VBox alignment="CENTER">
+                        <Label text="Pending Books"/>
+                        <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#pendingBooksImageOnClick"
+                                   pickOnBounds="true" preserveRatio="true">
+                            <Image url="@images/book.png"/>
+                        </ImageView>
+                        <Label fx:id="pendingBooksCountLabel"/>
+                    </VBox>
+                    <VBox alignment="CENTER">
+                        <Label text="Approved Books"/>
+                        <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#approvedBooksImageOnClick"
+                                   pickOnBounds="true" preserveRatio="true">
+                            <Image url="@images/book.png"/>
+                        </ImageView>
+                        <Label fx:id="approvedBooksCountLabel"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</FlowPane>
