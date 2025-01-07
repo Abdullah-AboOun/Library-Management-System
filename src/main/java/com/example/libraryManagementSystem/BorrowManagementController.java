@@ -141,6 +141,7 @@ public class BorrowManagementController implements Initializable {
 
     @FXML
     void statisticsButtonOnClick(ActionEvent actionEvent) {
+        HelperFunctions.switchScene("adminStatisticsDashboard");
 
     }
 

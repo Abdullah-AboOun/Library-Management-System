@@ -45,7 +45,7 @@ public class BorrowManagementTable {
     }
 
     public int getBookId() {
-        return bookId;
+            return bookId;
     }
 
     public void setBookId(int bookId) {
