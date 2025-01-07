@@ -200,7 +200,7 @@ public class AdminStatisticsController implements Initializable {
         TextField searchField = new TextField();
         searchField.setPromptText("Search");
         Button searchButton = new Button("Search");
-        Styles.toggleStyleClass(searchButton, Styles.ACCENT);
+        Styles.toggleStyleClass(searchButton, Styles.SUCCESS);
         searchButton.setOnAction(event -> {
             ObservableList<User> users = FXCollections.observableArrayList();
             try {
@@ -246,7 +246,7 @@ public class AdminStatisticsController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
-        Styles.toggleStyleClass(clearButton, Styles.WARNING);
+        Styles.toggleStyleClass(clearButton, Styles.ACCENT);
         searchHBox.getChildren().addAll(searchField, searchButton, clearButton, backButton);
 
 

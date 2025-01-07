@@ -146,7 +146,9 @@ public class BookRepository {
 
                 String borrowStatus = rs.getBoolean("borrowStatus") ? "Approved" : "Pending";
 
-                BorrowManagementTable request = new BorrowManagementTable(userId, userName, rs.getString("userImagePath"), bookId, bookTitle, rs.getString("bookImagePath"), borrowStatus);
+                BorrowManagementTable request = new BorrowManagementTable(userId, userName,
+                        rs.getString("userImagePath"), bookId, bookTitle,
+                        rs.getString("bookImagePath"), borrowStatus);
                 borrowRequests.add(request);
             }
         }
@@ -387,5 +389,36 @@ public class BookRepository {
             stmt.executeUpdate();
         }
 
+    }
+
+    public List<Book> getBorrowedBooks() {
+        String query = """
+                SELECT
+                    b.title,
+                    b.author,
+                    b.dateOfPublication,
+                    b.ISBN,
+                    b.language,
+                    b.category,
+                    b.publisher,
+                    b.imagePath,
+                    b.pagesNumber,
+                    b.copiesNumber
+                FROM
+                    books b
+                JOIN
+                    book_registrations br ON b.id = br.book_id
+                """;
+        List<Book> borrowedBooks = new ArrayList<>();
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                borrowedBooks.add(extractBookFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return borrowedBooks;
     }
 }

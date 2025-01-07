@@ -1,8 +1,6 @@
 package com.example.libraryManagementSystem;
 
 import com.example.libraryManagementSystem.DBCode.BookRepository;
-import com.example.libraryManagementSystem.entity.Book;
-import com.example.libraryManagementSystem.entity.Role;
 import com.example.libraryManagementSystem.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,7 +43,7 @@ public class LibrarianStatisticsController implements Initializable {
 
     private final User loggedInUser = HelperFunctions.getLoggedInUser();
 
-    TableView<Book> tableView = new TableView<>();
+    TableView<BorrowManagementTable> tableView = new TableView<>();
     BookRepository bookRepository = new BookRepository();
 
 
@@ -55,7 +53,26 @@ public class LibrarianStatisticsController implements Initializable {
         smallProfileImageView.setImage(new Image(new File(loggedInUser.getImagePath()).toURI().toString()));
         logoutButton.setGraphic(new FontIcon(Material2AL.LOG_OUT));
 
-        List<Book> allBooks = null;
+
+        try {
+            allBooksCountLabel.setText(String.valueOf(bookRepository.getAllBooks().size()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        List<BorrowManagementTable> borrowedBooks;
+        try {
+            borrowedBooks = bookRepository.getBorrowRequests();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        borrowedBooksCountLabel.setText(String.valueOf(borrowedBooks.size()));
+        pendingBooksCountLabel.setText(String.valueOf(borrowedBooks.stream().filter(book ->
+                book.getBorrowStatus().equals("Pending")).count()));
+        approvedBooksCountLabel.setText(String.valueOf(borrowedBooks.stream().filter(book ->
+                book.getBorrowStatus().equals("Approved")).count()));
+
         tableView = new TableView<>();
     }
 
@@ -90,7 +107,9 @@ public class LibrarianStatisticsController implements Initializable {
     @FXML
     void pendingBooksImageOnClick(MouseEvent mouseEvent) {
     }
+
     private void initializeTable() {
+
     }
 
     @FXML
