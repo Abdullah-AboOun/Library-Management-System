@@ -1,17 +1,22 @@
 package com.example.libraryManagementSystem;
 
+import atlantafx.base.theme.Styles;
 import com.example.libraryManagementSystem.DBCode.BookRepository;
 import com.example.libraryManagementSystem.entity.User;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 
@@ -94,21 +99,121 @@ public class LibrarianStatisticsController implements Initializable {
 
     @FXML
     void borrowedBooksImageOnClick(MouseEvent mouseEvent) {
-    }
-
-    @FXML
-    void allBooksImageOnClick(MouseEvent mouseEvent) {
+        initializeTable("all");
     }
 
     @FXML
     void approvedBooksImageOnClick(MouseEvent mouseEvent) {
+        initializeTable("Approved");
     }
 
     @FXML
     void pendingBooksImageOnClick(MouseEvent mouseEvent) {
+        initializeTable("Pending");
     }
 
-    private void initializeTable() {
+    private void initializeTable(String status) {
+        mainVBox.getChildren().clear();
+
+        TableColumn<BorrowManagementTable, String> userIdColumn = new TableColumn<>("User ID");
+        userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+
+        TableColumn<BorrowManagementTable, String> userNameColumn = new TableColumn<>("User Name");
+        userNameColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
+
+        TableColumn<BorrowManagementTable, ImageView> userImageColumn = new TableColumn<>("User Image");
+        userImageColumn.setCellValueFactory(cellData -> {
+            String userImagePath = cellData.getValue().getUserImage();
+            ImageView imageView = new ImageView(new Image(new File(userImagePath).toURI().toString()));
+            imageView.setFitHeight(30);
+            imageView.setFitWidth(30);
+            return new SimpleObjectProperty<>(imageView);
+        });
+
+        TableColumn<BorrowManagementTable, String> bookIdColumn = new TableColumn<>("Book ID");
+        bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
+
+        TableColumn<BorrowManagementTable, String> bookTitleColumn = new TableColumn<>("Book Title");
+        bookTitleColumn.setCellValueFactory(new PropertyValueFactory<>("bookTitle"));
+
+        TableColumn<BorrowManagementTable, ImageView> bookImageColumn = new TableColumn<>("Book Image");
+        bookImageColumn.setCellValueFactory(cellData -> {
+            String bookImagePath = cellData.getValue().getBookImage();
+            ImageView imageView = new ImageView(new Image(new File(bookImagePath).toURI().toString()));
+            imageView.setFitHeight(30);
+            imageView.setFitWidth(30);
+            return new SimpleObjectProperty<>(imageView);
+        });
+
+        TableColumn<BorrowManagementTable, String> borrowStatusColumn = new TableColumn<>("Borrow Status");
+        borrowStatusColumn.setCellValueFactory(new PropertyValueFactory<>("borrowStatus"));
+        borrowStatusColumn.setCellFactory(column -> new TableCell<BorrowManagementTable, String>() {
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty || status == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(status);
+                    if (status.equals("Approved")) {
+                        setTextFill(Color.GREEN);
+                    } else if (status.equals("Pending")) {
+                        setTextFill(Color.VIOLET);
+                    } else {
+                        setTextFill(Color.BLACK);
+                    }
+                }
+            }
+        });
+
+        tableView.getColumns().addAll(userIdColumn, userNameColumn, userImageColumn,
+                bookIdColumn, bookTitleColumn, bookImageColumn, borrowStatusColumn);
+        ObservableList<BorrowManagementTable> tableData = FXCollections.observableArrayList();
+
+        try {
+            tableData.addAll(bookRepository.getBorrowRequests());
+        } catch (SQLException e) {
+            HelperFunctions.showAlert(Alert.AlertType.ERROR, "Error", "Error in fetching data");
+        }
+        if (status.equals("all")) {
+            tableView.setItems(tableData);
+        } else if (status.equals("Approved") || status.equals("Pending")) {
+            tableView.setItems(tableData.filtered(book -> book.getBorrowStatus().equals(status)));
+        }
+
+
+        Button backButton = new Button("Back");
+        backButton.setOnAction(event -> {
+            HelperFunctions.switchScene("librarianStatisticsDashboard");
+        });
+        Styles.toggleStyleClass(backButton, Styles.DANGER);
+
+        TextField searchField = new TextField();
+        searchField.setPromptText("Search");
+        Button searchButton = new Button("Search");
+        searchButton.setOnAction(actionEvent -> {
+            String searchText = searchField.getText().toLowerCase();
+            if (searchText.isEmpty()) {
+                tableView.setItems(tableData);
+                return;
+            }
+            ObservableList<BorrowManagementTable> filteredData = tableData.filtered(book ->
+                    book.getUserName().toLowerCase().contains(searchText) ||
+                    book.getBookTitle().toLowerCase().contains(searchText));
+            tableView.setItems(filteredData);
+        });
+
+        Styles.toggleStyleClass(searchButton, Styles.SUCCESS);
+        Styles.toggleStyleClass(tableView, Styles.BORDERED);
+        Styles.toggleStyleClass(tableView, Styles.STRIPED);
+        HBox searchHBox = new HBox();
+        searchHBox.setSpacing(20);
+        searchHBox.getChildren().addAll(searchField, searchButton, backButton);
+
+
+        mainVBox.getChildren().addAll(searchHBox);
+        mainVBox.getChildren().add(tableView);
 
     }
 
