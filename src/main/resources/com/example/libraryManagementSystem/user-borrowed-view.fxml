@@ -5,15 +5,14 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 <?import java.net.URL?>
-<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="500.0" prefWidth="700.0"
+<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="700.0" prefWidth="1000.0"
           xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.example.libraryManagementSystem.UserWelcomeController">
+          fx:controller="com.example.libraryManagementSystem.UserBorrowedController">
     <stylesheets>
         <URL value="@styles/style.css"/>
     </stylesheets>
-    <VBox prefHeight="500.0" prefWidth="700.0">
+    <VBox prefHeight="700.0" prefWidth="1000.0">
         <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" spacing="20.0"
               style="-fx-background-color: #282a2e;" VBox.vgrow="ALWAYS">
             <ImageView fx:id="smallProfileImageView" fitHeight="40.0" fitWidth="40.0"
@@ -36,15 +35,15 @@
             </effect>
         </HBox>
 
-        <HBox alignment="CENTER" prefHeight="500.0" prefWidth="700.0" spacing="15">
+        <HBox alignment="CENTER" prefHeight="700.0" prefWidth="1000.0" spacing="15">
             <!-- Left Sidebar -->
             <VBox alignment="CENTER" prefHeight="440.0" prefWidth="173.0" spacing="20.0"
                   style="-fx-background-color: #141515;">
-                <Button disable="true" mnemonicParsing="false" style="-fx-pref-width: 150" styleClass="accent"
-                        text="Welcome Screen"/>
+                <Button mnemonicParsing="false" onAction="#welcomeButtonOnClick" style="-fx-pref-width: 150"
+                        styleClass="accent" text="Welcome Screen"/>
                 <Button mnemonicParsing="false" onAction="#borrowButtonOnClick" style="-fx-pref-width: 150"
                         styleClass="accent" text="Borrow Book"/>
-                <Button mnemonicParsing="false" onAction="#borrowedButtonOnClick" style="-fx-pref-width: 150"
+                <Button mnemonicParsing="false" disable="true" style="-fx-pref-width: 150"
                         styleClass="accent" text="Borrowed Books"/>
                 <VBox.margin>
                     <Insets bottom="40.0"/>
@@ -53,12 +52,7 @@
                     <DropShadow/>
                 </effect>
             </VBox>
-            <FlowPane alignment="CENTER" columnHalignment="CENTER" HBox.hgrow="ALWAYS">
-                <Label text="Welcome User">
-                    <font>
-                        <Font name="System Bold" size="48.0"/>
-                    </font>
-                </Label>
+            <FlowPane fx:id="mainFlowPane" hgap="10" vgap="10" prefWrapLength="200" HBox.hgrow="ALWAYS">
             </FlowPane>
         </HBox>
     </VBox>

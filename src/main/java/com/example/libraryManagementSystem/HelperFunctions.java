@@ -72,6 +72,9 @@ public class HelperFunctions {
             case "librarianStatisticsDashboard":
                 setScene("librarian-statistics-view.fxml", "Statistics", 1000, 700);
                 break;
+            case "userBorrowed":
+                setScene("user-borrowed-view.fxml", "Borrowed Books", 1000, 700);
+                break;
         }
     }
 

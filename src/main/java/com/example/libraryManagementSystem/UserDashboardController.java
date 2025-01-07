@@ -254,6 +254,6 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     void borrowedButtonOnClick(ActionEvent actionEvent) {
-
+        HelperFunctions.switchScene("userBorrowed");
     }
 }

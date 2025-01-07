@@ -244,6 +244,7 @@ public class BookRepository {
             }
         }
     }
+
     public boolean isBookCopiesAvailable(String isbn) throws SQLException {
         String query = "SELECT copiesNumber FROM books WHERE ISBN = ?";
         try (Connection connection = dbConnection.getConnection();
@@ -302,6 +303,7 @@ public class BookRepository {
             throw e;
         }
     }
+
     public void rejectRegistration(int userId, int bookId) throws SQLException {
         String query = "DELETE FROM book_registrations WHERE user_id = ? AND book_id = ?";
         try (Connection connection = dbConnection.getConnection();
@@ -420,5 +422,66 @@ public class BookRepository {
             e.printStackTrace();
         }
         return borrowedBooks;
+    }
+
+    public List<BorrowManagementTable> getBorrowedBooksByUserId(int userId) throws SQLException {
+        String query = """
+                SELECT
+                    b.title AS bookTitle,
+                    b.imagePath AS bookImagePath,
+                    br.user_id AS userId,
+                    br.book_id AS bookId,
+                    br.isApproved AS borrowStatus
+                FROM
+                    book_registrations br
+                JOIN
+                    books b ON br.book_id = b.id
+                WHERE
+                    br.user_id = ?
+                """;
+        List<BorrowManagementTable> borrowedBooks = new ArrayList<>();
+        try (Connection connection = new DatabaseConnection().getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String borrowStatus = rs.getBoolean("borrowStatus") ? "Approved" : "Pending";
+                BorrowManagementTable request = new BorrowManagementTable(
+                        rs.getInt("userId"),
+                        "",
+                        "",
+                        rs.getInt("bookId"),
+                        rs.getString("bookTitle"),
+                        rs.getString("bookImagePath"),
+                        borrowStatus);
+                borrowedBooks.add(request);
+            }
+        }
+        return borrowedBooks;
+    }
+
+    public void returnBook(int bookId, int loggedInUserId) throws SQLException {
+        String deleteQuery = "DELETE FROM book_registrations WHERE book_id = ? AND user_id = ?";
+        String updateCopiesQuery = "UPDATE books SET copiesNumber = copiesNumber + 1 WHERE id = ?";
+
+        try (Connection connection = dbConnection.getConnection()) {
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery);
+                 PreparedStatement updateStmt = connection.prepareStatement(updateCopiesQuery)) {
+
+                deleteStmt.setInt(1, bookId);
+                deleteStmt.setInt(2, loggedInUserId);
+                deleteStmt.executeUpdate();
+
+                updateStmt.setInt(1, bookId);
+                updateStmt.executeUpdate();
+
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+        }
     }
 }

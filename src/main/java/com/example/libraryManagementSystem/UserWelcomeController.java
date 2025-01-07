@@ -53,7 +53,7 @@ public class UserWelcomeController implements Initializable {
 
     @FXML
     void borrowedButtonOnClick(ActionEvent actionEvent) {
-
+        HelperFunctions.switchScene("userBorrowed");
     }
 }
 
